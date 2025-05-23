@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="typni website">
+
+    <!-- ========== Page Title ========== -->
+    <title> join - Typni</title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <!-- ========== End Stylesheet ========== -->
+
+    
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/hero1.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Member Registration</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li class="active">Register</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Membership registration 
+    ============================================= -->
+    <div style="top: -100 !important;" class="registration-form default-padding">
+        <div class="container">
+            <div class="row">
+            <h2 style="color: white;"></h2>
+                <div class="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Register</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="name">Your Name</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="name" placeholder="Name as per ID" required>
+                                                <span class="input-group-addon"><i class="fas fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone_number">Phone Number</label>
+                                            <div class="input-group">
+                                                <input type="tel" class="form-control" id="phone_number" required>
+                                                <span class="input-group-addon"><i class="fas fa-phone"></i></span>
+                                            </div>
+                                            <small class="form-text text-muted">Please enter a valid phone number with country code.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id-number">ID Number</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="idNumber" placeholder="Your Id Number" required>
+                                                <span class="input-group-addon"><i class="fas fa-flag"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Email </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="email" placeholder="yourname@mail.com" required>
+                                                <span class="input-group-addon"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="date_of_birth">Date Of Birth</label>
+                                            <div class="input-group">
+                                                <input type="date" class="form-control" id="date_of_birth" required>
+                                                <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="donateType">Gender</label>
+                                            <select id="gender" class="form-control">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="not Say">Rather Not Say</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="country">Country</label>
+                                            <select id="country" class="form-control countries-dropdown">
+                                                <!-- Will be populated by JavaScript -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="employment">Are You Employed?</label>
+                                            <select id="employment" class="form-control">
+                                                <option value="false">No</option>
+                                                <option value="true">Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Higest Level Of Education </label>
+                                            <select id="education" class="form-control">
+                                                <option value="highschool">High School</option>
+                                                <option value="tvet">TVET</option>
+                                                <option value="college">College</option>
+                                                <option value="university">University</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="interests">Select Your Top 3 Interests *</label>
+                                        <div class="interests-container">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-empowerment" name="interests" value="youth-empowerment">
+                                                        <label for="youth-empowerment">Youth Empowerment</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-mentorship" name="interests" value="youth-mentorship">
+                                                        <label for="youth-mentorship">Youth Mentorship</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-employment" name="interests" value="youth-employment">
+                                                        <label for="youth-employment">Youth Employment</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="entrepreneurship" name="interests" value="entrepreneurship">
+                                                        <label for="entrepreneurship">Entrepreneurship</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="financial-literacy" name="interests" value="financial-literacy">
+                                                        <label for="financial-literacy">Financial Literacy</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-representation" name="interests" value="youth-representation">
+                                                        <label for="youth-representation">Youth Representation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="education" name="interests" value="education">
+                                                        <label for="education">Education</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="sports-arts-talent" name="interests" value="sports-arts-talent">
+                                                        <label for="sports-arts-talent">Sports, Arts & Talent</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="pan-africanism" name="interests" value="pan-africanism">
+                                                        <label for="pan-africanism">Pan Africanism</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="technology-digital-literacy" name="interests" value="technology-digital-literacy">
+                                                        <label for="technology-digital-literacy">Technology & Digital Literacy</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="menstrual-health" name="interests" value="menstrual-health">
+                                                        <label for="menstrual-health">Menstrual Health</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="sexual-education" name="interests" value="sexual-education">
+                                                        <label for="sexual-education">Sexual Education</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="female-genital-mutilation" name="interests" value="female-genital-mutilation">
+                                                        <label for="female-genital-mutilation">Female Genital Mutilation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="childhood-marriages" name="interests" value="childhood-marriages">
+                                                        <label for="childhood-marriages">Childhood Marriages</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="childhood-pregnancies" name="interests" value="childhood-pregnancies">
+                                                        <label for="childhood-pregnancies">Childhood Pregnancies</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="alcohol-drugs-substance-abuse" name="interests" value="alcohol-drugs-substance-abuse">
+                                                        <label for="alcohol-drugs-substance-abuse">Alcohol, Drugs & Substance Abuse</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="mental-health-action" name="interests" value="mental-health-action">
+                                                        <label for="mental-health-action">Mental Health Action</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="inclusivity-young-pwds" name="interests" value="inclusivity-young-pwds">
+                                                        <label for="inclusivity-young-pwds">Inclusivity of Young PWDs</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="cyberbullying" name="interests" value="cyberbullying">
+                                                        <label for="cyberbullying">Cyberbullying</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="blood-donation" name="interests" value="blood-donation">
+                                                        <label for="blood-donation">Blood Donation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="climate-change-mitigation" name="interests" value="climate-change-mitigation">
+                                                        <label for="climate-change-mitigation">Climate Change Mitigation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="climate-change-adaptation-resilience" name="interests" value="climate-change-adaptation-resilience">
+                                                        <label for="climate-change-adaptation-resilience">Climate Change Adaptation & Resilience</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="nature-based-solutions" name="interests" value="nature-based-solutions">
+                                                        <label for="nature-based-solutions">Nature-Based Solutions</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="water-solutions-management" name="interests" value="water-solutions-management">
+                                                        <label for="water-solutions-management">Water Solutions & Management</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="smart-agriculture" name="interests" value="smart-agriculture">
+                                                        <label for="smart-agriculture">Smart Agriculture</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted">Please select up to 3 interests that best match your preferences.</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">PassWord </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">PassWord </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password" placeholder="Retype Password" required>
+                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-theme effect btn-sm" type="submit">Register Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <script src="utils/supabaseClient.js"></script>
+    <script src="utils/authGuard.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Initialize phone input
+        const phoneInput = window.intlTelInput(document.querySelector("#phone_number"), {
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+            preferredCountries: ["ke", "ug", "tz"], // Kenya, Uganda, Tanzania
+            separateDialCode: true,
+            initialCountry: "ke",
+            placeholderNumberType: "MOBILE"
+        });
+
+        // Fetch interests from database to populate checkboxes with correct IDs
+        const interestsContainer = document.querySelector('.interests-container .row');
+        try {
+            const { data: interests, error } = await supabase
+                .from('interests')
+                .select('id, name')
+                .order('name');
+            
+            if (error) throw error;
+            
+            // Store interests data for form submission
+            window.interestsData = interests.reduce((acc, interest) => {
+                // Convert name to kebab-case for checkbox value
+                const kebabName = interest.name.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+                acc[kebabName] = interest.id;
+                return acc;
+            }, {});
+        } catch (error) {
+            console.error('Failed to fetch interests:', error);
+        }
+
+        // Initialize countries dropdown
+        const countrySelect = document.getElementById('country');
+        const countries = [
+            { code: "af", name: "Afghanistan" },
+            { code: "al", name: "Albania" },
+            { code: "dz", name: "Algeria" },
+            { code: "as", name: "American Samoa" },
+            { code: "ad", name: "Andorra" },
+            { code: "ao", name: "Angola" },
+            { code: "ai", name: "Anguilla" },
+            { code: "ag", name: "Antigua and Barbuda" },
+            { code: "ar", name: "Argentina" },
+            { code: "am", name: "Armenia" },
+            { code: "aw", name: "Aruba" },
+            { code: "au", name: "Australia" },
+            { code: "at", name: "Austria" },
+            { code: "az", name: "Azerbaijan" },
+            { code: "bs", name: "Bahamas" },
+            { code: "bh", name: "Bahrain" },
+            { code: "bd", name: "Bangladesh" },
+            { code: "bb", name: "Barbados" },
+            { code: "by", name: "Belarus" },
+            { code: "be", name: "Belgium" },
+            { code: "bz", name: "Belize" },
+            { code: "bj", name: "Benin" },
+            { code: "bm", name: "Bermuda" },
+            { code: "bt", name: "Bhutan" },
+            { code: "bo", name: "Bolivia" },
+            { code: "ba", name: "Bosnia and Herzegovina" },
+            { code: "bw", name: "Botswana" },
+            { code: "br", name: "Brazil" },
+            { code: "bn", name: "Brunei Darussalam" },
+            { code: "bg", name: "Bulgaria" },
+            { code: "bf", name: "Burkina Faso" },
+            { code: "bi", name: "Burundi" },
+            { code: "cv", name: "Cabo Verde" },
+            { code: "kh", name: "Cambodia" },
+            { code: "cm", name: "Cameroon" },
+            { code: "ca", name: "Canada" },
+            { code: "ky", name: "Cayman Islands" },
+            { code: "cf", name: "Central African Republic" },
+            { code: "td", name: "Chad" },
+            { code: "cl", name: "Chile" },
+            { code: "cn", name: "China" },
+            { code: "co", name: "Colombia" },
+            { code: "km", name: "Comoros" },
+            { code: "cg", name: "Congo" },
+            { code: "cd", name: "Congo, Democratic Republic" },
+            { code: "ck", name: "Cook Islands" },
+            { code: "cr", name: "Costa Rica" },
+            { code: "ci", name: "Côte d'Ivoire" },
+            { code: "hr", name: "Croatia" },
+            { code: "cu", name: "Cuba" },
+            { code: "cy", name: "Cyprus" },
+            { code: "cz", name: "Czech Republic" },
+            { code: "dk", name: "Denmark" },
+            { code: "dj", name: "Djibouti" },
+            { code: "dm", name: "Dominica" },
+            { code: "do", name: "Dominican Republic" },
+            { code: "ec", name: "Ecuador" },
+            { code: "eg", name: "Egypt" },
+            { code: "sv", name: "El Salvador" },
+            { code: "gq", name: "Equatorial Guinea" },
+            { code: "er", name: "Eritrea" },
+            { code: "ee", name: "Estonia" },
+            { code: "et", name: "Ethiopia" },
+            { code: "fj", name: "Fiji" },
+            { code: "fi", name: "Finland" },
+            { code: "fr", name: "France" },
+            { code: "pf", name: "French Polynesia" },
+            { code: "ga", name: "Gabon" },
+            { code: "gm", name: "Gambia" },
+            { code: "ge", name: "Georgia" },
+            { code: "de", name: "Germany" },
+            { code: "gh", name: "Ghana" },
+            { code: "gi", name: "Gibraltar" },
+            { code: "gr", name: "Greece" },
+            { code: "gl", name: "Greenland" },
+            { code: "gd", name: "Grenada" },
+            { code: "gu", name: "Guam" },
+            { code: "gt", name: "Guatemala" },
+            { code: "gn", name: "Guinea" },
+            { code: "gw", name: "Guinea-Bissau" },
+            { code: "gy", name: "Guyana" },
+            { code: "ht", name: "Haiti" },
+            { code: "hn", name: "Honduras" },
+            { code: "hk", name: "Hong Kong" },
+            { code: "hu", name: "Hungary" },
+            { code: "is", name: "Iceland" },
+            { code: "in", name: "India" },
+            { code: "id", name: "Indonesia" },
+            { code: "ir", name: "Iran" },
+            { code: "iq", name: "Iraq" },
+            { code: "ie", name: "Ireland" },
+            { code: "il", name: "Israel" },
+            { code: "it", name: "Italy" },
+            { code: "jm", name: "Jamaica" },
+            { code: "jp", name: "Japan" },
+            { code: "jo", name: "Jordan" },
+            { code: "kz", name: "Kazakhstan" },
+            { code: "ke", name: "Kenya" },
+            { code: "ki", name: "Kiribati" },
+            { code: "kp", name: "Korea, North" },
+            { code: "kr", name: "Korea, South" },
+            { code: "kw", name: "Kuwait" },
+            { code: "kg", name: "Kyrgyzstan" },
+            { code: "la", name: "Laos" },
+            { code: "lv", name: "Latvia" },
+            { code: "lb", name: "Lebanon" },
+            { code: "ls", name: "Lesotho" },
+            { code: "lr", name: "Liberia" },
+            { code: "ly", name: "Libya" },
+            { code: "li", name: "Liechtenstein" },
+            { code: "lt", name: "Lithuania" },
+            { code: "lu", name: "Luxembourg" },
+            { code: "mk", name: "Macedonia" },
+            { code: "mg", name: "Madagascar" },
+            { code: "mw", name: "Malawi" },
+            { code: "my", name: "Malaysia" },
+            { code: "mv", name: "Maldives" },
+            { code: "ml", name: "Mali" },
+            { code: "mt", name: "Malta" },
+            { code: "mh", name: "Marshall Islands" },
+            { code: "mr", name: "Mauritania" },
+            { code: "mu", name: "Mauritius" },
+            { code: "mx", name: "Mexico" },
+            { code: "fm", name: "Micronesia" },
+            { code: "md", name: "Moldova" },
+            { code: "mc", name: "Monaco" },
+            { code: "mn", name: "Mongolia" },
+            { code: "me", name: "Montenegro" },
+            { code: "ms", name: "Montserrat" },
+            { code: "ma", name: "Morocco" },
+            { code: "mz", name: "Mozambique" },
+            { code: "mm", name: "Myanmar" },
+            { code: "na", name: "Namibia" },
+            { code: "nr", name: "Nauru" },
+            { code: "np", name: "Nepal" },
+            { code: "nl", name: "Netherlands" },
+            { code: "nz", name: "New Zealand" },
+            { code: "ni", name: "Nicaragua" },
+            { code: "ne", name: "Niger" },
+            { code: "ng", name: "Nigeria" },
+            { code: "nu", name: "Niue" },
+            { code: "no", name: "Norway" },
+            { code: "om", name: "Oman" },
+            { code: "pk", name: "Pakistan" },
+            { code: "pw", name: "Palau" },
+            { code: "ps", name: "Palestine" },
+            { code: "pa", name: "Panama" },
+            { code: "pg", name: "Papua New Guinea" },
+            { code: "py", name: "Paraguay" },
+            { code: "pe", name: "Peru" },
+            { code: "ph", name: "Philippines" },
+            { code: "pl", name: "Poland" },
+            { code: "pt", name: "Portugal" },
+            { code: "pr", name: "Puerto Rico" },
+            { code: "qa", name: "Qatar" },
+            { code: "ro", name: "Romania" },
+            { code: "ru", name: "Russia" },
+            { code: "rw", name: "Rwanda" },
+            { code: "kn", name: "Saint Kitts and Nevis" },
+            { code: "lc", name: "Saint Lucia" },
+            { code: "vc", name: "Saint Vincent and the Grenadines" },
+            { code: "ws", name: "Samoa" },
+            { code: "sm", name: "San Marino" },
+            { code: "st", name: "Sao Tome and Principe" },
+            { code: "sa", name: "Saudi Arabia" },
+            { code: "sn", name: "Senegal" },
+            { code: "rs", name: "Serbia" },
+            { code: "sc", name: "Seychelles" },
+            { code: "sl", name: "Sierra Leone" },
+            { code: "sg", name: "Singapore" },
+            { code: "sk", name: "Slovakia" },
+            { code: "si", name: "Slovenia" },
+            { code: "sb", name: "Solomon Islands" },
+            { code: "so", name: "Somalia" },
+            { code: "za", name: "South Africa" },
+            { code: "ss", name: "South Sudan" },
+            { code: "es", name: "Spain" },
+            { code: "lk", name: "Sri Lanka" },
+            { code: "sd", name: "Sudan" },
+            { code: "sr", name: "Suriname" },
+            { code: "sz", name: "Eswatini" },
+            { code: "se", name: "Sweden" },
+            { code: "ch", name: "Switzerland" },
+            { code: "sy", name: "Syria" },
+            { code: "tw", name: "Taiwan" },
+            { code: "tj", name: "Tajikistan" },
+            { code: "tz", name: "Tanzania" },
+            { code: "th", name: "Thailand" },
+            { code: "tl", name: "Timor-Leste" },
+            { code: "tg", name: "Togo" },
+            { code: "to", name: "Tonga" },
+            { code: "tt", name: "Trinidad and Tobago" },
+            { code: "tn", name: "Tunisia" },
+            { code: "tr", name: "Turkey" },
+            { code: "tm", name: "Turkmenistan" },
+            { code: "tv", name: "Tuvalu" },
+            { code: "ug", name: "Uganda" },
+            { code: "ua", name: "Ukraine" },
+            { code: "ae", name: "United Arab Emirates" },
+            { code: "gb", name: "United Kingdom" },
+            { code: "us", name: "United States" },
+            { code: "uy", name: "Uruguay" },
+            { code: "uz", name: "Uzbekistan" },
+            { code: "vu", name: "Vanuatu" },
+            { code: "va", name: "Vatican City" },
+            { code: "ve", name: "Venezuela" },
+            { code: "vn", name: "Vietnam" },
+            { code: "ye", name: "Yemen" },
+            { code: "zm", name: "Zambia" },
+            { code: "zw", name: "Zimbabwe" }
+        ];
+
+        // Populate the countries dropdown
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country.name.toLowerCase();
+            option.dataset.code = country.code;
+            option.innerHTML = `<span class="flag-icon flag-icon-${country.code}"></span> ${country.name}`;
+            option.textContent = country.name; // Fallback text
+            countrySelect.appendChild(option);
+        });
+        
+        // Set preferred countries at the top
+        const preferredCountries = ["ke", "ug", "tz"];
+        for (let i = 0; i < preferredCountries.length; i++) {
+            const code = preferredCountries[i];
+            const country = countries.find(c => c.code === code);
+            if (country) {
+                const option = document.createElement('option');
+                option.value = country.name.toLowerCase();
+                option.dataset.code = country.code;
+                option.textContent = country.name;
+                option.selected = code === "ke"; // Select Kenya by default
+                countrySelect.insertBefore(option, countrySelect.firstChild);
+            }
+        }
+
+        const form = document.querySelector('form');
+        const interestCheckboxes = document.querySelectorAll('input[name="interests"]');
+        
+        // Limit interests to 3 selections
+        interestCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkedBoxes = document.querySelectorAll('input[name="interests"]:checked');
+                if (checkedBoxes.length > 3) {
+                    this.checked = false;
+                    alert('You can only select up to 3 interests.');
+                }
+            });
+        });
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Prevent multiple submissions
+            if (form.dataset.submitting === 'true') return;
+            form.dataset.submitting = 'true';
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+            
+            // Validate phone number
+            if (!phoneInput.isValidNumber()) {
+                alert('Please enter a valid phone number.');
+                form.dataset.submitting = 'false';
+                if (submitBtn) submitBtn.disabled = false;
+                return;
+            }
+
+            // Get selected interest values
+            const selectedInterestValues = Array.from(
+                document.querySelectorAll('input[name="interests"]:checked')
+            ).map(checkbox => checkbox.value);
+            
+            // Map interest values to UUIDs
+            const interestIds = [];
+            if (window.interestsData) {
+                for (const value of selectedInterestValues) {
+                    if (window.interestsData[value]) {
+                        interestIds.push(window.interestsData[value]);
+                    }
+                }
+            }
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                phone_number: phoneInput.getNumber(), // This includes the country code
+                idNumber: document.getElementById('idNumber').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                date_of_birth: document.getElementById('date_of_birth').value,
+                gender: document.getElementById('gender').value,
+                country: document.getElementById('country').value,
+                is_employed: document.getElementById('employment').value === 'true',
+                education_level: document.getElementById('education').value,
+                interests: selectedInterestValues,
+                interest_ids: interestIds
+            };
+
+            // Validate interests
+            if (formData.interests.length === 0) {
+                alert('Please select at least one interest.');
+                form.dataset.submitting = 'false';
+                if (submitBtn) submitBtn.disabled = false;
+                return;
+            }
+            if (formData.interests.length > 3) {
+                alert('You can only select up to 3 interests.');
+                form.dataset.submitting = 'false';
+                if (submitBtn) submitBtn.disabled = false;
+                return;
+            }
+
+            try {
+                // Sign up the user with all the metadata included
+                const { data, error } = await signUp(formData);
+                
+                if (error) {
+                    throw error;
+                }
+
+                // If signup successful and we have a confirmation
+                if (data) {
+                    if (data.session) {
+                        // User is automatically signed in - redirect to profile
+                        window.location.href = 'profile.html';
+                    } else {
+                        // Email confirmation may be required - show message
+                        alert('Registration successful! Please check your email for confirmation.');
+                        window.location.href = 'login.html';
+                    }
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed: ' + (error.message || 'Unknown error'));
+                form.dataset.submitting = 'false';
+                if (submitBtn) submitBtn.disabled = false;
+            }
+            form.dataset.submitting = 'false';
+            if (submitBtn) submitBtn.disabled = false;
+        });
+    });
+    </script>
+
+    <style>
+        .interests-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .interest-option {
+            margin-bottom: 10px;
+        }
+        .interest-option input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        .interest-option label {
+            font-weight: normal;
+            cursor: pointer;
+        }
+        /* Phone input styles */
+        .iti {
+            width: 100% !important;
+            position: relative;
+        }
+        .iti__flag-container {
+            display: flex;
+            align-items: center;
+            background: none !important;
+            z-index: 10;
+        }
+        .iti__selected-flag {
+            background: none !important;
+        }
+        .iti__country-list {
+            z-index: 9999 !important;
+        }
+        .form-group .input-group {
+            display: flex;
+            align-items: stretch;
+        }
+        .form-group .input-group input {
+            flex: 1;
+        }
+        /* Fix for flag/country code disappearing */
+        .iti .iti__flag {
+            display: block !important;
+        }
+        .iti .iti__selected-dial-code {
+            display: inline-block !important;
+            color: #333;
+            font-weight: 500;
+        }
+        .iti input.form-control {
+            padding-left: 90px !important;
+        }
+        
+        /* Country dropdown styles */
+        .countries-dropdown {
+            height: auto !important;
+        }
+        .countries-dropdown option {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .flag-icon {
+            margin-right: 8px;
+            border-radius: 2px;
+            display: inline-block;
+            width: 1.5em;
+            height: 1em;
+            background-size: cover;
+            background-position: center;
+            vertical-align: middle;
+        }
+        /* Style for the selected option */
+        .countries-dropdown option:checked {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+
+</body>
+</html>

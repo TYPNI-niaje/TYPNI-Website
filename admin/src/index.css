@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: theme('colors.gray.50');
+    color: theme('colors.gray.900');
+  }
+  
+  #root {
+    height: 100vh;
+    width: 100%;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-all;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-all;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-md text-gray-600 hover:bg-primary hover:bg-opacity-10 hover:text-primary transition-all duration-200;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-primary bg-opacity-10 text-primary font-medium;
+  }
+
+  /* Custom animations */
+  .hover-lift {
+    @apply transition-transform hover:scale-105;
+  }
+
+  /* Custom header title */
+  .page-title {
+    @apply text-xl font-bold text-primary bg-blue-100 px-4 py-1 rounded-md;
+  }
+
+  /* Additional styles for ReactQuill editor */
+  .ql-editor {
+    min-height: 250px;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .ql-toolbar.ql-snow, .ql-container.ql-snow {
+    border-color: #e5e7eb; /* Border color matching Tailwind gray-300 */
+  }
+  
+  /* Add styles for form inputs to match Tailwind styling */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="number"],
+  textarea,
+  select {
+    @apply rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
+  }
+}
+
+/* Scrollbar styling */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: theme('colors.gray.100');
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: theme('colors.gray.300');
+    border-radius: 3px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.gray.400');
+  }
+}
