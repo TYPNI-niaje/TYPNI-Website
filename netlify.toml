@@ -1,17 +1,32 @@
 [build]
   base = "/"
+  command = "npm run build:all"
   publish = "dist"
-  command = "npm run build"
 
 [functions]
   directory = "server/src"
   node_bundler = "esbuild"
 
+# Client site redirects
+[[redirects]]
+  from = "/"
+  to = "/client/*"
+  status = 200
+
+# Admin panel redirects
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+  force = true
+
+# API redirects
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
 
+# Fallback redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -22,4 +37,9 @@
 
 [dev]
   framework = "vite"
-  targetPort = 5173 
+  targetPort = 5173
+
+# Environment variables will be configured in Netlify dashboard
+# VITE_SUPABASE_URL
+# VITE_SUPABASE_ANON_KEY
+# Other environment variables 
