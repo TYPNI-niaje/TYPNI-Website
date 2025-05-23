@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import typniLogo from '../../assets/images/TYPNI-11.jpg';
 import { useLocation } from 'react-router-dom';
@@ -23,8 +23,8 @@ const Header: FC<HeaderProps> = ({ onMenuClick, profile }) => {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 fixed top-0 right-0 left-0 lg:left-64 z-10">
-      <div className="h-full px-4 flex items-center justify-between">
+    <header className="h-16 bg-white border-b border-gray-200 fixed top-0 right-0 left-0 z-20">
+      <div className="h-full px-4 lg:px-8 flex items-center justify-between">
         <div className="flex items-center">
           {/* Mobile menu button */}
           <button 

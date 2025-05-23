@@ -147,7 +147,7 @@ const EventDetail: FC = () => {
         <p className="text-red-500">{error || 'Event not found'}</p>
         <button 
           className="mt-4 btn-secondary" 
-          onClick={() => navigate('/events')}
+          onClick={() => navigate('/admin/events')}
         >
           Return to Events
         </button>
@@ -158,7 +158,7 @@ const EventDetail: FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <Link to="/events" className="text-gray-500 hover:text-gray-700">
+        <Link to="/admin/events" className="text-gray-500 hover:text-gray-700">
           <ArrowLeftIcon className="w-5 h-5" />
         </Link>
         <h1 className="text-2xl font-bold text-gray-900">Event Details</h1>
@@ -179,7 +179,7 @@ const EventDetail: FC = () => {
               <h2 className="text-xl font-bold">{event.title}</h2>
             </div>
             <Link 
-              to={`/events/${event.id}/edit`} 
+              to={`/admin/events/${event.id}/edit`} 
               className="inline-flex items-center text-primary hover:text-primary-dark text-sm font-medium"
             >
               <PencilIcon className="w-4 h-4 mr-1" />

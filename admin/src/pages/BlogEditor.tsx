@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './BlogEditor.css';
 import Card from '../components/Card/Card';
-import { ArrowLeftIcon, PhotoIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { createBlogPost, getBlogPostById, updateBlogPost, uploadBlogThumbnail } from '../lib/blogService';
 import Loading from '../components/Loading/Loading';
 import Message from '../components/Message/Message';
@@ -176,9 +176,9 @@ const BlogEditor: React.FC = () => {
       // Format dates properly for Supabase
       let publishDateFormatted = null;
       if (status === 'scheduled' && publishDate) {
-        publishDateFormatted = new Date(publishDate).toISOString();
+        publishDateFormatted = new Date(publishDate);
       } else if (status === 'published') {
-        publishDateFormatted = new Date().toISOString();
+        publishDateFormatted = new Date();
       }
       
       const blogData = {
@@ -189,7 +189,7 @@ const BlogEditor: React.FC = () => {
         category: finalCategory,
         status,
         publish_date: publishDateFormatted,
-        thumbnail_url: finalThumbnailUrl || null // Use null instead of undefined
+        thumbnail_url: finalThumbnailUrl as string | undefined
       };
       
       console.log('Preparing blog data:', JSON.stringify(blogData, null, 2));

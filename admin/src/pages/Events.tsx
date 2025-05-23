@@ -210,7 +210,7 @@ const Events: FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-gray-900">Events</h1>
         
-        <Link to="/admin/events/create" className="btn-primary flex items-center">
+        <Link to="/admin/events/new" className="btn-primary flex items-center">
           <PlusIcon className="w-5 h-5 mr-2" />
           Create Event
         </Link>

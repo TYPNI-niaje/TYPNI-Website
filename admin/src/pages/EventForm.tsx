@@ -1,79 +1,52 @@
 import { useState, useEffect } from 'react';
-import type { FC } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getEventById, createEvent, updateEvent, uploadEventBanner } from '../lib/eventService';
-import type { Event } from '../lib/eventService';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { createEvent, getEventById, updateEvent, uploadEventBanner } from '../lib/eventService';
 import Card from '../components/Card/Card';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
-import {
-  CalendarIcon,
-  ArrowLeftIcon,
-} from '@heroicons/react/24/outline';
 
-// Function to get tomorrow's date in YYYY-MM-DD format
-const getTomorrowDate = () => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  return tomorrow.toISOString().split('T')[0];
-};
+interface Event {
+  id?: string;
+  title: string;
+  description: string;
+  location: string;
+  start_date: Date;
+  end_date: Date;
+  capacity?: number;
+  registration_deadline?: Date;
+  type: 'in-person' | 'online' | 'hybrid';
+  status: 'upcoming' | 'ongoing' | 'past' | 'canceled';
+  banner_url?: string;
+  banner?: File;
+  created_at?: string;
+  updated_at?: string;
+}
 
-// Function to get a date 5 days from now in YYYY-MM-DD format
-const getFiveDaysFromNow = () => {
-  const fiveDays = new Date();
-  fiveDays.setDate(fiveDays.getDate() + 5);
-  return fiveDays.toISOString().split('T')[0];
-};
-
-// Function to get a date 4 days from now in YYYY-MM-DD format
-const getFourDaysFromNow = () => {
-  const fourDays = new Date();
-  fourDays.setDate(fourDays.getDate() + 4);
-  return fourDays.toISOString().split('T')[0];
-};
-
-const EventForm: FC = () => {
+const EventForm = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const isEditMode = !!id;
 
-  // Form state with default values for faster testing
-  const [formData, setFormData] = useState<{
-    title: string;
-    description: string;
-    location: string;
-    startDate: string;
-    startTime: string;
-    endDate: string;
-    endTime: string;
-    capacity: string;
-    registrationDeadlineDate: string;
-    registrationDeadlineTime: string;
-    type: 'in-person' | 'online' | 'hybrid';
-    status: 'upcoming' | 'ongoing' | 'past' | 'canceled';
-    banner: File | null;
-  }>({
-    title: 'Graduation',
-    description: 'Let\'s go',
-    location: 'Nairobi',
-    startDate: getTomorrowDate(),
-    startTime: '11:00',
-    endDate: getFiveDaysFromNow(),
-    endTime: '10:00',
-    capacity: '100',
-    registrationDeadlineDate: getFourDaysFromNow(),
-    registrationDeadlineTime: '12:00',
+  // Form state with default values
+  const [formData, setFormData] = useState<Event>({
+    title: '',
+    description: '',
+    location: '',
+    start_date: new Date(),
+    end_date: new Date(),
+    capacity: undefined,
+    registration_deadline: undefined,
     type: 'in-person',
     status: 'upcoming',
-    banner: null
+    banner_url: undefined
   });
 
   const [loading, setLoading] = useState(isEditMode);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [existingBannerUrl, setExistingBannerUrl] = useState<string | null>(null);
 
   // Fetch event data if in edit mode
   useEffect(() => {
@@ -91,24 +64,17 @@ const EventForm: FC = () => {
             title: eventData.title,
             description: eventData.description || '',
             location: eventData.location,
-            startDate: startDate.toISOString().split('T')[0],
-            startTime: startDate.toTimeString().slice(0, 5),
-            endDate: endDate.toISOString().split('T')[0],
-            endTime: endDate.toTimeString().slice(0, 5),
-            capacity: eventData.capacity ? String(eventData.capacity) : '',
-            registrationDeadlineDate: eventData.registration_deadline 
-              ? new Date(eventData.registration_deadline).toISOString().split('T')[0] 
-              : '',
-            registrationDeadlineTime: eventData.registration_deadline
-              ? new Date(eventData.registration_deadline).toTimeString().slice(0, 5)
-              : '',
+            start_date: startDate,
+            end_date: endDate,
+            capacity: eventData.capacity,
+            registration_deadline: eventData.registration_deadline ? new Date(eventData.registration_deadline) : undefined,
             type: eventData.type,
             status: eventData.status,
-            banner: null
+            banner_url: eventData.banner_url
           });
           
           if (eventData.banner_url) {
-            setExistingBannerUrl(eventData.banner_url);
+            setImagePreview(eventData.banner_url);
           }
         } catch (err) {
           console.error('Error fetching event:', err);
@@ -124,7 +90,13 @@ const EventForm: FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Handle date inputs
+    if (name === 'start_date' || name === 'end_date' || name === 'registration_deadline') {
+      setFormData(prev => ({ ...prev, [name]: value ? new Date(value) : undefined }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,16 +126,15 @@ const EventForm: FC = () => {
       setError(null);
       
       // Validate required fields
-      if (!formData.title || !formData.location || !formData.startDate || !formData.startTime 
-          || !formData.endDate || !formData.endTime || !formData.type) {
+      if (!formData.title || !formData.location || !formData.start_date || !formData.end_date || !formData.type) {
         setError('Please fill in all required fields');
         setSubmitting(false);
         return;
       }
       
       // Construct date objects
-      const startDateTime = new Date(`${formData.startDate}T${formData.startTime}`);
-      const endDateTime = new Date(`${formData.endDate}T${formData.endTime}`);
+      const startDateTime = new Date(formData.start_date);
+      const endDateTime = new Date(formData.end_date);
       
       // Validate dates
       if (endDateTime <= startDateTime) {
@@ -173,24 +144,23 @@ const EventForm: FC = () => {
       }
       
       // Optional registration deadline
-      let registrationDeadline: Date | null = null;
-      if (formData.registrationDeadlineDate && formData.registrationDeadlineTime) {
-        registrationDeadline = new Date(`${formData.registrationDeadlineDate}T${formData.registrationDeadlineTime}`);
+      let registrationDeadline: Date | undefined = undefined;
+      if (formData.registration_deadline) {
+        registrationDeadline = new Date(formData.registration_deadline);
       }
       
       // Prepare event data
-      const eventData: Partial<Event> = {
+      const eventData = {
         title: formData.title,
         description: formData.description,
         location: formData.location,
         start_date: startDateTime,
         end_date: endDateTime,
-        capacity: formData.capacity ? parseInt(formData.capacity, 10) : undefined,
-        registration_deadline: registrationDeadline || undefined,
-        type: formData.type,
-        status: formData.status,
-        // Banner will be handled separately
-        banner_url: existingBannerUrl || undefined
+        capacity: formData.capacity,
+        registration_deadline: registrationDeadline,
+        type: formData.type as 'in-person' | 'online' | 'hybrid',
+        status: formData.status as 'upcoming' | 'ongoing' | 'past' | 'canceled',
+        banner_url: formData.banner_url
       };
       
       let resultEvent;
@@ -199,7 +169,7 @@ const EventForm: FC = () => {
       if (isEditMode && id) {
         resultEvent = await updateEvent(id, eventData, user.id);
       } else {
-        resultEvent = await createEvent(eventData as Omit<Event, 'id' | 'created_at' | 'updated_at'>, user.id);
+        resultEvent = await createEvent(eventData, user.id);
       }
       
       // Handle banner upload if there's a file
@@ -210,7 +180,7 @@ const EventForm: FC = () => {
       }
       
       toast.success(`Event ${isEditMode ? 'updated' : 'created'} successfully`);
-      navigate(`/events/${resultEvent.id}`);
+      navigate(`/admin/events/${resultEvent.id}`);
     } catch (err) {
       console.error('Error submitting event:', err);
       setError(`Failed to ${isEditMode ? 'update' : 'create'} event. Please try again.`);
@@ -231,7 +201,7 @@ const EventForm: FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <Link to={isEditMode ? `/events/${id}` : "/events"} className="text-gray-500 hover:text-gray-700">
+        <Link to="/admin/events" className="text-gray-500 hover:text-gray-700">
           <ArrowLeftIcon className="w-5 h-5" />
         </Link>
         <h1 className="text-2xl font-bold text-gray-900">{isEditMode ? 'Edit Event' : 'Create New Event'}</h1>
@@ -338,59 +308,28 @@ const EventForm: FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="start_date" className="block text-sm font-medium text-gray-700 mb-1">
                     Start Date <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="date"
-                    id="startDate"
-                    name="startDate"
-                    value={formData.startDate}
+                    id="start_date"
+                    name="start_date"
+                    value={formData.start_date.toISOString().split('T')[0]}
                     onChange={handleInputChange}
                     className="input-field w-full"
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-1">
-                    Start Time <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    id="startTime"
-                    name="startTime"
-                    value={formData.startTime}
-                    onChange={handleInputChange}
-                    className="input-field w-full"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="end_date" className="block text-sm font-medium text-gray-700 mb-1">
                     End Date <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="date"
-                    id="endDate"
-                    name="endDate"
-                    value={formData.endDate}
-                    onChange={handleInputChange}
-                    className="input-field w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 mb-1">
-                    End Time <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    id="endTime"
-                    name="endTime"
-                    value={formData.endTime}
+                    id="end_date"
+                    name="end_date"
+                    value={formData.end_date.toISOString().split('T')[0]}
                     onChange={handleInputChange}
                     className="input-field w-full"
                     required
@@ -400,27 +339,14 @@ const EventForm: FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="registrationDeadlineDate" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="registration_deadline" className="block text-sm font-medium text-gray-700 mb-1">
                     Registration Deadline Date
                   </label>
                   <input
                     type="date"
-                    id="registrationDeadlineDate"
-                    name="registrationDeadlineDate"
-                    value={formData.registrationDeadlineDate}
-                    onChange={handleInputChange}
-                    className="input-field w-full"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="registrationDeadlineTime" className="block text-sm font-medium text-gray-700 mb-1">
-                    Registration Deadline Time
-                  </label>
-                  <input
-                    type="time"
-                    id="registrationDeadlineTime"
-                    name="registrationDeadlineTime"
-                    value={formData.registrationDeadlineTime}
+                    id="registration_deadline"
+                    name="registration_deadline"
+                    value={formData.registration_deadline ? formData.registration_deadline.toISOString().split('T')[0] : ''}
                     onChange={handleInputChange}
                     className="input-field w-full"
                   />
@@ -463,14 +389,14 @@ const EventForm: FC = () => {
                   className="input-field w-full"
                 />
                 
-                {(imagePreview || existingBannerUrl) && (
+                {(imagePreview || formData.banner_url) && (
                   <div className="mt-2 relative">
                     <img 
-                      src={imagePreview || existingBannerUrl || ''} 
+                      src={imagePreview || formData.banner_url || ''} 
                       alt="Banner preview" 
                       className="max-h-40 rounded-lg border border-gray-200"
                     />
-                    {!imagePreview && existingBannerUrl && (
+                    {!imagePreview && formData.banner_url && (
                       <p className="text-xs text-gray-500 mt-1">Current banner (upload new to replace)</p>
                     )}
                   </div>
@@ -481,7 +407,7 @@ const EventForm: FC = () => {
           
           <div className="pt-4 border-t flex justify-end gap-3">
             <Link 
-              to={isEditMode ? `/events/${id}` : "/events"} 
+              to="/admin/events"
               className="btn-secondary"
             >
               Cancel

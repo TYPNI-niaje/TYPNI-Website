@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import typniLogo from '../../assets/images/TYPNI-11.jpg';
 
