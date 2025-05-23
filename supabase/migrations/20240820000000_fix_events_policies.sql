@@ -1,9 +1,12 @@
 -- Fix events table policies to properly check admin role from profiles table
 
--- First, drop the existing policy
+-- First, drop existing policies
 DROP POLICY IF EXISTS "Admin users can manage events" ON public.events;
+DROP POLICY IF EXISTS "Admin users can create events" ON public.events;
+DROP POLICY IF EXISTS "Admin users can update events" ON public.events;
+DROP POLICY IF EXISTS "Admin users can delete events" ON public.events;
 
--- Create separate policies for each operation
+-- Create separate policies for each operation with proper role check
 CREATE POLICY "Admin users can create events"
 ON public.events
 FOR INSERT
@@ -41,7 +44,6 @@ USING (
 );
 
 -- Keep the existing select policy that allows everyone to view events
--- If it doesn't exist, create it
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -56,4 +58,7 @@ BEGIN
     USING (true);
   END IF;
 END
-$$; 
+$$;
+
+-- Ensure RLS is enabled
+ALTER TABLE public.events ENABLE ROW LEVEL SECURITY; 

@@ -98,7 +98,7 @@ const BlogPosts = () => {
         
         <button 
           className="btn-primary flex items-center"
-          onClick={() => navigate('/admin/blog-editor')}
+          onClick={() => navigate('/admin/blog/new')}
         >
           <PlusIcon className="w-5 h-5 mr-2" />
           New Post
