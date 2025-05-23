@@ -5,6 +5,7 @@
 @layer base {
   html {
     font-family: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    @apply antialiased h-full;
   }
   
   body {
@@ -13,6 +14,7 @@
     min-height: 100vh;
     background-color: theme('colors.gray.50');
     color: theme('colors.gray.900');
+    @apply h-full;
   }
   
   #root {
@@ -35,7 +37,7 @@
   }
   
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white rounded-lg shadow-md p-6 overflow-y-auto;
   }
   
   .sidebar-item {
@@ -56,50 +58,125 @@
     @apply text-xl font-bold text-primary bg-blue-100 px-4 py-1 rounded-md;
   }
 
-  /* Additional styles for ReactQuill editor */
-  .ql-editor {
-    min-height: 250px;
-    max-height: 500px;
-    overflow-y: auto;
+  /* Responsive container classes */
+  .content-container {
+    @apply w-full px-4 sm:px-6 lg:px-8;
   }
-  
-  .ql-toolbar.ql-snow, .ql-container.ql-snow {
-    border-color: #e5e7eb; /* Border color matching Tailwind gray-300 */
+
+  .content-section {
+    @apply py-4 sm:py-6 lg:py-8;
   }
-  
-  /* Add styles for form inputs to match Tailwind styling */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="date"],
-  input[type="datetime-local"],
-  input[type="number"],
-  textarea,
-  select {
-    @apply rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
+
+  .grid-responsive {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
+
+  /* Layout adjustments for sidebar */
+  .main-content {
+    @apply w-full transition-all duration-300;
+  }
+
+  @screen lg {
+    .main-content {
+      padding-left: 16rem; /* Use padding instead of margin */
+    }
+  }
+
+  /* Prevent content overflow */
+  .content-wrapper {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Ensure proper content width with sidebar */
+  @screen lg {
+    .with-sidebar {
+      width: calc(100% - 16rem);
+    }
+  }
+
+  /* Layout adjustments for scrolling */
+  .page-container {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .content-wrapper {
+    @apply h-full overflow-y-auto;
+  }
+
+  /* Table container adjustments */
+  .table-container {
+    @apply overflow-x-auto;
+  }
+
+  /* Form container adjustments */
+  .form-container {
+    @apply overflow-y-auto;
+  }
+}
+
+/* Additional styles for ReactQuill editor */
+.ql-editor {
+  min-height: 250px;
+  max-height: 500px;
+  overflow-y: auto;
+  min-width: 0; /* Prevent editor from overflowing */
+}
+
+.ql-toolbar.ql-snow, .ql-container.ql-snow {
+  border-color: #e5e7eb; /* Border color matching Tailwind gray-300 */
+}
+
+/* Add styles for form inputs to match Tailwind styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="number"],
+textarea,
+select {
+  @apply rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
+}
+
+/* Responsive breakpoint adjustments */
+@screen lg {
+  .content-max-width {
+    max-width: calc(100vw - 16rem); /* Accounting for sidebar width */
+  }
+}
+
+/* Prevent content overflow */
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Scrollbar styling */
 @layer utilities {
-  .scrollbar-thin {
+  .scrollbar-custom {
     scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.300') theme('colors.gray.100');
   }
   
-  .scrollbar-thin::-webkit-scrollbar {
+  .scrollbar-custom::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   
-  .scrollbar-thin::-webkit-scrollbar-track {
+  .scrollbar-custom::-webkit-scrollbar-track {
     background: theme('colors.gray.100');
+    border-radius: 3px;
   }
   
-  .scrollbar-thin::-webkit-scrollbar-thumb {
+  .scrollbar-custom::-webkit-scrollbar-thumb {
     background: theme('colors.gray.300');
     border-radius: 3px;
   }
   
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
     background: theme('colors.gray.400');
   }
 }

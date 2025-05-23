@@ -1,4 +1,5 @@
-import { FC, useState, useEffect } from 'react';
+import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface AdminGreetingProps {

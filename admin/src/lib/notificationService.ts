@@ -147,7 +147,7 @@ export const fetchNotifications = async (adminId?: string): Promise<Notification
       ...(eventRegs || []).map(reg => ({
         id: `event-reg-${reg.id}`,
         title: 'New Event Registration',
-        message: `New registration for event: "${reg.events?.title || 'Unknown event'}"`,
+        message: `New registration for event: "${reg.events?.[0]?.title || 'Unknown event'}"`,
         timestamp: reg.registration_date,
         isRead: isRead('event', reg.id),
         type: 'info' as const,
