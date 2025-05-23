@@ -125,6 +125,292 @@
 
     <!-- ========== Supabase Client ========== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- ========== Auth Setup ========== -->
+    <script type="module">
+        import { supabase } from './utils/supabaseClient.js';
+        window.supabaseClient = supabase;
+    </script>
+    <script src="utils/authGuard.js"></script>
+    
+    <!-- ========== Event Registration Component ========== -->
+    <script src="js/EventRegistration.js"></script>
+    
+    <script type="text/javascript">
+        // Initialize Supabase client
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for supabaseClient to be available
+            const initializeApp = setInterval(() => {
+                if (window.supabaseClient && window.EventRegistration) {
+                    clearInterval(initializeApp);
+                    initializeEvent();
+                }
+            }, 100);
+        });
+        
+        // Initialize the event display
+        async function initializeEvent() {
+            try {
+                const supabase = window.supabaseClient;
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
+
+                // Get event ID from URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventId = urlParams.get('id');
+                
+                if (!eventId) {
+                    // If no event ID provided, redirect to events page
+                    window.location.href = '/event-carousel.html';
+                    return;
+                }
+
+                // Fetch event details
+                const { data: event, error } = await supabase
+                    .from('events')
+                    .select('*')
+                    .eq('id', eventId)
+                    .single();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                if (!event) {
+                    throw new Error('Event not found');
+                }
+
+                // Update the page title
+                document.title = `${event.title} - Typni`;
+                
+                // Update event details
+                const eventTitleElement = document.getElementById('event-title');
+                if (eventTitleElement) eventTitleElement.innerText = event.title;
+                
+                const eventDescriptionElement = document.getElementById('event-description');
+                if (eventDescriptionElement) eventDescriptionElement.innerText = event.description || 'No description available';
+                
+                const eventLocationElement = document.getElementById('event-location');
+                if (eventLocationElement) eventLocationElement.innerText = event.location;
+                
+                // Format and set dates
+                const startDate = new Date(event.start_date);
+                const endDate = new Date(event.end_date);
+                
+                const eventDateElement = document.getElementById('event-date');
+                if (eventDateElement) eventDateElement.innerText = `${formatShortDate(startDate)}`;
+                
+                const eventTimeElement = document.getElementById('event-time');
+                if (eventTimeElement) eventTimeElement.innerText = `${startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                
+                const eventStartDateElement = document.getElementById('event-start-date');
+                if (eventStartDateElement) eventStartDateElement.innerText = formatDate(event.start_date);
+                
+                const eventEndDateElement = document.getElementById('event-end-date');
+                if (eventEndDateElement) eventEndDateElement.innerText = formatDate(event.end_date);
+                
+                // Event type and status badges
+                const eventTypeBadge = document.getElementById('event-type-badge');
+                const eventStatusBadge = document.getElementById('event-status-badge');
+                const eventTypeInfo = document.getElementById('event-type-info');
+                
+                // Set type badge
+                if (eventTypeBadge && event.type) {
+                    eventTypeBadge.innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
+                    if (eventTypeInfo) eventTypeInfo.innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
+                    
+                    switch(event.type) {
+                        case 'in-person':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        case 'online':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        case 'hybrid':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        default:
+                            eventTypeBadge.className = 'badge btn-theme';
+                    }
+                }
+                
+                // Set status badge
+                if (eventStatusBadge && event.status) {
+                    eventStatusBadge.innerText = event.status.charAt(0).toUpperCase() + event.status.slice(1);
+                    
+                    switch(event.status) {
+                        case 'upcoming':
+                            eventStatusBadge.className = 'badge btn-theme';
+                            break;
+                        case 'ongoing':
+                            eventStatusBadge.className = 'badge btn-theme';
+                            break;
+                        case 'past':
+                            eventStatusBadge.className = 'badge btn-dark';
+                            break;
+                        case 'canceled':
+                            eventStatusBadge.className = 'badge btn-danger';
+                            break;
+                        default:
+                            eventStatusBadge.className = 'badge btn-theme';
+                    }
+                }
+                
+                // Set banner image if available
+                const eventBanner = document.getElementById('event-banner');
+                if (eventBanner && event.banner_url) {
+                    eventBanner.innerHTML = `<img src="${event.banner_url}" alt="${event.title}" class="img-responsive">`;
+                }
+                
+                // Show capacity if available
+                const capacityRow = document.getElementById('capacity-row');
+                const eventCapacity = document.getElementById('event-capacity');
+                if (capacityRow && eventCapacity && event.capacity) {
+                    capacityRow.style.display = 'block';
+                    eventCapacity.innerText = event.capacity;
+                }
+                
+                // Show registration deadline if available
+                const deadlineRow = document.getElementById('deadline-row');
+                const registrationDeadline = document.getElementById('registration-deadline');
+                if (deadlineRow && registrationDeadline && event.registration_deadline) {
+                    deadlineRow.style.display = 'block';
+                    registrationDeadline.innerText = formatDate(event.registration_deadline);
+                }
+                
+                // Initialize registration component
+                const registrationContainer = document.getElementById('event-registration-container');
+                if (registrationContainer) {
+                    new window.EventRegistration('event-registration-container', eventId);
+                }
+                
+                // Load related events
+                loadRelatedEvents(event.type, eventId);
+                
+            } catch (error) {
+                console.error('Error loading event:', error);
+                const eventTitle = document.getElementById('event-title');
+                if (eventTitle) eventTitle.innerText = 'Error Loading Event';
+                
+                const eventDescription = document.getElementById('event-description');
+                if (eventDescription) eventDescription.innerText = 'Sorry, we couldn\'t load the event details. Please try again later.';
+                
+                // Show error in registration container
+                const registrationContainer = document.getElementById('event-registration-container');
+                if (registrationContainer) {
+                    registrationContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4>Error</h4>
+                            <p>Failed to load event details. Please try again later.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Format short date (without time)
+        function formatShortDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Load related events
+        async function loadRelatedEvents(eventType, currentEventId) {
+            try {
+                const supabase = window.supabaseClient;
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
+
+                // Fetch events with the same type
+                const { data: events, error } = await supabase
+                    .from('events')
+                    .select('id, title, start_date, location, banner_url')
+                    .eq('type', eventType)
+                    .neq('id', currentEventId)
+                    .eq('status', 'upcoming')
+                    .order('start_date', { ascending: true })
+                    .limit(3);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                const moreEventsContainer = document.getElementById('more-events-container');
+                const moreEvents = document.getElementById('more-events');
+                
+                if (!events || events.length === 0) {
+                    // No related events found
+                    if (moreEventsContainer) moreEventsContainer.style.display = 'none';
+                    return;
+                }
+                
+                // Build HTML for related events
+                if (moreEvents) {
+                    let eventsHtml = '';
+                    
+                    events.forEach(event => {
+                        const eventDate = new Date(event.start_date);
+                        
+                        eventsHtml += `
+                            <div class="col-md-4">
+                                <div class="item">
+                                    <div class="thumb">
+                                        <img src="${event.banner_url || 'assets/img/800x600.png'}" alt="Thumb">
+                                    </div>
+                                    <div class="info">
+                                        <div class="date">
+                                            ${eventDate.getDate()} <span>${eventDate.toLocaleString('default', { month: 'short' })}</span>
+                                        </div>
+                                        <div class="content">
+                                            <h4>
+                                                <a href="event-detail.html?id=${event.id}">${event.title}</a>
+                                            </h4>
+                                            <div class="meta">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fas fa-map-marker-alt"></i> ${event.location}
+                                                    </li>
+                                                    <li>
+                                                        <i class="fas fa-clock"></i> ${eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <a class="btn btn-theme effect btn-sm" href="event-detail.html?id=${event.id}">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    moreEvents.innerHTML = eventsHtml;
+                }
+                
+            } catch (error) {
+                console.error('Error loading related events:', error);
+                const moreEventsContainer = document.getElementById('more-events-container');
+                if (moreEventsContainer) moreEventsContainer.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -310,589 +596,5 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
-    
-    <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://lkgqmfqtxpbvwrsguwka.supabase.co';
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZ3FtZnF0eHBidndyc2d1d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1ODk1MjYsImV4cCI6MjA2MzE2NTUyNn0.bMKMVLW-dwVDfhXFIBr-dxbB9yFZ-isNb5v2VrjoqQA';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
-        
-        // Get event ID from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventId = urlParams.get('id');
-        
-        if (!eventId) {
-            // If no event ID provided, redirect to events page
-            window.location.href = '/event-carousel.html';
-        }
-        
-        // Format date for display
-        function formatDate(dateString) {
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            return new Date(dateString).toLocaleDateString('en-US', options);
-        }
-        
-        // Format short date (without time)
-        function formatShortDate(dateString) {
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            };
-            return new Date(dateString).toLocaleDateString('en-US', options);
-        }
-        
-        // Handle user registration
-        class EventRegistration {
-            constructor(containerId, eventId) {
-                this.containerId = containerId;
-                this.eventId = eventId;
-                this.containerElement = document.getElementById(containerId);
-                
-                if (!this.containerElement) {
-                    console.error(`Container element with ID "${containerId}" not found`);
-                    return;
-                }
-                
-                this.checkAuthStatus();
-            }
-            
-            async checkAuthStatus() {
-                try {
-                    const { data: { session } } = await supabaseClient.auth.getSession();
-                    
-                    if (session) {
-                        this.user = session.user;
-                        this.checkRegistrationStatus();
-                    } else {
-                        this.renderLoginRequired();
-                    }
-                } catch (error) {
-                    console.error('Error checking authentication status:', error);
-                    this.renderError('An error occurred while checking authentication status');
-                }
-            }
-            
-            async checkRegistrationStatus() {
-                try {
-                    // First, check if event exists and is valid
-                    const { data: eventData, error: eventError } = await supabaseClient
-                        .from('events')
-                        .select('*')
-                        .eq('id', this.eventId)
-                        .single();
-                        
-                    if (eventError) {
-                        console.error('Error fetching event:', eventError);
-                        this.renderError('Event not found');
-                        return;
-                    }
-                    
-                    this.event = eventData;
-                    
-                    // Check if event is already in the past
-                    const currentDate = new Date();
-                    const eventEndDate = new Date(this.event.end_date);
-                    
-                    if (eventEndDate < currentDate) {
-                        this.renderPastEvent();
-                        return;
-                    }
-                    
-                    // Check if registration deadline has passed
-                    if (this.event.registration_deadline) {
-                        const deadlineDate = new Date(this.event.registration_deadline);
-                        if (deadlineDate < currentDate) {
-                            this.renderDeadlinePassed();
-                            return;
-                        }
-                    }
-                    
-                    // Check if event is canceled
-                    if (this.event.status === 'canceled') {
-                        this.renderCanceledEvent();
-                        return;
-                    }
-                    
-                    // Check if user is already registered
-                    const { data: registrationData, error: registrationError } = await supabaseClient
-                        .from('event_registrations')
-                        .select('id, status')
-                        .eq('event_id', this.eventId)
-                        .eq('user_id', this.user.id)
-                        .single();
-                        
-                    if (registrationError && registrationError.code !== 'PGRST116') {
-                        console.error('Error checking registration status:', registrationError);
-                        this.renderError('An error occurred while checking registration status');
-                        return;
-                    }
-                    
-                    if (registrationData) {
-                        // User is already registered
-                        this.renderAlreadyRegistered(registrationData.status);
-                    } else {
-                        // User is not registered yet
-                        this.renderRegistrationForm();
-                    }
-                } catch (error) {
-                    console.error('Error checking registration status:', error);
-                    this.renderError('An error occurred while checking registration status');
-                }
-            }
-            
-            renderRegistrationForm() {
-                const formHtml = `
-                    <div class="event-registration-form">
-                        <h3>Register for ${this.event.title}</h3>
-                        <p>Please fill out the form below to register for this event.</p>
-                        
-                        <form id="${this.containerId}-form">
-                            <div class="form-group mb-3">
-                                <label for="notes">Any special requests or notes:</label>
-                                <textarea id="${this.containerId}-notes" class="form-control" rows="3"></textarea>
-                            </div>
-                            
-                            <div class="alert alert-info">
-                                By registering, you agree to attend this event.
-                            </div>
-                            
-                            <button type="submit" class="btn btn-theme effect btn-sm">Register Now</button>
-                        </form>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = formHtml;
-                
-                // Add event listener to the form
-                const form = document.getElementById(`${this.containerId}-form`);
-                form.addEventListener('submit', (event) => this.handleRegister(event));
-            }
-            
-            async handleRegister(event) {
-                event.preventDefault();
-                
-                const notesElement = document.getElementById(`${this.containerId}-notes`);
-                const notes = notesElement ? notesElement.value : '';
-                
-                try {
-                    // Register the user for the event
-                    const { data, error } = await supabaseClient
-                        .from('event_registrations')
-                        .insert([
-                            {
-                                event_id: this.eventId,
-                                user_id: this.user.id,
-                                notes: notes
-                            }
-                        ])
-                        .select();
-                        
-                    if (error) {
-                        console.error('Error registering for event:', error);
-                        this.renderError('An error occurred while registering for the event');
-                        return;
-                    }
-                    
-                    // Registration successful
-                    this.renderSuccessMessage();
-                } catch (error) {
-                    console.error('Error registering for event:', error);
-                    this.renderError('An error occurred while registering for the event');
-                }
-            }
-            
-            renderSuccessMessage() {
-                const successHtml = `
-                    <div class="event-registration-success">
-                        <div class="alert alert-success">
-                            <h4>Registration Successful!</h4>
-                            <p>You have successfully registered for ${this.event.title}.</p>
-                            <p>Please check your email for confirmation details.</p>
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <button id="${this.containerId}-cancel" class="btn btn-danger btn-sm">Cancel Registration</button>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = successHtml;
-                
-                // Add event listener to the cancel button
-                const cancelButton = document.getElementById(`${this.containerId}-cancel`);
-                cancelButton.addEventListener('click', () => this.handleCancel());
-            }
-            
-            async handleCancel() {
-                try {
-                    // Update the registration status to canceled
-                    const { error } = await supabaseClient
-                        .from('event_registrations')
-                        .update({ status: 'canceled' })
-                        .eq('event_id', this.eventId)
-                        .eq('user_id', this.user.id);
-                        
-                    if (error) {
-                        console.error('Error canceling registration:', error);
-                        this.renderError('An error occurred while canceling your registration');
-                        return;
-                    }
-                    
-                    // Show canceled message
-                    this.renderCancelationSuccess();
-                } catch (error) {
-                    console.error('Error canceling registration:', error);
-                    this.renderError('An error occurred while canceling your registration');
-                }
-            }
-            
-            renderCancelationSuccess() {
-                const cancelHtml = `
-                    <div class="event-registration-success">
-                        <div class="alert alert-warning">
-                            <h4>Registration Canceled</h4>
-                            <p>Your registration for ${this.event.title} has been canceled.</p>
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <button id="${this.containerId}-register-again" class="btn btn-theme effect btn-sm">Register Again</button>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = cancelHtml;
-                
-                // Add event listener to the register again button
-                const registerAgainButton = document.getElementById(`${this.containerId}-register-again`);
-                registerAgainButton.addEventListener('click', () => this.renderRegistrationForm());
-            }
-            
-            renderAlreadyRegistered(status) {
-                let statusText = '';
-                let buttonLabel = '';
-                let buttonClass = '';
-                
-                switch (status) {
-                    case 'registered':
-                        statusText = 'You are registered for this event.';
-                        buttonLabel = 'Cancel Registration';
-                        buttonClass = 'danger';
-                        break;
-                    case 'attended':
-                        statusText = 'You attended this event.';
-                        buttonLabel = 'View Certificate';
-                        buttonClass = 'theme effect';
-                        break;
-                    case 'canceled':
-                        statusText = 'Your registration for this event was canceled.';
-                        buttonLabel = 'Register Again';
-                        buttonClass = 'theme effect';
-                        break;
-                    case 'no-show':
-                        statusText = 'You were marked as no-show for this event.';
-                        buttonLabel = 'Contact Organizer';
-                        buttonClass = 'theme effect';
-                        break;
-                    default:
-                        statusText = 'You are registered for this event.';
-                        buttonLabel = 'Cancel Registration';
-                        buttonClass = 'danger';
-                }
-                
-                const registeredHtml = `
-                    <div class="event-registration-success">
-                        <div class="alert alert-info">
-                            <h4>Already Registered</h4>
-                            <p>${statusText}</p>
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <button id="${this.containerId}-action" class="btn btn-${buttonClass} btn-sm">${buttonLabel}</button>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = registeredHtml;
-                
-                // Add event listener to the action button
-                const actionButton = document.getElementById(`${this.containerId}-action`);
-                if (status === 'registered') {
-                    actionButton.addEventListener('click', () => this.handleCancel());
-                } else if (status === 'canceled') {
-                    actionButton.addEventListener('click', () => this.renderRegistrationForm());
-                }
-            }
-            
-            renderLoginRequired() {
-                const loginHtml = `
-                    <div class="event-registration-login">
-                        <div class="alert alert-warning">
-                            <h4>Login Required</h4>
-                            <p>Please login to register for this event.</p>
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <a href="login.html?redirect=${encodeURIComponent(window.location.href)}" class="btn btn-theme effect btn-sm">Login Now</a>
-                            <a href="registration.html?redirect=${encodeURIComponent(window.location.href)}" class="btn btn-secondary btn-sm">Create Account</a>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = loginHtml;
-            }
-            
-            renderError(message) {
-                const errorHtml = `
-                    <div class="event-registration-error">
-                        <div class="alert alert-danger">
-                            <h4>Error</h4>
-                            <p>${message}</p>
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <button onclick="window.location.reload()" class="btn btn-theme effect btn-sm">Try Again</button>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = errorHtml;
-            }
-            
-            renderPastEvent() {
-                const pastEventHtml = `
-                    <div class="event-registration-past">
-                        <div class="alert alert-secondary">
-                            <h4>Event Has Ended</h4>
-                            <p>This event has already taken place.</p>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = pastEventHtml;
-            }
-            
-            renderDeadlinePassed() {
-                const deadlineHtml = `
-                    <div class="event-registration-deadline">
-                        <div class="alert alert-warning">
-                            <h4>Registration Closed</h4>
-                            <p>The registration deadline for this event has passed.</p>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = deadlineHtml;
-            }
-            
-            renderCanceledEvent() {
-                const canceledHtml = `
-                    <div class="event-registration-canceled">
-                        <div class="alert alert-danger">
-                            <h4>Event Canceled</h4>
-                            <p>This event has been canceled by the organizers.</p>
-                        </div>
-                    </div>
-                `;
-                
-                this.containerElement.innerHTML = canceledHtml;
-            }
-        }
-        
-        // Initialize the event display
-        async function initializeEvent() {
-            try {
-                // Fetch event details
-                const { data: event, error } = await supabaseClient
-                    .from('events')
-                    .select('*')
-                    .eq('id', eventId)
-                    .single();
-                
-                if (error) {
-                    throw error;
-                }
-                
-                if (!event) {
-                    throw new Error('Event not found');
-                }
-                
-                // Update the page title
-                document.title = `${event.title} - Typni`;
-                
-                // Update event details
-                document.getElementById('event-title').innerText = event.title;
-                document.getElementById('event-description').innerText = event.description || 'No description available';
-                document.getElementById('event-location').innerText = event.location;
-                
-                // Format and set dates
-                const startDate = new Date(event.start_date);
-                const endDate = new Date(event.end_date);
-                
-                document.getElementById('event-date').innerText = `${formatShortDate(startDate)}`;
-                document.getElementById('event-time').innerText = `${startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-                
-                document.getElementById('event-start-date').innerText = formatDate(event.start_date);
-                document.getElementById('event-end-date').innerText = formatDate(event.end_date);
-                
-                // Event type and status badges
-                const eventTypeBadge = document.getElementById('event-type-badge');
-                const eventStatusBadge = document.getElementById('event-status-badge');
-                
-                // Set type badge
-                eventTypeBadge.innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
-                document.getElementById('event-type-info').innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
-                
-                switch(event.type) {
-                    case 'in-person':
-                        eventTypeBadge.className = 'badge btn-theme';
-                        break;
-                    case 'online':
-                        eventTypeBadge.className = 'badge btn-theme';
-                        break;
-                    case 'hybrid':
-                        eventTypeBadge.className = 'badge btn-theme';
-                        break;
-                    default:
-                        eventTypeBadge.className = 'badge btn-theme';
-                }
-                
-                // Set status badge
-                eventStatusBadge.innerText = event.status.charAt(0).toUpperCase() + event.status.slice(1);
-                
-                switch(event.status) {
-                    case 'upcoming':
-                        eventStatusBadge.className = 'badge btn-theme';
-                        break;
-                    case 'ongoing':
-                        eventStatusBadge.className = 'badge btn-theme';
-                        break;
-                    case 'past':
-                        eventStatusBadge.className = 'badge btn-dark';
-                        break;
-                    case 'canceled':
-                        eventStatusBadge.className = 'badge btn-danger';
-                        break;
-                    default:
-                        eventStatusBadge.className = 'badge btn-theme';
-                }
-                
-                // Set banner image if available
-                if (event.banner_url) {
-                    document.getElementById('event-banner').innerHTML = `<img src="${event.banner_url}" alt="${event.title}" class="img-responsive">`;
-                }
-                
-                // Show capacity if available
-                if (event.capacity) {
-                    document.getElementById('capacity-row').style.display = 'block';
-                    document.getElementById('event-capacity').innerText = event.capacity;
-                }
-                
-                // Show registration deadline if available
-                if (event.registration_deadline) {
-                    document.getElementById('deadline-row').style.display = 'block';
-                    document.getElementById('registration-deadline').innerText = formatDate(event.registration_deadline);
-                }
-                
-                // Initialize registration component
-                new EventRegistration('event-registration-container', eventId);
-                
-                // Load related events
-                loadRelatedEvents(event.type, eventId);
-                
-            } catch (error) {
-                console.error('Error loading event:', error);
-                document.getElementById('event-title').innerText = 'Error Loading Event';
-                document.getElementById('event-description').innerText = 'Sorry, we couldn\'t load the event details. Please try again later.';
-                
-                // Show error in registration container
-                document.getElementById('event-registration-container').innerHTML = `
-                    <div class="alert alert-danger">
-                        <h4>Error</h4>
-                        <p>Failed to load event details. Please try again later.</p>
-                    </div>
-                `;
-            }
-        }
-        
-        // Load related events
-        async function loadRelatedEvents(eventType, currentEventId) {
-            try {
-                // Fetch events with the same type
-                const { data: events, error } = await supabaseClient
-                    .from('events')
-                    .select('id, title, start_date, location, banner_url')
-                    .eq('type', eventType)
-                    .neq('id', currentEventId)
-                    .eq('status', 'upcoming')
-                    .order('start_date', { ascending: true })
-                    .limit(3);
-                
-                if (error) {
-                    throw error;
-                }
-                
-                if (!events || events.length === 0) {
-                    // No related events found
-                    document.getElementById('more-events-container').style.display = 'none';
-                    return;
-                }
-                
-                // Build HTML for related events
-                let eventsHtml = '';
-                
-                events.forEach(event => {
-                    const eventDate = new Date(event.start_date);
-                    
-                    eventsHtml += `
-                        <div class="col-md-4">
-                            <div class="item">
-                                <div class="thumb">
-                                    <img src="${event.banner_url || 'assets/img/800x600.png'}" alt="Thumb">
-                                </div>
-                                <div class="info">
-                                    <div class="date">
-                                        ${eventDate.getDate()} <span>${eventDate.toLocaleString('default', { month: 'short' })}</span>
-                                    </div>
-                                    <div class="content">
-                                        <h4>
-                                            <a href="event-detail.html?id=${event.id}">${event.title}</a>
-                                        </h4>
-                                        <div class="meta">
-                                            <ul>
-                                                <li>
-                                                    <i class="fas fa-map-marker-alt"></i> ${event.location}
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-clock"></i> ${eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <a class="btn btn-theme effect btn-sm" href="event-detail.html?id=${event.id}">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                document.getElementById('more-events').innerHTML = eventsHtml;
-                
-            } catch (error) {
-                console.error('Error loading related events:', error);
-                document.getElementById('more-events-container').style.display = 'none';
-            }
-        }
-        
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', initializeEvent);
-    </script>
-
 </body>
 </html> 

@@ -42,3 +42,5 @@ admin_promotion.md
 # Supabase
 .branches
 .temp 
+# Local Netlify folder
+.netlify

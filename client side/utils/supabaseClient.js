@@ -14,6 +14,9 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
   }
 })
 
+// Make the initialized client available globally
+window.supabaseClient = supabase;
+
 // Auth helper functions
 async function signUp(userData) {
   try {
