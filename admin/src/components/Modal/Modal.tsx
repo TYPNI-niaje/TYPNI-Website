@@ -1,4 +1,5 @@
-import { Fragment, FC, ReactNode } from 'react';
+import { Fragment } from 'react';
+import type { FC, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -34,7 +35,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, size = 'md' }
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+            <div className="fixed inset-0 bg-black/50" />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}

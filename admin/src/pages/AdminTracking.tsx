@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Card from '../components/Card/Card';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
+import type { ReactElement } from 'react';
 
 interface AdminAction {
   id: string;
@@ -129,7 +130,7 @@ const AdminTracking = () => {
     setFilteredActions(filtered);
   }, [filters, actions]);
 
-  const getActionStyle = (action: string): { rowClass: string; icon: JSX.Element | null } => {
+  const getActionStyle = (action: string): { rowClass: string; icon: ReactElement | null } => {
     switch (action) {
       case 'failed_login':
         return {
