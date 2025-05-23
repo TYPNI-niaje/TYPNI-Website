@@ -1,5 +1,7 @@
 [build]
-  publish = "."
+  base = "client side"
+  publish = "client side"
+  command = ""
 
 [[redirects]]
   from = "/*"
