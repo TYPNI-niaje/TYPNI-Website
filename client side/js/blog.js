@@ -1,5 +1,5 @@
 // Import necessary functions from supabaseClient
-import { getPublishedBlogPosts, getBlogPostById, getPostsByCategory, getBlogCategories, getRecentBlogPosts } from '../utils/supabaseClient.js';
+import { getPublishedBlogPosts, getBlogPostById, getPostsByCategory, getRecentBlogPosts } from '../utils/supabaseClient.js';
 
 // Global variable to store all blog posts
 let allBlogPosts = [];
@@ -11,10 +11,15 @@ async function initFilterButtons() {
   if (!filterContainer) return;
   
   try {
-    // Fetch blog categories
-    const { data: categories, error } = await getBlogCategories();
+    // Fetch all blog posts to get unique categories
+    const { data: posts, error } = await getPublishedBlogPosts();
     
     if (error) throw error;
+    
+    // Extract unique categories
+    const categories = [...new Set(posts.map(post => post.category))]
+      .map(name => ({ name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
     
     // Check if there are any categories
     if (!categories || categories.length === 0) {
@@ -68,11 +73,7 @@ async function initFilterButtons() {
         button.classList.add('active');
         
         // Filter posts client-side
-        if (category.name === '*') {
-          filterBlogPosts(null);
-        } else {
-          filterBlogPosts(category.name);
-        }
+        filterBlogPosts(category.name);
       });
       
       filterContainer.appendChild(button);
@@ -310,6 +311,11 @@ async function initBlogDetailPage() {
                 <li>
                   <i class="fas fa-calendar-alt"></i> ${postDate.toLocaleDateString()}
                 </li>
+                <li>
+                  <a href="blog-page.html?category=${encodeURIComponent(post.category)}">
+                    <i class="fas fa-folder"></i> ${post.category}
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -359,10 +365,23 @@ async function initCategories() {
     // Show loading state
     categoryContainer.innerHTML = '<li>Loading categories...</li>';
     
-    // Fetch blog categories with counts
-    const { data: categories, error } = await getBlogCategories();
+    // Fetch all blog posts to get categories
+    const { data: posts, error } = await getPublishedBlogPosts();
     
     if (error) throw error;
+    
+    // Extract unique categories and count posts in each category
+    const categoryMap = posts.reduce((acc, post) => {
+      if (!acc[post.category]) {
+        acc[post.category] = 0;
+      }
+      acc[post.category]++;
+      return acc;
+    }, {});
+
+    const categories = Object.entries(categoryMap)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
     
     // Check if there are any categories
     if (!categories || categories.length === 0) {

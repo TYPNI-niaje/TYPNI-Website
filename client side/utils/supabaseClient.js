@@ -225,17 +225,8 @@ export async function removeAvatar(userId, avatarUrl) {
 export async function getPublishedBlogPosts() {
   try {
     const { data, error } = await supabase
-      .from('blog_posts')
-      .select(`
-        *,
-        categories (
-          name
-        ),
-        author:profiles (
-          full_name,
-          avatar_url
-        )
-      `)
+      .from('blogs')
+      .select('*')
       .eq('status', 'published')
       .order('created_at', { ascending: false })
 
@@ -249,17 +240,8 @@ export async function getPublishedBlogPosts() {
 export async function getBlogPostById(id) {
   try {
     const { data, error } = await supabase
-      .from('blog_posts')
-      .select(`
-        *,
-        categories (
-          name
-        ),
-        author:profiles (
-          full_name,
-          avatar_url
-        )
-      `)
+      .from('blogs')
+      .select('*')
       .eq('id', id)
       .single()
 
@@ -273,18 +255,9 @@ export async function getBlogPostById(id) {
 export async function getPostsByCategory(category) {
   try {
     const { data, error } = await supabase
-      .from('blog_posts')
-      .select(`
-        *,
-        categories (
-          name
-        ),
-        author:profiles (
-          full_name,
-          avatar_url
-        )
-      `)
-      .eq('category_id', category)
+      .from('blogs')
+      .select('*')
+      .eq('category', category)
       .eq('status', 'published')
       .order('created_at', { ascending: false })
 
@@ -295,54 +268,11 @@ export async function getPostsByCategory(category) {
   }
 }
 
-export async function getBlogCategories() {
-  try {
-    // First get all published blog posts
-    const { data: posts, error: postsError } = await supabase
-      .from('blog_posts')
-      .select('category_id')
-      .eq('status', 'published')
-
-    if (postsError) throw postsError
-
-    // Get unique category IDs
-    const categoryIds = [...new Set(posts.map(post => post.category_id))]
-
-    // Get categories with those IDs
-    const { data: categories, error: categoriesError } = await supabase
-      .from('categories')
-      .select('*')
-      .in('id', categoryIds)
-      .order('name')
-
-    if (categoriesError) throw categoriesError
-
-    // Count posts for each category
-    const categoriesWithCount = categories.map(category => ({
-      ...category,
-      post_count: posts.filter(post => post.category_id === category.id).length
-    }))
-
-    return { data: categoriesWithCount, error: null }
-  } catch (error) {
-    return { data: null, error }
-  }
-}
-
 export async function getRecentBlogPosts(limit = 3) {
   try {
     const { data, error } = await supabase
-      .from('blog_posts')
-      .select(`
-        *,
-        categories (
-          name
-        ),
-        author:profiles (
-          full_name,
-          avatar_url
-        )
-      `)
+      .from('blogs')
+      .select('*')
       .eq('status', 'published')
       .order('created_at', { ascending: false })
       .limit(limit)
