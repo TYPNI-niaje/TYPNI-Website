@@ -14,11 +14,12 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
   }
 })
 
-// Make the initialized client available globally
-window.supabaseClient = supabase;
+// Make the initialized client available globally and export it
+window.supabaseClient = supabase
+export { supabase }
 
 // Auth helper functions
-async function signUp(userData) {
+export async function signUp(userData) {
   try {
     // Sign up the user with metadata
     const { data, error } = await supabase.auth.signUp({
@@ -52,7 +53,7 @@ async function signUp(userData) {
   }
 }
 
-async function signIn(email, password) {
+export async function signIn(email, password) {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -65,7 +66,7 @@ async function signIn(email, password) {
   }
 }
 
-async function signOut() {
+export async function signOut() {
   try {
     const { error } = await supabase.auth.signOut()
     if (error) throw error
@@ -75,7 +76,7 @@ async function signOut() {
   }
 }
 
-async function getCurrentUser() {
+export async function getCurrentUser() {
   try {
     const { data: { user }, error } = await supabase.auth.getUser()
     if (error) throw error
@@ -85,7 +86,7 @@ async function getCurrentUser() {
   }
 }
 
-async function updateProfile(userId, profileData) {
+export async function updateProfile(userId, profileData) {
   try {
     const { data, error } = await supabase
       .from('profiles')
@@ -98,7 +99,7 @@ async function updateProfile(userId, profileData) {
   }
 }
 
-async function getUserProfile(userId) {
+export async function getUserProfile(userId) {
   try {
     const { data, error } = await supabase
       .from('profiles')
@@ -112,7 +113,7 @@ async function getUserProfile(userId) {
   }
 }
 
-async function getUserInterests(userId) {
+export async function getUserInterests(userId) {
   try {
     const { data, error } = await supabase
       .from('user_interests')
@@ -130,7 +131,7 @@ async function getUserInterests(userId) {
   }
 }
 
-async function updateUserInterests(userId, interestIds) {
+export async function updateUserInterests(userId, interestIds) {
   try {
     // First delete existing interests
     const { error: deleteError } = await supabase
@@ -155,254 +156,200 @@ async function updateUserInterests(userId, interestIds) {
   }
 }
 
-// Upload avatar to Supabase Storage
-async function uploadAvatar(userId, file) {
+export async function uploadAvatar(userId, file) {
   try {
-    const fileExt = file.name.split('.').pop();
-    // Generate a unique filename using UUID pattern
-    const fileName = `${userId}-${Date.now()}.${fileExt}`;
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${userId}-${Date.now()}.${fileExt}`
     
-    // Upload the file
     const { data, error: uploadError } = await supabase.storage
       .from('avatars')
       .upload(fileName, file, {
         upsert: true,
         contentType: file.type
-      });
+      })
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
-      throw uploadError;
-    }
+    if (uploadError) throw uploadError
 
-    // Get the public URL
     const { data: { publicUrl } } = supabase.storage
       .from('avatars')
-      .getPublicUrl(fileName);
+      .getPublicUrl(fileName)
 
-    // Update the profile with the new avatar URL
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({ avatar_url: publicUrl })
-      .eq('id', userId);
-
-    if (updateError) {
-      // If profile update fails, try to remove the uploaded file
-      await supabase.storage.from('avatars').remove([fileName]);
-      throw updateError;
-    }
-
-    return publicUrl;
+    return publicUrl
   } catch (error) {
-    console.error('Error in uploadAvatar:', error);
-    throw error;
+    console.error('Error in uploadAvatar:', error)
+    throw error
   }
 }
 
-// Update avatar_url in profile
-async function updateAvatarUrl(userId, avatarUrl) {
+export async function updateAvatarUrl(userId, avatarUrl) {
   try {
     const { data, error } = await supabase
       .from('profiles')
       .update({ avatar_url: avatarUrl })
       .eq('id', userId)
-      .select()
-      .single();
-    
-    if (error) {
-      console.error('Error updating avatar URL:', error);
-      throw error;
-    }
-    
-    return { data, error: null };
+    if (error) throw error
+    return { data, error: null }
   } catch (error) {
-    console.error('Error in updateAvatarUrl:', error);
-    return { data: null, error };
+    return { data: null, error }
   }
 }
 
-// Remove avatar from Supabase Storage
-async function removeAvatar(userId, avatarUrl) {
+export async function removeAvatar(userId, avatarUrl) {
   try {
-    if (!avatarUrl) return;
-    // Extract file name from URL
-    const fileName = avatarUrl.split('/').pop();
-    const { error } = await supabase.storage.from('avatars').remove([fileName]);
-    if (error) throw error;
-    return { error: null };
-  } catch (error) {
-    console.error('Error in removeAvatar:', error);
-    throw error;
-  }
-} 
+    if (!avatarUrl) return
 
-// Blog functions
-async function getPublishedBlogPosts() {
+    // Extract filename from URL
+    const fileName = avatarUrl.split('/').pop()
+
+    // Remove file from storage
+    const { error: storageError } = await supabase.storage
+      .from('avatars')
+      .remove([fileName])
+
+    if (storageError) throw storageError
+
+    // Update profile
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ avatar_url: null })
+      .eq('id', userId)
+
+    if (profileError) throw profileError
+
+    return { error: null }
+  } catch (error) {
+    return { error }
+  }
+}
+
+export async function getPublishedBlogPosts() {
   try {
     const { data, error } = await supabase
-      .from('blogs')
-      .select('*')
+      .from('blog_posts')
+      .select(`
+        *,
+        categories (
+          name
+        ),
+        author:profiles (
+          full_name,
+          avatar_url
+        )
+      `)
       .eq('status', 'published')
-      .order('publish_date', { ascending: false });
-      
-    if (error) throw error;
-    
-    // Convert timestamps to Date objects
-    return { 
-      data: data.map(post => {
-        return {
-          ...post,
-          publish_date: post.publish_date ? new Date(post.publish_date) : null,
-          created_at: new Date(post.created_at),
-          updated_at: new Date(post.updated_at)
-        };
-      }), 
-      error: null 
-    };
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return { data, error: null }
   } catch (error) {
-    console.error('Error fetching published blog posts:', error);
-    return { data: null, error };
+    return { data: null, error }
   }
 }
 
-async function getBlogPostById(id) {
+export async function getBlogPostById(id) {
   try {
     const { data, error } = await supabase
-      .from('blogs')
-      .select('*')
+      .from('blog_posts')
+      .select(`
+        *,
+        categories (
+          name
+        ),
+        author:profiles (
+          full_name,
+          avatar_url
+        )
+      `)
       .eq('id', id)
-      .single();
-      
-    if (error) throw error;
-    
-    return { 
-      data: {
-        ...data,
-        publish_date: data.publish_date ? new Date(data.publish_date) : null,
-        created_at: new Date(data.created_at),
-        updated_at: new Date(data.updated_at)
-      }, 
-      error: null 
-    };
+      .single()
+
+    if (error) throw error
+    return { data, error: null }
   } catch (error) {
-    console.error(`Error fetching blog post with ID ${id}:`, error);
-    return { data: null, error };
+    return { data: null, error }
   }
 }
 
-async function getPostsByCategory(category) {
+export async function getPostsByCategory(category) {
   try {
     const { data, error } = await supabase
-      .from('blogs')
-      .select('*')
+      .from('blog_posts')
+      .select(`
+        *,
+        categories (
+          name
+        ),
+        author:profiles (
+          full_name,
+          avatar_url
+        )
+      `)
+      .eq('category_id', category)
       .eq('status', 'published')
-      .eq('category', category)
-      .order('publish_date', { ascending: false });
-      
-    if (error) throw error;
-    
-    return { 
-      data: data.map(post => {
-        return {
-          ...post,
-          publish_date: post.publish_date ? new Date(post.publish_date) : null,
-          created_at: new Date(post.created_at),
-          updated_at: new Date(post.updated_at)
-        };
-      }), 
-      error: null 
-    };
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return { data, error: null }
   } catch (error) {
-    console.error(`Error fetching posts for category ${category}:`, error);
-    return { data: null, error };
+    return { data: null, error }
   }
 }
 
-// Get blog categories with post counts
-async function getBlogCategories() {
+export async function getBlogCategories() {
   try {
     // First get all published blog posts
-    const { data, error } = await supabase
-      .from('blogs')
-      .select('category')
-      .eq('status', 'published');
-      
-    if (error) throw error;
-    
-    // Count posts by category
-    const categories = {};
-    data.forEach(post => {
-      if (post.category) {
-        if (!categories[post.category]) {
-          categories[post.category] = 0;
-        }
-        categories[post.category]++;
-      }
-    });
-    
-    // Convert to array of category objects
-    const categoryArray = Object.keys(categories).map(name => ({
-      name,
-      count: categories[name]
-    }));
-    
-    // Sort by post count (descending)
-    categoryArray.sort((a, b) => b.count - a.count);
-    
-    return { data: categoryArray, error: null };
+    const { data: posts, error: postsError } = await supabase
+      .from('blog_posts')
+      .select('category_id')
+      .eq('status', 'published')
+
+    if (postsError) throw postsError
+
+    // Get unique category IDs
+    const categoryIds = [...new Set(posts.map(post => post.category_id))]
+
+    // Get categories with those IDs
+    const { data: categories, error: categoriesError } = await supabase
+      .from('categories')
+      .select('*')
+      .in('id', categoryIds)
+      .order('name')
+
+    if (categoriesError) throw categoriesError
+
+    // Count posts for each category
+    const categoriesWithCount = categories.map(category => ({
+      ...category,
+      post_count: posts.filter(post => post.category_id === category.id).length
+    }))
+
+    return { data: categoriesWithCount, error: null }
   } catch (error) {
-    console.error('Error fetching blog categories:', error);
-    return { data: null, error };
+    return { data: null, error }
   }
 }
 
-// Get recent blog posts (limited to 3 by default)
-async function getRecentBlogPosts(limit = 3) {
+export async function getRecentBlogPosts(limit = 3) {
   try {
     const { data, error } = await supabase
-      .from('blogs')
-      .select('id, title, thumbnail_url, author, publish_date, created_at')
+      .from('blog_posts')
+      .select(`
+        *,
+        categories (
+          name
+        ),
+        author:profiles (
+          full_name,
+          avatar_url
+        )
+      `)
       .eq('status', 'published')
-      .order('publish_date', { ascending: false })
-      .limit(limit);
-      
-    if (error) throw error;
-    
-    // Convert timestamps to Date objects
-    return { 
-      data: data.map(post => {
-        return {
-          ...post,
-          publish_date: post.publish_date ? new Date(post.publish_date) : null,
-          created_at: new Date(post.created_at)
-        };
-      }), 
-      error: null 
-    };
-  } catch (error) {
-    console.error('Error fetching recent blog posts:', error);
-    return { data: null, error };
-  }
-}
+      .order('created_at', { ascending: false })
+      .limit(limit)
 
-// Export all functions
-export {
-  supabase,
-  signUp,
-  signIn,
-  signOut,
-  getCurrentUser,
-  updateProfile,
-  getUserProfile,
-  getUserInterests,
-  updateUserInterests,
-  uploadAvatar,
-  updateAvatarUrl,
-  removeAvatar,
-  // Blog functions
-  getPublishedBlogPosts,
-  getBlogPostById,
-  getPostsByCategory,
-  getBlogCategories,
-  getRecentBlogPosts
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    return { data: null, error }
+  }
 } 

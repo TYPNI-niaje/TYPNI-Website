@@ -38,6 +38,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     let attempts = 0;
     const maxAttempts = 50;
     
+    // Initialize Supabase if not already initialized
+    if (!window.supabaseClient && window.supabase) {
+      const supabaseUrl = 'https://lkgqmfqtxpbvwrsguwka.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZ3FtZnF0eHBidndyc2d1d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1ODk1MjYsImV4cCI6MjA2MzE2NTUyNn0.bMKMVLW-dwVDfhXFIBr-dxbB9yFZ-isNb5v2VrjoqQA';
+      
+      window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: false,
+          storageKey: 'typni_auth',
+          storage: window.localStorage,
+          flowType: 'pkce'
+        }
+      });
+    }
+    
     while (!window.supabaseClient && attempts < maxAttempts) {
       await new Promise(resolve => setTimeout(resolve, 100));
       attempts++;
