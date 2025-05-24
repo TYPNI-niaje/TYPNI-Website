@@ -1,7 +1,0 @@
-/assets/js/*.js 200! Content-Type=application/javascript
-/assets/*.js 200! Content-Type=application/javascript
-/*.js 200! Content-Type=application/javascript
-/assets/css/*.css 200! Content-Type=text/css
-/assets/*.css 200! Content-Type=text/css
-/*.css 200! Content-Type=text/css
-/* /index.html 200 
