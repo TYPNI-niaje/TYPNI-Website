@@ -181,14 +181,14 @@ const BlogPosts = () => {
                       <div className="flex justify-end space-x-2">
                         <button 
                           className="text-gray-600 hover:text-gray-900"
-                          onClick={() => navigate(`/admin/blog-view/${post.id}`)}
+                          onClick={() => navigate(`/admin/blog/${post.id}`)}
                           title="View blog post"
                         >
                           <EyeIcon className="w-4 h-4" />
                         </button>
                         <button 
                           className="text-indigo-600 hover:text-indigo-900"
-                          onClick={() => navigate(`/admin/blog-editor/${post.id}`)}
+                          onClick={() => navigate(`/admin/blog/${post.id}/edit`)}
                           title="Edit blog post"
                         >
                           <PencilSquareIcon className="w-4 h-4" />
@@ -253,13 +253,13 @@ const BlogPosts = () => {
                 <div className="flex justify-end border-t border-gray-100 pt-3 gap-4">
                   <button 
                     className="text-gray-600 hover:text-gray-900"
-                    onClick={() => navigate(`/admin/blog-view/${post.id}`)}
+                    onClick={() => navigate(`/admin/blog/${post.id}`)}
                   >
                     <EyeIcon className="w-5 h-5" />
                   </button>
                   <button 
                     className="text-indigo-600 hover:text-indigo-900"
-                    onClick={() => navigate(`/admin/blog-editor/${post.id}`)}
+                    onClick={() => navigate(`/admin/blog/${post.id}/edit`)}
                   >
                     <PencilSquareIcon className="w-5 h-5" />
                   </button>

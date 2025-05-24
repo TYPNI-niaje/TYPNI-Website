@@ -58,7 +58,7 @@ const BlogView = () => {
         <h2 className="text-red-800 text-lg font-medium mb-2">Error Loading Blog Post</h2>
         <p className="text-red-600">{error}</p>
         <button
-          onClick={() => navigate('/admin/blog-posts')}
+          onClick={() => navigate('/admin/blog')}
           className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-indigo-700 transition-colors"
         >
           Back to Posts
@@ -73,7 +73,7 @@ const BlogView = () => {
         <h2 className="text-yellow-800 text-lg font-medium mb-2">Blog Post Not Found</h2>
         <p className="text-yellow-600">The requested blog post could not be found.</p>
         <button
-          onClick={() => navigate('/admin/blog-posts')}
+          onClick={() => navigate('/admin/blog')}
           className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-indigo-700 transition-colors"
         >
           Back to Posts
@@ -91,7 +91,7 @@ const BlogView = () => {
     >
       <div className="flex items-center justify-between">
         <button
-          onClick={() => navigate('/admin/blog-posts')}
+          onClick={() => navigate('/admin/blog')}
           className="flex items-center text-gray-600 hover:text-gray-900"
         >
           <ArrowLeftIcon className="w-5 h-5 mr-1" />
@@ -99,7 +99,7 @@ const BlogView = () => {
         </button>
         
         <button
-          onClick={() => navigate(`/admin/blog-editor/${post.id}`)}
+          onClick={() => navigate(`/admin/blog/${post.id}/edit`)}
           className="flex items-center btn-primary"
         >
           <PencilSquareIcon className="w-5 h-5 mr-1" />
