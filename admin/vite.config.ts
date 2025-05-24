@@ -14,26 +14,22 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    assetsDir: 'assets',
+    cssCodeSplit: true,
+    modulePreload: {
+      polyfill: true
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
         },
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          if (!assetInfo.name) return 'assets/[name]-[hash][extname]'
-          const info = assetInfo.name.split('.')
-          let extType = info[info.length - 1]
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-            return `assets/img/[name]-[hash][extname]`
-          } else if (/css/.test(extType)) {
-            return `assets/css/[name]-[hash][extname]`
-          }
-          return `assets/[name]-[hash][extname]`
-        },
-      },
-    },
+        format: 'es',
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]'
+      }
+    }
   },
   server: {
     port: 5174,
