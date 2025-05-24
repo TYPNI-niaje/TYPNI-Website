@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '',
+  base: '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,19 +15,12 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     assetsDir: 'assets',
+    manifest: true,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
         },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'vite.svg') {
-            return 'vite.svg'
-          }
-          return 'assets/[name]-[hash][extname]'
-        },
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
       },
     },
   },
