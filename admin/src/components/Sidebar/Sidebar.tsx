@@ -32,7 +32,7 @@ const sidebarItems: SidebarItem[] = [
   { name: 'Blog Posts', path: '/admin/blog', icon: DocumentTextIcon },
   { name: 'Events', path: '/admin/events', icon: CalendarIcon },
   { name: 'Admin Tracking', path: '/admin/tracking', icon: UserIcon },
-  { name: 'Sign Out', path: '/admin/settings', icon: CogIcon },
+  { name: 'Settings', path: '/admin/settings', icon: CogIcon },
 ];
 
 const Sidebar: FC<SidebarProps> = ({ onClose, isOpen = false }) => {

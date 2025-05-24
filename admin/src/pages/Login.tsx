@@ -2,11 +2,12 @@ import { type FC, useState, useEffect } from 'react';
 import { supabase, logAdminAction } from '../lib/supabase';
 import typniLogo from '../assets/images/TYPNI-11.jpg';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LoginProps {
   error?: string | null;
-  }
+}
 
 const Login: FC<LoginProps> = ({ error: externalError }) => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,16 @@ const Login: FC<LoginProps> = ({ error: externalError }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(externalError || null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAdmin } = useAuth();
+
+  // If user is already authenticated and is admin, redirect to dashboard
+  useEffect(() => {
+    if (isAdmin) {
+      const from = location.state?.from?.pathname || '/admin';
+      navigate(from, { replace: true });
+    }
+  }, [isAdmin, navigate, location]);
 
   // Update error when external error prop changes
   useEffect(() => {
@@ -34,64 +45,15 @@ const Login: FC<LoginProps> = ({ error: externalError }) => {
     }, 10000); // 10 seconds timeout
     
     try {
-      console.log('Attempting login with email:', email);
-      
-      if (!email || !password) {
-        setError('Email and password are required');
-        clearTimeout(loginTimeout);
-        setLoading(false);
-        return;
-      }
-      
       // Attempt to sign in
-      const { data, error: loginError } = await supabase.auth.signInWithPassword({
-        email: email.trim(), 
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
         password
       });
-      
-      clearTimeout(loginTimeout);
-      
-      if (loginError) {
-        console.error('Login error:', loginError);
-        setError(loginError.message || 'Invalid email or password');
-        
-        // Log failed login attempt
-        await logAdminAction(
-          null, 
-          'failed_login', 
-          { 
-            email,
-            reason: loginError.message || 'Invalid credentials',
-            ip: window.location.hostname,
-            timestamp: new Date().toISOString()
-          }
-        );
-        
-        setLoading(false);
-        return;
-      }
-      
-      if (!data?.user) {
-        console.error('No user returned from login');
-        setError('Login failed - no user data returned');
-        
-        // Log failed login attempt
-        await logAdminAction(
-          null,
-          'failed_login',
-          {
-            email,
-            reason: 'No user data returned',
-            ip: window.location.hostname,
-            timestamp: new Date().toISOString()
-          }
-        );
-        
-        setLoading(false);
-        return;
-      }
 
-      // Check if user has admin role
+      if (signInError) throw signInError;
+
+      // Check if user exists and has admin role
       const { data: roleData, error: roleError } = await supabase
         .from('profiles')
         .select('role')
@@ -133,11 +95,9 @@ const Login: FC<LoginProps> = ({ error: externalError }) => {
       
       toast.success('Login successful');
       
-      // Always redirect to dashboard after successful login
-      navigate('/admin/dashboard');
-      
-      // Auth state change will be handled by the App component
-      // Keep loading state true as we'll redirect shortly
+      // Redirect to the page they tried to visit or dashboard
+      const from = location.state?.from?.pathname || '/admin';
+      navigate(from, { replace: true });
       
     } catch (error: any) {
       clearTimeout(loginTimeout);
@@ -148,86 +108,85 @@ const Login: FC<LoginProps> = ({ error: externalError }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="flex flex-col items-center">
           <img 
             src={typniLogo} 
             alt="TYPNI Logo" 
-            className="w-24 h-24 object-cover rounded-xl shadow-md"
+            className="w-24 h-24 object-cover rounded-lg shadow-md" 
           />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Admin Login
+          </h2>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Admin Login
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          The Young People's Network International
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-              <p className="text-red-700 text-sm">{error}</p>
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    {error}
+                  </h3>
+                </div>
+              </div>
             </div>
           )}
-          <form className="space-y-6" onSubmit={handleLogin}>
+          
+          <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  disabled={loading}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input-field"
-                />
-              </div>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  disabled={loading}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input-field"
-                />
-              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                placeholder="Password"
+              />
             </div>
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full btn-primary flex justify-center py-2 px-4 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Logging in...
-                  </span>
-                ) : 'Log in'}
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full btn-primary flex justify-center py-2 px-4 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Logging in...
+                </span>
+              ) : 'Log in'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

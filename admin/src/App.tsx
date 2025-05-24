@@ -22,6 +22,22 @@ import AuthLoadingScreen from './components/Loading/AuthLoadingScreen';
 
 const queryClient = new QueryClient();
 
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return <AuthLoadingScreen />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  }
+
+  return <>{children}</>;
+};
+
 function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, setSidebarOpen: (open: boolean) => void }) {
   const { isAdmin, isLoading, profile } = useAuth();
   const location = useLocation();
@@ -33,7 +49,7 @@ function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, set
 
   // Render login page without admin layout
   if (isLoginPage) {
-  return (
+    return (
       <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/admin/login" element={<Login />} />
@@ -47,34 +63,86 @@ function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, set
     <div className="flex h-screen overflow-hidden">
       <Sidebar onClose={() => setSidebarOpen(false)} isOpen={sidebarOpen} />
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
-            <Header onMenuClick={() => setSidebarOpen(true)} profile={profile} />
+        <Header onMenuClick={() => setSidebarOpen(true)} profile={profile} />
         <main className="flex-1 overflow-y-auto pt-16 pb-6">
           <div className="px-4 sm:px-6 md:px-8 lg:px-12">
-                  <Routes>
-              <Route path="/admin" element={<Dashboard />} />
-              {isAdmin && (
-                <>
-                    <Route path="/admin/users" element={<Users />} />
-                    <Route path="/admin/events" element={<Events />} />
-                    <Route path="/admin/events/new" element={<EventForm />} />
-                    <Route path="/admin/events/:id" element={<EventDetail />} />
-                  <Route path="/admin/events/:id/edit" element={<EventForm />} />
-                  <Route path="/admin/blog" element={<BlogPosts />} />
-                  <Route path="/admin/blog/new" element={<BlogEditor />} />
-                  <Route path="/admin/blog/:id" element={<BlogView />} />
-                  <Route path="/admin/blog/:id/edit" element={<BlogEditor />} />
-                    <Route path="/admin/memberships" element={<Memberships />} />
-                  <Route path="/admin/analytics" element={<Analytics />} />
-                    <Route path="/admin/tracking" element={<AdminTracking />} />
-                  <Route path="/admin/settings" element={<Settings />} />
-                </>
-              )}
-              <Route path="*" element={<Navigate to="/admin" />} />
-                  </Routes>
-              </div>
-            </main>
+            <Routes>
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/users" element={
+                <ProtectedRoute>
+                  <Users />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/events" element={
+                <ProtectedRoute>
+                  <Events />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/events/new" element={
+                <ProtectedRoute>
+                  <EventForm />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/events/:id" element={
+                <ProtectedRoute>
+                  <EventDetail />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/events/:id/edit" element={
+                <ProtectedRoute>
+                  <EventForm />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/blog" element={
+                <ProtectedRoute>
+                  <BlogPosts />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/blog/new" element={
+                <ProtectedRoute>
+                  <BlogEditor />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/blog/:id" element={
+                <ProtectedRoute>
+                  <BlogView />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/blog/:id/edit" element={
+                <ProtectedRoute>
+                  <BlogEditor />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/memberships" element={
+                <ProtectedRoute>
+                  <Memberships />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/analytics" element={
+                <ProtectedRoute>
+                  <Analytics />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/tracking" element={
+                <ProtectedRoute>
+                  <AdminTracking />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
+            </Routes>
           </div>
-        </div>
+        </main>
+      </div>
+    </div>
   );
 }
 
