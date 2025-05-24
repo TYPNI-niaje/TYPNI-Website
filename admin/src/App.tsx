@@ -39,7 +39,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, setSidebarOpen: (open: boolean) => void }) {
-  const { isAdmin, isLoading, profile } = useAuth();
+  const { isLoading, profile } = useAuth();
   const location = useLocation();
   const isLoginPage = location.pathname === '/admin/login';
 
