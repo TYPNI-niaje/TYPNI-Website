@@ -409,11 +409,18 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <!-- Load Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
-    <script src="utils/supabaseClient.js"></script>
-    <script src="utils/authGuard.js"></script>
-    <script>
+    <script src="utils/authGuard.js" defer></script>
+    <script type="module">
+        import { signUp, supabase } from './utils/supabaseClient.js';
+        
+        // Make sure we have access to supabase
+        if (!supabase) {
+            console.error('Supabase client not initialized');
+        }
+        
     document.addEventListener('DOMContentLoaded', async function() {
         // Initialize phone input
         const phoneInput = window.intlTelInput(document.querySelector("#phone_number"), {
@@ -441,249 +448,80 @@
                 acc[kebabName] = interest.id;
                 return acc;
             }, {});
+
+                // Create checkboxes for each interest
+                interests.forEach(interest => {
+                    const kebabName = interest.name.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+                    const div = document.createElement('div');
+                    div.className = 'col-md-4 interest-option';
+                    div.innerHTML = `
+                        <input type="checkbox" id="${kebabName}" name="interests" value="${kebabName}">
+                        <label for="${kebabName}">${interest.name}</label>
+                    `;
+                    interestsContainer.appendChild(div);
+                });
         } catch (error) {
             console.error('Failed to fetch interests:', error);
+                interestsContainer.innerHTML = '<div class="col-12"><p class="text-danger">Failed to load interests. Please try refreshing the page.</p></div>';
         }
 
         // Initialize countries dropdown
         const countrySelect = document.getElementById('country');
-        const countries = [
-            { code: "af", name: "Afghanistan" },
-            { code: "al", name: "Albania" },
-            { code: "dz", name: "Algeria" },
-            { code: "as", name: "American Samoa" },
-            { code: "ad", name: "Andorra" },
-            { code: "ao", name: "Angola" },
-            { code: "ai", name: "Anguilla" },
-            { code: "ag", name: "Antigua and Barbuda" },
-            { code: "ar", name: "Argentina" },
-            { code: "am", name: "Armenia" },
-            { code: "aw", name: "Aruba" },
-            { code: "au", name: "Australia" },
-            { code: "at", name: "Austria" },
-            { code: "az", name: "Azerbaijan" },
-            { code: "bs", name: "Bahamas" },
-            { code: "bh", name: "Bahrain" },
-            { code: "bd", name: "Bangladesh" },
-            { code: "bb", name: "Barbados" },
-            { code: "by", name: "Belarus" },
-            { code: "be", name: "Belgium" },
-            { code: "bz", name: "Belize" },
-            { code: "bj", name: "Benin" },
-            { code: "bm", name: "Bermuda" },
-            { code: "bt", name: "Bhutan" },
-            { code: "bo", name: "Bolivia" },
-            { code: "ba", name: "Bosnia and Herzegovina" },
-            { code: "bw", name: "Botswana" },
-            { code: "br", name: "Brazil" },
-            { code: "bn", name: "Brunei Darussalam" },
-            { code: "bg", name: "Bulgaria" },
-            { code: "bf", name: "Burkina Faso" },
-            { code: "bi", name: "Burundi" },
-            { code: "cv", name: "Cabo Verde" },
-            { code: "kh", name: "Cambodia" },
-            { code: "cm", name: "Cameroon" },
-            { code: "ca", name: "Canada" },
-            { code: "ky", name: "Cayman Islands" },
-            { code: "cf", name: "Central African Republic" },
-            { code: "td", name: "Chad" },
-            { code: "cl", name: "Chile" },
-            { code: "cn", name: "China" },
-            { code: "co", name: "Colombia" },
-            { code: "km", name: "Comoros" },
-            { code: "cg", name: "Congo" },
-            { code: "cd", name: "Congo, Democratic Republic" },
-            { code: "ck", name: "Cook Islands" },
-            { code: "cr", name: "Costa Rica" },
-            { code: "ci", name: "Côte d'Ivoire" },
-            { code: "hr", name: "Croatia" },
-            { code: "cu", name: "Cuba" },
-            { code: "cy", name: "Cyprus" },
-            { code: "cz", name: "Czech Republic" },
-            { code: "dk", name: "Denmark" },
-            { code: "dj", name: "Djibouti" },
-            { code: "dm", name: "Dominica" },
-            { code: "do", name: "Dominican Republic" },
-            { code: "ec", name: "Ecuador" },
-            { code: "eg", name: "Egypt" },
-            { code: "sv", name: "El Salvador" },
-            { code: "gq", name: "Equatorial Guinea" },
-            { code: "er", name: "Eritrea" },
-            { code: "ee", name: "Estonia" },
-            { code: "et", name: "Ethiopia" },
-            { code: "fj", name: "Fiji" },
-            { code: "fi", name: "Finland" },
-            { code: "fr", name: "France" },
-            { code: "pf", name: "French Polynesia" },
-            { code: "ga", name: "Gabon" },
-            { code: "gm", name: "Gambia" },
-            { code: "ge", name: "Georgia" },
-            { code: "de", name: "Germany" },
-            { code: "gh", name: "Ghana" },
-            { code: "gi", name: "Gibraltar" },
-            { code: "gr", name: "Greece" },
-            { code: "gl", name: "Greenland" },
-            { code: "gd", name: "Grenada" },
-            { code: "gu", name: "Guam" },
-            { code: "gt", name: "Guatemala" },
-            { code: "gn", name: "Guinea" },
-            { code: "gw", name: "Guinea-Bissau" },
-            { code: "gy", name: "Guyana" },
-            { code: "ht", name: "Haiti" },
-            { code: "hn", name: "Honduras" },
-            { code: "hk", name: "Hong Kong" },
-            { code: "hu", name: "Hungary" },
-            { code: "is", name: "Iceland" },
-            { code: "in", name: "India" },
-            { code: "id", name: "Indonesia" },
-            { code: "ir", name: "Iran" },
-            { code: "iq", name: "Iraq" },
-            { code: "ie", name: "Ireland" },
-            { code: "il", name: "Israel" },
-            { code: "it", name: "Italy" },
-            { code: "jm", name: "Jamaica" },
-            { code: "jp", name: "Japan" },
-            { code: "jo", name: "Jordan" },
-            { code: "kz", name: "Kazakhstan" },
-            { code: "ke", name: "Kenya" },
-            { code: "ki", name: "Kiribati" },
-            { code: "kp", name: "Korea, North" },
-            { code: "kr", name: "Korea, South" },
-            { code: "kw", name: "Kuwait" },
-            { code: "kg", name: "Kyrgyzstan" },
-            { code: "la", name: "Laos" },
-            { code: "lv", name: "Latvia" },
-            { code: "lb", name: "Lebanon" },
-            { code: "ls", name: "Lesotho" },
-            { code: "lr", name: "Liberia" },
-            { code: "ly", name: "Libya" },
-            { code: "li", name: "Liechtenstein" },
-            { code: "lt", name: "Lithuania" },
-            { code: "lu", name: "Luxembourg" },
-            { code: "mk", name: "Macedonia" },
-            { code: "mg", name: "Madagascar" },
-            { code: "mw", name: "Malawi" },
-            { code: "my", name: "Malaysia" },
-            { code: "mv", name: "Maldives" },
-            { code: "ml", name: "Mali" },
-            { code: "mt", name: "Malta" },
-            { code: "mh", name: "Marshall Islands" },
-            { code: "mr", name: "Mauritania" },
-            { code: "mu", name: "Mauritius" },
-            { code: "mx", name: "Mexico" },
-            { code: "fm", name: "Micronesia" },
-            { code: "md", name: "Moldova" },
-            { code: "mc", name: "Monaco" },
-            { code: "mn", name: "Mongolia" },
-            { code: "me", name: "Montenegro" },
-            { code: "ms", name: "Montserrat" },
-            { code: "ma", name: "Morocco" },
-            { code: "mz", name: "Mozambique" },
-            { code: "mm", name: "Myanmar" },
-            { code: "na", name: "Namibia" },
-            { code: "nr", name: "Nauru" },
-            { code: "np", name: "Nepal" },
-            { code: "nl", name: "Netherlands" },
-            { code: "nz", name: "New Zealand" },
-            { code: "ni", name: "Nicaragua" },
-            { code: "ne", name: "Niger" },
-            { code: "ng", name: "Nigeria" },
-            { code: "nu", name: "Niue" },
-            { code: "no", name: "Norway" },
-            { code: "om", name: "Oman" },
-            { code: "pk", name: "Pakistan" },
-            { code: "pw", name: "Palau" },
-            { code: "ps", name: "Palestine" },
-            { code: "pa", name: "Panama" },
-            { code: "pg", name: "Papua New Guinea" },
-            { code: "py", name: "Paraguay" },
-            { code: "pe", name: "Peru" },
-            { code: "ph", name: "Philippines" },
-            { code: "pl", name: "Poland" },
-            { code: "pt", name: "Portugal" },
-            { code: "pr", name: "Puerto Rico" },
-            { code: "qa", name: "Qatar" },
-            { code: "ro", name: "Romania" },
-            { code: "ru", name: "Russia" },
-            { code: "rw", name: "Rwanda" },
-            { code: "kn", name: "Saint Kitts and Nevis" },
-            { code: "lc", name: "Saint Lucia" },
-            { code: "vc", name: "Saint Vincent and the Grenadines" },
-            { code: "ws", name: "Samoa" },
-            { code: "sm", name: "San Marino" },
-            { code: "st", name: "Sao Tome and Principe" },
-            { code: "sa", name: "Saudi Arabia" },
-            { code: "sn", name: "Senegal" },
-            { code: "rs", name: "Serbia" },
-            { code: "sc", name: "Seychelles" },
-            { code: "sl", name: "Sierra Leone" },
-            { code: "sg", name: "Singapore" },
-            { code: "sk", name: "Slovakia" },
-            { code: "si", name: "Slovenia" },
-            { code: "sb", name: "Solomon Islands" },
-            { code: "so", name: "Somalia" },
-            { code: "za", name: "South Africa" },
-            { code: "ss", name: "South Sudan" },
-            { code: "es", name: "Spain" },
-            { code: "lk", name: "Sri Lanka" },
-            { code: "sd", name: "Sudan" },
-            { code: "sr", name: "Suriname" },
-            { code: "sz", name: "Eswatini" },
-            { code: "se", name: "Sweden" },
-            { code: "ch", name: "Switzerland" },
-            { code: "sy", name: "Syria" },
-            { code: "tw", name: "Taiwan" },
-            { code: "tj", name: "Tajikistan" },
-            { code: "tz", name: "Tanzania" },
-            { code: "th", name: "Thailand" },
-            { code: "tl", name: "Timor-Leste" },
-            { code: "tg", name: "Togo" },
-            { code: "to", name: "Tonga" },
-            { code: "tt", name: "Trinidad and Tobago" },
-            { code: "tn", name: "Tunisia" },
-            { code: "tr", name: "Turkey" },
-            { code: "tm", name: "Turkmenistan" },
-            { code: "tv", name: "Tuvalu" },
-            { code: "ug", name: "Uganda" },
-            { code: "ua", name: "Ukraine" },
-            { code: "ae", name: "United Arab Emirates" },
-            { code: "gb", name: "United Kingdom" },
-            { code: "us", name: "United States" },
-            { code: "uy", name: "Uruguay" },
-            { code: "uz", name: "Uzbekistan" },
-            { code: "vu", name: "Vanuatu" },
-            { code: "va", name: "Vatican City" },
-            { code: "ve", name: "Venezuela" },
-            { code: "vn", name: "Vietnam" },
-            { code: "ye", name: "Yemen" },
-            { code: "zm", name: "Zambia" },
-            { code: "zw", name: "Zimbabwe" }
-        ];
-
-        // Populate the countries dropdown
-        countries.forEach(country => {
-            const option = document.createElement('option');
-            option.value = country.name.toLowerCase();
-            option.dataset.code = country.code;
-            option.innerHTML = `<span class="flag-icon flag-icon-${country.code}"></span> ${country.name}`;
-            option.textContent = country.name; // Fallback text
-            countrySelect.appendChild(option);
-        });
-        
-        // Set preferred countries at the top
-        const preferredCountries = ["ke", "ug", "tz"];
-        for (let i = 0; i < preferredCountries.length; i++) {
-            const code = preferredCountries[i];
-            const country = countries.find(c => c.code === code);
-            if (country) {
-                const option = document.createElement('option');
-                option.value = country.name.toLowerCase();
-                option.dataset.code = country.code;
-                option.textContent = country.name;
-                option.selected = code === "ke"; // Select Kenya by default
-                countrySelect.insertBefore(option, countrySelect.firstChild);
+            const preferredCountries = ['KE', 'UG', 'TZ']; // Kenya, Uganda, Tanzania
+            
+            // Function to get country name and flag
+            function getCountryOption(code) {
+                const countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(code);
+                return {
+                    code: code,
+                    name: countryName,
+                    flag: code.toLowerCase()
+                };
             }
-        }
+
+            // Get all countries
+            const allCountryCodes = ["AF","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BA","BW","BV","BR","IO","BN","BG","BF","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","CC","CO","KM","CG","CD","CK","CR","CI","HR","CU","CY","CZ","DK","DJ","DM","DO","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GR","GL","GD","GP","GU","GT","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IL","IT","JM","JP","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","MS","MA","MZ","MM","NA","NR","NP","NL","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","RU","RW","SH","KN","LC","PM","VC","WS","SM","ST","SA","SN","SC","SL","SG","SK","SI","SB","SO","ZA","GS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TL","TG","TK","TO","TT","TN","TR","TM","TC","TV","UG","UA","AE","GB","US","UM","UY","UZ","VU","VE","VN","VG","VI","WF","EH","YE","ZM","ZW"];
+            
+            // Create preferred countries array with names and flags
+            const preferredCountryOptions = preferredCountries.map(getCountryOption);
+            
+            // Create all countries array with names and flags
+            const allCountryOptions = allCountryCodes.map(getCountryOption)
+                .filter(country => !preferredCountries.includes(country.code))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            // Clear existing options
+            countrySelect.innerHTML = '';
+
+            // Add preferred countries group
+            if (preferredCountryOptions.length > 0) {
+                const preferredGroup = document.createElement('optgroup');
+                preferredGroup.label = 'Preferred Countries';
+                preferredCountryOptions.forEach(country => {
+            const option = document.createElement('option');
+                    option.value = country.code;
+                    option.innerHTML = `<span class="flag-icon flag-icon-${country.flag}"></span> ${country.name}`;
+                    preferredGroup.appendChild(option);
+                });
+                countrySelect.appendChild(preferredGroup);
+
+                // Add separator
+                const separator = document.createElement('option');
+                separator.disabled = true;
+                separator.textContent = '──────────';
+                countrySelect.appendChild(separator);
+            }
+
+            // Add all other countries
+            const otherGroup = document.createElement('optgroup');
+            otherGroup.label = 'All Countries';
+            allCountryOptions.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.code;
+                option.innerHTML = `<span class="flag-icon flag-icon-${country.flag}"></span> ${country.name}`;
+                otherGroup.appendChild(option);
+            });
+            countrySelect.appendChild(otherGroup);
 
         const form = document.querySelector('form');
         const interestCheckboxes = document.querySelectorAll('input[name="interests"]');
@@ -762,11 +600,34 @@
             }
 
             try {
-                // Sign up the user with all the metadata included
+                // Sign up the user with metadata
                 const { data, error } = await signUp(formData);
                 
                 if (error) {
                     throw error;
+                }
+
+                // If signup successful, create profile entry
+                if (data?.user) {
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .insert({
+                            id: data.user.id,
+                            full_name: formData.name,
+                            phone_number: formData.phone_number,
+                            id_number: formData.idNumber,
+                            date_of_birth: formData.date_of_birth,
+                            gender: formData.gender,
+                            country: formData.country,
+                            is_employed: formData.is_employed,
+                            education_level: formData.education_level,
+                            updated_at: new Date()
+                        });
+
+                    if (profileError) {
+                        console.error('Error creating profile:', profileError);
+                        // Still proceed since auth was successful
+                    }
                 }
 
                 // If signup successful and we have a confirmation
