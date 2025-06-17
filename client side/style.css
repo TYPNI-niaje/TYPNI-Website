@@ -44,7 +44,7 @@ Table of contents
   padding: 10px ;
   text-align: left;
 }
-.card img{
+.card .avatar{
   width: 400px !important;
   border-radius: 5px;
   margin: 4px;
@@ -53,10 +53,11 @@ Table of contents
 .card .title {
   color: grey;
   font-size: 18px;
+  text-decoration: none;
 }
 .card span{
-  text-decoration:underline;
-  color: #390099;
+  text-decoration:none;
+  color: #000000;
 }
 
 .card button {
