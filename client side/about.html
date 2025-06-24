@@ -169,6 +169,7 @@
 
     <!-- Start Team Members
     ============================================= -->
+    
     <div class="team-members-area item-white bg-gray default-padding">
         <div class="container">
             <div class="row">
@@ -181,104 +182,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 team-member-info">
-                    <div class="team-carousel-items owl-carousel owl-theme">
-                        <div class="item">
-                            <div class="col-md-6 thumb">
-                                <img src="assets/img/charlene ruto.png" alt="Team">
-                            </div>
-                            <div class="col-md-6 info title">
-                                <h3>Charlene Ruto</h3>
-                                <h5>Team Lead</h5>
-                                <ul>
-                                    <li>Location: <span>Nairobi, Kenya</span></li>
-                                </ul>
-                                <p>
-                                    Charlene’s vision is rooted in the belief that every young person has the potential to achieve greatness. Her commitment to uplifting the youth and addressing their challenges has inspired countless individuals and organizations to join the movement for positive change.
-                                </p>
-                                <div class="social">
-                                    <ul>
-                                        <li>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="col-md-6 thumb">
-                                <img src="assets/img/charlene ruto.png" alt="Team">
-                            </div>
-                            <div class="col-md-6 info title">
-                                <h3>Charlene Ruto</h3>
-                                <h5>Team Lead</h5>
-                                <ul>
-                                    <li>Location: <span>Nairobi, Kenya</span></li>
-                                </ul>
-                                <p>
-                                    Charlene’s vision is rooted in the belief that every young person has the potential to achieve greatness. Her commitment to uplifting the youth and addressing their challenges has inspired countless individuals and organizations to join the movement for positive change.
-                                </p>
-                                <div class="social">
-                                    <ul>
-                                        <li>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="col-md-6 thumb">
-                                <img src="assets/img/charlene ruto.png" alt="Team">
-                            </div>
-                            <div class="col-md-6 info title">
-                                <h3>Charlene Ruto</h3>
-                                <h5>Team Lead</h5>
-                                <ul>
-                                    <li>Location: <span>Nairobi, Kenya</span></li>
-                                </ul>
-                                <p>
-                                    Charlene’s vision is rooted in the belief that every young person has the potential to achieve greatness. Her commitment to uplifting the youth and addressing their challenges has inspired countless individuals and organizations to join the movement for positive change.
-                                </p>
-                                <div class="social">
-                                    <ul>
-                                        <li>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="team-members-placeholder"></div>
+            <script>
+            fetch('assets/components/team.html') // make sure this path is correct
+                .then(response => response.text())
+                .then(data => {
+                document.getElementById('team-members-placeholder').innerHTML = data;
+                });
+            </script>
             </div>
         </div>
     </div>
