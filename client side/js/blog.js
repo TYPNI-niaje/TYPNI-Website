@@ -73,7 +73,7 @@ async function initFilterButtons() {
         button.classList.add('active');
         
         // Filter posts client-side
-        filterBlogPosts(category.name);
+          filterBlogPosts(category.name);
       });
       
       filterContainer.appendChild(button);

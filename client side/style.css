@@ -5177,6 +5177,73 @@ nav.bootsnav.navbar-default.info-topbar.sticked ul li a {
   padding: 0;
 }
 
+/* Success Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #FF0054;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(150%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.notification.show {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification i {
+  font-size: 20px;
+}
+
+.notification .message {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+
+.notification.fade-out {
+  transform: translateX(150%);
+  opacity: 0;
+  visibility: hidden;
+  animation: slideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+}
+
+/* End Success Notification Styles */
+
 
 /* ============================================================== 
      # Team Members 
@@ -6028,4 +6095,148 @@ footer .f-item.newsletter form .input-group-addon button {
   transition: all 0.35s ease-in-out;
   width: 0;
 }
+
+/* Loading spinner styles */
+.contact-form-area .contact-form button .hidden {
+  display: none;
+}
+
+.contact-form-area .contact-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.contact-form-area .contact-form button .fa-spin {
+  animation: fa-spin 1s infinite linear;
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.contact-form-area .contact-form button:hover {
+  background-color: #FF0054;
+  border: 1px solid #FF0054;
+  color: #ffffff;
+}
+
+/* Success Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #FF0054;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(150%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification i {
+  font-size: 20px;
+}
+
+.notification .message {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+
+.notification.fade-out {
+  transform: translateX(150%);
+}
+
+/* End Success Notification Styles */
+
+/* Modal Notification Styles */
+.modal-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  text-align: center;
+  max-width: 90%;
+  width: 400px;
+  display: none;
+}
+
+.modal-notification.show {
+  display: block;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-notification .title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #FF0054;
+  margin-bottom: 10px;
+}
+
+.modal-notification .message {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.modal-notification .dismiss-btn {
+  background-color: #FF0054;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.modal-notification .dismiss-btn:hover {
+  background-color: #e0004a;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  display: none;
+}
+
+.modal-overlay.show {
+  display: block;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* End Modal Notification Styles */
  

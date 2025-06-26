@@ -9,7 +9,8 @@ import {
   CogIcon,
   XMarkIcon,
   UserIcon,
-  TagIcon
+  TagIcon,
+  ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
 import typniLogo from '../../assets/images/TYPNI-11.jpg';
 
@@ -29,6 +30,7 @@ const sidebarItems: SidebarItem[] = [
   { name: 'Analytics', path: '/admin/analytics', icon: ChartBarIcon },
   { name: 'Users', path: '/admin/users', icon: UserGroupIcon },
   { name: 'Memberships', path: '/admin/memberships', icon: TagIcon },
+  { name: 'Messages', path: '/admin/messages', icon: ChatBubbleLeftRightIcon },
   { name: 'Blog Posts', path: '/admin/blog', icon: DocumentTextIcon },
   { name: 'Events', path: '/admin/events', icon: CalendarIcon },
   { name: 'Admin Tracking', path: '/admin/tracking', icon: UserIcon },

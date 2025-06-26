@@ -35,6 +35,63 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
 
+    <script>
+        // Global notification functions
+        function dismissNotification() {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-notification');
+            
+            if (!overlay || !modal) return;
+            
+            // Remove show classes
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            
+            // Add fade out animation
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            modal.style.animation = 'fadeOut 0.3s ease-out';
+            
+            // Wait for animation to complete before redirecting
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        }
+
+        function showNotification() {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-notification');
+            
+            if (!overlay || !modal) return;
+            
+            // Reset any previous animations
+            overlay.style.animation = '';
+            modal.style.animation = '';
+            
+            // Show the modal and overlay
+            overlay.classList.add('show');
+            modal.classList.add('show');
+        }
+
+        // Initialize event listeners when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade out animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Add click handler for dismiss button
+            const dismissBtn = document.getElementById('dismiss-notification-btn');
+            if (dismissBtn) {
+                dismissBtn.addEventListener('click', dismissNotification);
+            }
+        });
+    </script>
+
 </head>
 
 <body>
@@ -379,6 +436,35 @@
         </div>
     </div>
 
+    <!-- Notification Modal -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="modal-notification" class="modal-notification">
+        <div class="title">Registration Successful!</div>
+        <div class="message">Please check your email to verify your account. You'll need to verify your email before you can log in.</div>
+        <button type="button" class="dismiss-btn" id="dismiss-notification-btn">Got it</button>
+    </div>
+    
+    <script>
+        // Add click handler for dismiss button
+        document.getElementById('dismiss-notification-btn').addEventListener('click', function() {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-notification');
+            
+            // Remove show classes
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            
+            // Add fade out animation
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            modal.style.animation = 'fadeOut 0.3s ease-out';
+            
+            // Wait for animation to complete before redirecting
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        });
+    </script>
+
     <!-- Start Footer 
     ============================================= -->
     <div id="footer-placeholder"></div>
@@ -578,7 +664,7 @@
                 password: document.getElementById('password').value,
                 date_of_birth: document.getElementById('date_of_birth').value,
                 gender: document.getElementById('gender').value,
-                country: document.getElementById('country').value,
+                country: new Intl.DisplayNames(['en'], { type: 'region' }).of(document.getElementById('country').value),
                 is_employed: document.getElementById('employment').value === 'true',
                 education_level: document.getElementById('education').value,
                 interests: selectedInterestValues,
@@ -637,8 +723,7 @@
                         window.location.href = 'profile.html';
                     } else {
                         // Email confirmation may be required - show message
-                        alert('Registration successful! Please check your email for confirmation.');
-                        window.location.href = 'login.html';
+                        showNotification();
                     }
                 }
             } catch (error) {

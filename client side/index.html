@@ -25,6 +25,7 @@
     <link href="assets/css/bootsnav.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
     <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link href="chatbot-package/css/chatbot.css" rel="stylesheet" />
     
     <!-- Custom styles for event sizing -->
     <style>
@@ -74,6 +75,11 @@
     <!-- ========== Google Fonts ========== -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+    <!-- ========== Font Awesome ========== -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- ========== End Font Awesome ========== -->
 
     <!-- ========== Supabase Client ========== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -903,12 +909,17 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="chatbot-package/js/chatbot.js"></script>
 
     <script type="module">
         import { supabase, getPublishedBlogPosts, getRecentBlogPosts } from './utils/supabaseClient.js';
         
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Supabase client initialized", supabase);
+
+            // Initialize chatbot
+            const chatbot = new Chatbot();
+            chatbot.initialize();
 
             // Format date for display
             function formatDate(dateString) {
