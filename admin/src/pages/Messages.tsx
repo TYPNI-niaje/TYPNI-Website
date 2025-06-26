@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Card from '../components/Card/Card';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { supabase } from '../lib/supabase';
-import Message from '../components/Message/Message';
 
 interface ContactMessage {
   id: string;
