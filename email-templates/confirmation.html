@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Welcome to TYPNI</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .header {
+            background-color: #390099;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .content {
+            padding: 48px 40px;
+            position: relative;
+            color: #333;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: auto;
+            opacity: 0.12;
+            z-index: 0;
+            pointer-events: none;
+        }
+        h1 {
+            color: #390099;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+        }
+        p {
+            margin: 16px 0;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .button {
+            display: inline-block;
+            background-color: #390099;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 24px 0;
+            transition: background-color 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .button:hover {
+            background-color: #FF0054;
+        }
+        .link-text {
+            font-size: 14px;
+            color: #666;
+            word-break: break-all;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 16px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 24px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid #eee;
+            position: relative;
+            z-index: 1;
+        }
+        .signature {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            color: #666;
+            position: relative;
+            z-index: 1;
+        }
+        .note {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+        }
+        .social-links {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+        .social-links a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            background-color: #390099;
+            color: white;
+            border-radius: 50%;
+            margin: 0 8px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+            vertical-align: middle;
+        }
+        .social-links a:hover {
+            background-color: #FF0054;
+        }
+        .social-links .social-icon {
+            width: 36px;
+            height: 36px;
+            padding: 6px;
+            border-radius: 50%;
+            background: #390099;
+            transition: background-color 0.2s ease;
+            vertical-align: middle;
+        }
+        .social-links .social-icon:hover {
+            background-color: #FF0054;
+        }
+        /* Add Font Awesome */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+    </style>
+</head>
+<body>
+    <div role="article" aria-roledescription="email" aria-label="Welcome to TYPNI" lang="en">
+    <div class="container">
+        <div class="header">
+            <img src="https://lkgqmfqtxpbvwrsguwka.supabase.co/storage/v1/object/public/email-assets//TYPNI-11.jpg" alt="TYPNI - The Young People's Network International" class="logo">
+        </div>
+        <div class="content">
+            <img src="https://lkgqmfqtxpbvwrsguwka.supabase.co/storage/v1/object/public/email-assets//TYPNI-22.jpg" alt="TYPNI Background Pattern" class="watermark">
+            <h1>Welcome to TYPNI! 🎉</h1>
+            <p>Dear Future Leader,</p>
+            <p>Thank you for joining The Young People's Network International (TYPNI). We're excited to welcome you to our vibrant community of young changemakers from around the world.</p>
+            <p>To ensure we have the correct email address and to activate your account, please confirm your email:</p>
+            <p style="text-align: center;">
+                <a href="{{ .ConfirmationURL }}" class="button">Confirm My Email</a>
+            </p>
+            <div class="link-text">
+                {{ .ConfirmationURL }}
+            </div>
+            <p class="note">* This confirmation link will expire in 24 hours. If expired, you'll need to request a new one.</p>
+            <p>Once confirmed, you'll have full access to our platform and can start connecting with other young leaders!</p>
+            <div class="signature">
+            <p>Best regards,<br>The TYPNI Team</p>
+            </div>
+            <div class="social-links">
+                <p style="margin-bottom: 16px; color: #666;">Connect with our global community</p>
+                <a href="https://www.facebook.com/profile.php?id=61559739352208&locale=pl_PL" target="_blank" rel="noopener">
+                    <img src="https://lkgqmfqtxpbvwrsguwka.supabase.co/storage/v1/object/public/email-assets/social-icons/8379988.jpg" alt="Follow TYPNI on Facebook" class="social-icon">
+                </a>
+                <a href="https://x.com/typn_i?lang=en" target="_blank" rel="noopener">
+                    <img src="https://lkgqmfqtxpbvwrsguwka.supabase.co/storage/v1/object/public/email-assets/social-icons/sl_z_072523_61700_07.jpg" alt="Follow TYPNI on X" class="social-icon">
+                </a>
+                <a href="https://www.instagram.com/typn_i/" target="_blank" rel="noopener">
+                    <img src="https://lkgqmfqtxpbvwrsguwka.supabase.co/storage/v1/object/public/email-assets/social-icons/v982-d3-04.jpg" alt="Follow TYPNI on Instagram" class="social-icon">
+                </a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2025 The Young People's Network International</p>
+            <p style="font-size: 12px; color: #666;">This email was sent by TYPNI. If you did not sign up for an account, please ignore this email.</p>
+        </div>
+        </div>
+    </div>
+</body>
+</html> 
