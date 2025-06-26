@@ -4,8 +4,8 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_FLAGS = "--legacy-peer-deps"
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps --force"
 
 # Handle SPA routing
 [[redirects]]
