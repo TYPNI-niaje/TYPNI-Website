@@ -539,22 +539,36 @@
     background: rgba(155, 89, 182, 0.2);
 }
 
-@keyframes cursor-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
+/* Remove the cursor blink animation since we want ChatGPT-like fading */
 .message.bot .message-text::after {
-    content: '|';
-    display: inline-block;
-    opacity: 1;
-    animation: cursor-blink 0.7s infinite;
-    margin-left: 2px;
-    font-weight: bold;
-    color: #333;
+    display: none;
 }
 
-.message.bot.typing-complete .message-text::after {
+/* Add fade-in animation for text characters */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+    opacity: 1;
+    }
+}
+
+.message.bot .message-text {
+    white-space: pre-wrap; /* Preserve whitespace and line breaks */
+    line-height: 1.5; /* Improve line spacing */
+    letter-spacing: 0.2px; /* Slightly improve letter spacing */
+    text-align: left; /* Ensure left alignment */
+}
+
+.message.bot .message-text span {
+    display: inline;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards; /* Slower fade-in animation */
+}
+
+/* Remove typing cursor styles */
+.message.typing-animation::after {
     display: none;
 }
 
@@ -630,7 +644,8 @@
 
 /* Message formatting */
 .message p {
-    margin: 0 0 8px 0;
+    margin: 0 0 12px 0; /* Increased bottom margin */
+    line-height: 1.5;
 }
 
 .message p:last-child {
@@ -638,8 +653,17 @@
 }
 
 .message ul, .message ol {
-    margin: 0;
-    padding-left: 20px;
+    margin: 8px 0; /* Add vertical margin */
+    padding-left: 24px; /* Increase indent */
+}
+
+.message li {
+    margin-bottom: 6px; /* Add space between list items */
+    line-height: 1.5;
+}
+
+.message li:last-child {
+    margin-bottom: 0;
 }
 
 .message a {
@@ -1047,7 +1071,7 @@
 }
 
 /* Enhanced Message Bubbles */
-.message {
+    .message {
     margin-bottom: 15px;
     max-width: 85%;
     padding: 12px 16px;

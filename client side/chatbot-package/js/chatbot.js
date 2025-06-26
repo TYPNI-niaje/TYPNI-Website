@@ -574,19 +574,26 @@ User message: ${message}`;
             
             // Start typing effect
             let i = 0;
-            const typingSpeed = 10; // milliseconds per character - adjust for faster/slower typing
+            const typingSpeed = 25; // Increased from 10 to 25ms
+            const words = plainText.split(/(\s+)/); // Split by whitespace but keep the spaces
+            let currentText = '';
             
-            const typeNextChar = () => {
-                if (i < plainText.length) {
-                    // Add next character to the message div
-                    textContainer.textContent += plainText.charAt(i);
+            const typeNextWord = () => {
+                if (i < words.length) {
+                    const word = words[i];
+                    currentText += word;
+                    
+                    // Create a span for the word
+                    const wordContainer = document.createElement('span');
+                    wordContainer.style.animationDelay = `${i * 25}ms`; // Increased from 15 to 25ms
+                    textContainer.innerHTML = currentText;
                     i++;
                     
                     // Scroll to the bottom as text is being typed
                     this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
                     
-                    // Schedule next character
-                    setTimeout(typeNextChar, typingSpeed);
+                    // Schedule next word
+                    setTimeout(typeNextWord, typingSpeed);
                 } else {
                     // Typing complete - replace with formatted text
                     textContainer.innerHTML = formattedText;
@@ -616,7 +623,7 @@ User message: ${message}`;
             };
             
             // Start the typing animation
-            setTimeout(typeNextChar, 500); // Small initial delay
+            setTimeout(typeNextWord, 500); // Small initial delay
         } else {
             // For user messages, just set the text content directly
             textContainer.textContent = text;

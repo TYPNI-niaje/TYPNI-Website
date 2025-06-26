@@ -131,7 +131,7 @@ class Chatbot {
         this.emojiItems.forEach(emoji => {
             emoji.addEventListener('click', (e) => this.insertEmoji(e.target.textContent));
         });
-        
+
         // Show notification after 2 seconds
         setTimeout(() => {
             if (!this.chatBox.classList.contains('active')) {
@@ -659,7 +659,7 @@ User message: ${message}`;
         this.input.selectionStart = this.input.selectionEnd = cursorPos + emoji.length;
         this.emojiPicker.classList.remove('visible');
     }
-
+    
     showNotificationBadge() {
         this.notificationBadge.classList.add('visible');
     }
