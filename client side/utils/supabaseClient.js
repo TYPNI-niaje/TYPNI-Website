@@ -220,7 +220,7 @@ export async function removeAvatar(userId, avatarUrl) {
   } catch (error) {
     return { error }
   }
-}
+} 
 
 export async function getPublishedBlogPosts() {
   try {
@@ -229,7 +229,7 @@ export async function getPublishedBlogPosts() {
       .select('*')
       .eq('status', 'published')
       .order('created_at', { ascending: false })
-
+      
     if (error) throw error
     return { data, error: null }
   } catch (error) {
@@ -244,7 +244,7 @@ export async function getBlogPostById(id) {
       .select('*')
       .eq('id', id)
       .single()
-
+      
     if (error) throw error
     return { data, error: null }
   } catch (error) {
@@ -260,7 +260,7 @@ export async function getPostsByCategory(category) {
       .eq('category', category)
       .eq('status', 'published')
       .order('created_at', { ascending: false })
-
+      
     if (error) throw error
     return { data, error: null }
   } catch (error) {
@@ -276,10 +276,10 @@ export async function getRecentBlogPosts(limit = 3) {
       .eq('status', 'published')
       .order('created_at', { ascending: false })
       .limit(limit)
-
+      
     if (error) throw error
     return { data, error: null }
   } catch (error) {
     return { data: null, error }
-  }
+}
 } 

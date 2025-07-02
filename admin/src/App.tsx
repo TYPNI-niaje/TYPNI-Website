@@ -14,6 +14,7 @@ import BlogPosts from './pages/BlogPosts';
 import BlogEditor from './pages/BlogEditor';
 import BlogView from './pages/BlogView';
 import Memberships from './pages/Memberships';
+import Messages from './pages/Messages';
 import Analytics from './pages/Analytics';
 import AdminTracking from './pages/AdminTracking';
 import Settings from './pages/Settings';
@@ -120,6 +121,11 @@ function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, set
               <Route path="/admin/memberships" element={
                 <ProtectedRoute>
                   <Memberships />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/messages" element={
+                <ProtectedRoute>
+                  <Messages />
                 </ProtectedRoute>
               } />
               <Route path="/admin/analytics" element={

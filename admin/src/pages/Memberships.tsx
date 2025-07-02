@@ -17,6 +17,13 @@ interface Interest {
   name: string;
 }
 
+interface UserInterestResponse {
+  interest_id: string;
+  interests: {
+    name: string;
+  };
+}
+
 const Memberships = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -77,8 +84,7 @@ const Memberships = () => {
         .from('user_interests')
         .select(`
           interest_id,
-          interests:interest_id (
-            id, 
+          interests (
             name
           )
         `)
@@ -86,31 +92,27 @@ const Memberships = () => {
 
       if (error) throw error;
       
-      // Log data structure for debugging
-      console.log('Interest data:', data);
-      
-      // Use simpler approach to avoid type issues
-      const interests: Interest[] = [];
-      
-      if (data) {
-        data.forEach((item: any) => {
-          // Access first element if interests is an array
-          if (Array.isArray(item.interests)) {
-            const interest = item.interests[0];
-            if (interest && interest.name) {
-              interests.push({ name: interest.name });
-            }
-          } 
-          // Or access directly if it's an object
-          else if (item.interests && item.interests.name) {
-            interests.push({ name: item.interests.name });
-          }
-        });
+      // Add defensive checks and logging
+          if (!data) {
+      console.log('No interests data found for user:', userId);
+      setUserInterests([]);
+      return;
+    }
+    
+    // Transform the data into the expected format, with null checks
+    const interests: Interest[] = (data as unknown as UserInterestResponse[]).reduce((acc: Interest[], item) => {
+      if (item?.interests?.name) {
+        acc.push({ name: item.interests.name });
+      } else {
+        console.log('Invalid interest data structure:', item);
       }
+      return acc;
+    }, []);
       
       setUserInterests(interests);
     } catch (err) {
       console.error('Error fetching user interests:', err);
+      setUserInterests([]);
     }
   };
 

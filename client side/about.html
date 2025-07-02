@@ -25,6 +25,7 @@
     <link href="assets/css/bootsnav.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
     <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link href="chatbot-package/css/chatbot.css" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
 
     
@@ -32,6 +33,11 @@
     <!-- ========== Google Fonts ========== -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+    <!-- ========== Font Awesome ========== -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- ========== End Font Awesome ========== -->
 
 </head>
 
@@ -89,7 +95,11 @@
                     <h2>Welcome to TYPNI – The Young People's Network International</h2>
                     <h4>At TYPNI, we believe in the power of youth to shape the future.</h4>
                     <p>
+<<<<<<< HEAD
                         Spearheaded by Charlene Ruto, the daughter of Kenya’s President, TYPNI is a dynamic organization dedicated to empowering young people across Kenya and beyond. Our mission is to unlock the potential of the youth by providing them with the tools, resources, and opportunities they need to thrive. Through our initiatives, we aim to create a generation of empowered, skilled, and visionary leaders who will drive positive change in their communities and the world.
+=======
+                        pearheaded by Charlene Ruto, the daughter of Kenya's President, TYPNI is a dynamic organization dedicated to empowering young people across Kenya and beyond. Our mission is to unlock the potential of the youth by providing them with the tools, resources, and opportunities they need to thrive. Through our initiatives, we aim to create a generation of empowered, skilled, and visionary leaders who will drive positive change in their communities and the world.
+>>>>>>> 6ef2c3fe29ea5d7a31a7b8ab726346ff0de3a698
                     </p>
                     <div class="achivement-items row">
                         <div class="col-md-6 col-sm-6 item">
@@ -396,6 +406,14 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="chatbot-package/js/chatbot.js"></script>
+    <script>
+        // Initialize chatbot
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbot = new Chatbot();
+            chatbot.initialize();
+        });
+    </script>
 
 </body>
 </html>
