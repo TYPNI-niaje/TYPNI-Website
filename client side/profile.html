@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="typni website">
+
+    <!-- ========== Page Title ========== -->
+    <title> join - Typni</title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- ========== End Stylesheet ========== -->
+
+    
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('assets/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <!-- <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/2440x1578.png);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Event</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li class="active">Event</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- End Breadcrumb -->
+
+    <!-- Start Membership registration 
+    ============================================= -->
+    <div class="donation-form default-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 form">
+                    <h2>Your Profile</h2>
+                    <div class="panel panel-default card">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Your Profile Details</h3>
+                        </div>
+                        <div class="profile-avatar-container">
+                            <div class="avatar-wrapper">
+                                <img id="profile-avatar" class="profile-avatar" style="display:none;" />
+                                <div id="profile-avatar-default" class="profile-avatar-default">
+                                    <!-- SVG user icon -->
+                                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="40" cy="40" r="40" fill="#f3f3f3"/>
+                                        <path d="M40 42c6.627 0 12-5.373 12-12S46.627 18 40 18s-12 5.373-12 12 5.373 12 12 12zm0 4c-8.837 0-16 7.163-16 16v2a2 2 0 002 2h28a2 2 0 002-2v-2c0-8.837-7.163-16-16-16z" fill="#bbb"/>
+                                    </svg>
+                                </div>
+                                <label for="avatar-upload" class="avatar-upload-label">
+                                    <input type="file" id="avatar-upload" accept="image/*" style="display:none;" />
+                                    <span class="avatar-upload-icon">
+                                        <!-- Modern camera SVG icon -->
+                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="16" cy="16" r="16" fill="#390099"/>
+                                            <g>
+                                                <rect x="8" y="13" width="16" height="10" rx="3" fill="#fff"/>
+                                                <rect x="13" y="10" width="6" height="4" rx="2" fill="#fff"/>
+                                                <circle cx="16" cy="18" r="3.5" fill="#390099" stroke="#390099" stroke-width="1.5"/>
+                                                <circle cx="16" cy="18" r="2" fill="#fff"/>
+                                                <rect x="20.5" y="15" width="2" height="2" rx="1" fill="#390099"/>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div id="avatar-upload-status" class="avatar-upload-status"></div>
+                            <button id="remove-avatar-btn" class="btn btn-danger btn-xs" style="margin-top: 8px; display:none; font-size:11px; padding:2px 8px; width: auto; min-width: 80px;">Remove Photo</button>
+                        </div>
+                        <h1><span>Name:</span> <span id="profile-name"></span></h1>
+                        <p class="title"><span>Organization :</span> <span id="profile-organization"></span></p>
+                        <p><span>Phone Number:</span> <span id="profile-phone"></span></p>
+                        <p><span>ID Number:</span> <span id="profile-idNumber"></span></p>
+                        <p><span>Email:</span> <span id="profile-email"></span></p>
+                        <p><span>DOB:</span> <span id="profile-dob"></span></p>
+                        <p><span>Gender:</span> <span id="profile-gender"></span></p>
+                        <p><span>Nationality:</span> <span id="profile-nationality"></span></p>
+                        <p><span>Employment Status:</span> <span id="profile-employment"></span></p>
+                        <p><span>Highest Education:</span> <span id="profile-education"></span></p>
+                        <p><span>Interests:</span> <span id="profile-interests"></span></p>
+                        <button id="logout-btn" class="btn btn-danger" style="margin-top: 20px;">Sign Out</button>
+                    </div>
+                </div>
+                <div class="col-md-6 form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Edit Profile</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="name">Your Name</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="name" placeholder="Name as per ID" required>
+                                                <span class="input-group-addon"><i class="fas fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Phone">Phone Number</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="phone_number" placeholder="+254 " required>
+                                                <span class="input-group-addon"><i class="fas fa-phone"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id-number">ID Number</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="idNumber" placeholder="Your Id Number" required>
+                                                <span class="input-group-addon"><i class="fas fa-flag"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Email </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="email" placeholder="yourname@mail.com" required>
+                                                <span class="input-group-addon"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Phone">Date Of Birth</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="Birth Day" placeholder="DD/MM/YYYY " required>
+                                                <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="donateType">Gender</label>
+                                            <select id="donateType" class="form-control">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="not Say">Rather Not Say</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="donateType">Country</label>
+                                            <select id="donateType" class="form-control">
+                                                <option value="kenya">Kenya</option>
+                                                <option value="uganda">Uganda</option>
+                                                <option value="tanzania">Tanzania</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="donateType">Are You Employed?</label>
+                                            <select id="donateType" class="form-control">
+                                                <option value="kenya">No</option>
+                                                <option value="uganda">Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Higest Level Of Education </label>
+                                            <select id="donateType" class="form-control">
+                                                <option value="highschool">High School</option>
+                                                <option value="tvet">TVET</option>
+                                                <option value="college">College</option>
+                                                <option value="university">University</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="interests">Let's Pick Your Interests *</label>
+                                        <select id="interests" class="form-control" multiple> <!-- "multiple" allows for multiple selections -->
+                                            <option value="youth-empowerment">Youth Empowerment</option>
+                                            <option value="youth-mentorship">Youth Mentorship</option>
+                                            <option value="youth-employment">Youth Employment</option>
+                                            <option value="entrepreneurship">Entrepreneurship</option>
+                                            <option value="financial-literacy">Financial Literacy</option>
+                                            <option value="youth-representation">Youth Representation</option>
+                                            <option value="education">Education</option>
+                                            <option value="sports-arts-talent">Sports, Arts & Talent</option>
+                                            <option value="pan-africanism">Pan Africanism</option>
+                                            <option value="technology-digital-literacy">Technology & Digital Literacy</option>
+                                            <option value="menstrual-health">Menstrual Health</option>
+                                            <option value="sexual-education">Sexual Education</option>
+                                            <option value="female-genital-mutilation">Female Genital Mutilation</option>
+                                            <option value="childhood-marriages">Childhood Marriages</option>
+                                            <option value="childhood-pregnancies">Childhood Pregnancies</option>
+                                            <option value="alcohol-drugs-substance-abuse">Alcohol, Drugs & Substance Abuse</option>
+                                            <option value="mental-health-action">Mental Health Action</option>
+                                            <option value="inclusivity-young-pwds">Inclusivity of Young PWDs</option>
+                                            <option value="cyberbullying">Cyberbullying</option>
+                                            <option value="blood-donation">Blood Donation</option>
+                                            <option value="climate-change-mitigation">Climate Change Mitigation</option>
+                                            <option value="climate-change-adaptation-resilience">Climate Change Adaptation & Resilience</option>
+                                            <option value="nature-based-solutions">Nature-Based Solutions</option>
+                                            <option value="water-solutions-management">Water Solutions & Management</option>
+                                            <option value="smart-agriculture">Smart Agriculture</option>
+                                        </select>
+                                        <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+                                    </div>
+                                </div>   
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-theme effect btn-sm" type="submit">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('assets/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script src="utils/authGuard.js"></script>
+    <script type="module">
+    import { supabase, getCurrentUser, getUserProfile, getUserInterests, updateProfile, updateUserInterests, signOut, uploadAvatar, updateAvatarUrl, removeAvatar } from './utils/supabaseClient.js';
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check if user is authenticated
+        const { data: { user }, error: authError } = await getCurrentUser();
+        
+        if (authError || !user) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            // Get user profile
+            let { data: profile, error: profileError } = await getUserProfile(user.id);
+            
+            if (profileError) {
+                throw profileError;
+            }
+
+            // Get user interests
+            const { data: interests, error: interestsError } = await getUserInterests(user.id);
+            
+            if (interestsError) {
+                throw interestsError;
+            }
+
+            // Update profile display with real data
+            document.getElementById('profile-name').textContent = profile.full_name || 'Not specified';
+            document.getElementById('profile-organization').textContent = profile.organization || 'Not specified';
+            document.getElementById('profile-phone').textContent = profile.phone_number || 'Not specified';
+            document.getElementById('profile-idNumber').textContent = profile.id_number || 'Not specified';
+            document.getElementById('profile-email').textContent = user.email || 'Not specified';
+            document.getElementById('profile-dob').textContent = profile.date_of_birth || 'Not specified';
+            document.getElementById('profile-gender').textContent = profile.gender || 'Not specified';
+            document.getElementById('profile-nationality').textContent = profile.country || 'Not specified';
+            document.getElementById('profile-employment').textContent = (profile.is_employed === true) ? 'Yes' : (profile.is_employed === false ? 'No' : 'Not specified');
+            document.getElementById('profile-education').textContent = profile.education_level || 'Not specified';
+            document.getElementById('profile-interests').textContent = (interests && interests.length > 0)
+                ? interests.map(i => i.interests?.name || i.name).join(', ')
+                : 'None';
+
+            // Handle profile update form
+            const profileForm = document.getElementById('profile-form');
+            if (profileForm) {
+                profileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const formData = {
+                        full_name: document.getElementById('name').value,
+                        phone_number: document.getElementById('phone_number').value,
+                        id_number: document.getElementById('idNumber').value,
+                        date_of_birth: document.getElementById('Birth Day').value,
+                        gender: document.getElementById('donateType').value,
+                        country: document.querySelector('select[id="donateType"]').value,
+                        is_employed: document.querySelectorAll('select[id="donateType"]')[1].value === 'Yes',
+                        education_level: document.querySelectorAll('select[id="donateType"]')[2].value
+                    };
+                    try {
+                        const { error } = await updateProfile(user.id, formData);
+                        if (error) throw error;
+                        alert('Profile updated successfully!');
+                        location.reload();
+                    } catch (error) {
+                        console.error('Error:', error.message);
+                        alert('Failed to update profile: ' + error.message);
+                    }
+                });
+            }
+
+            // Handle interests update form
+            const interestsForm = document.getElementById('interests-form');
+            if (interestsForm) {
+                interestsForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const selectedInterests = Array.from(document.getElementById('interests').selectedOptions)
+                        .map(option => option.value);
+                    try {
+                        const { error } = await updateUserInterests(user.id, selectedInterests);
+                        if (error) throw error;
+                        alert('Interests updated successfully!');
+                        location.reload();
+                    } catch (error) {
+                        console.error('Error:', error.message);
+                        alert('Failed to update interests: ' + error.message);
+                    }
+                });
+            }
+
+            // Handle logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function() {
+                    try {
+                        const { error } = await signOut();
+                        if (error) throw error;
+                        window.location.href = 'login.html';
+                    } catch (error) {
+                        console.error('Error:', error.message);
+                        alert('Failed to logout: ' + error.message);
+                    }
+                });
+            }
+
+            // Update profile display with real data
+            const avatarImg = document.getElementById('profile-avatar');
+            const avatarDefault = document.getElementById('profile-avatar-default');
+            const removeAvatarBtn = document.getElementById('remove-avatar-btn');
+            if (profile.avatar_url) {
+                avatarImg.src = profile.avatar_url;
+                avatarImg.style.display = 'block';
+                avatarDefault.style.display = 'none';
+                if (removeAvatarBtn) removeAvatarBtn.style.display = 'inline-block';
+            } else {
+                avatarImg.style.display = 'none';
+                avatarDefault.style.display = 'flex';
+                if (removeAvatarBtn) removeAvatarBtn.style.display = 'none';
+            }
+
+            // Avatar upload logic
+            const avatarInput = document.getElementById('avatar-upload');
+            const avatarStatus = document.getElementById('avatar-upload-status');
+            avatarInput.addEventListener('change', async function() {
+                const file = avatarInput.files[0];
+                if (!file) return;
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    avatarStatus.textContent = 'Please select an image file';
+                    return;
+                }
+
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    avatarStatus.textContent = 'Image must be less than 2MB';
+                    return;
+                }
+
+                avatarStatus.textContent = 'Uploading...';
+                try {
+                    const url = await uploadAvatar(user.id, file);
+                    if (!url) throw new Error('No URL returned from upload');
+                    const { error } = await updateAvatarUrl(user.id, url);
+                    if (error) throw error;
+
+                    avatarImg.src = url;
+                    avatarImg.style.display = 'block';
+                    avatarDefault.style.display = 'none';
+                    if (removeAvatarBtn) removeAvatarBtn.style.display = 'inline-block';
+                    avatarStatus.textContent = 'Profile photo updated!';
+                    // Clear the input
+                    avatarInput.value = '';
+                } catch (err) {
+                    console.error('Upload error:', err);
+                    avatarStatus.textContent = 'Upload failed: ' + (err.message || 'Unknown error');
+                    if (removeAvatarBtn) removeAvatarBtn.style.display = 'none';
+                }
+            });
+
+            // Avatar remove logic
+            if (removeAvatarBtn) {
+                removeAvatarBtn.addEventListener('click', async function() {
+                    if (!profile.avatar_url) return;
+                    
+                    try {
+                        removeAvatarBtn.disabled = true;
+                        avatarStatus.textContent = 'Removing...';
+                        
+                        // Remove avatar using the imported function
+                        await removeAvatar(user.id, profile.avatar_url);
+                        
+                        // Update UI
+                        avatarImg.style.display = 'none';
+                        avatarDefault.style.display = 'flex';
+                        removeAvatarBtn.style.display = 'none';
+                        avatarStatus.textContent = 'Profile photo removed!';
+                        
+                        // Update local profile data
+                        profile.avatar_url = null;
+                    } catch (error) {
+                        console.error('Error:', error.message);
+                        avatarStatus.textContent = 'Failed to remove photo: ' + error.message;
+                    } finally {
+                        removeAvatarBtn.disabled = false;
+                    }
+                });
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to load profile: ' + (error.message || 'Unknown error'));
+        }
+    });
+    </script>
+
+    <style>
+    .profile-avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .avatar-wrapper {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 8px;
+    }
+    .profile-avatar, .profile-avatar-default {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fafafa;
+        border: 2px solid #eee;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        display: block;
+    }
+    .profile-avatar-default {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3f3f3;
+    }
+    .avatar-upload-label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #390099;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+        transition: background 0.2s;
+    }
+    .avatar-upload-label:hover {
+        background: #4b1bb2;
+    }
+    .avatar-upload-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .avatar-upload-status {
+        font-size: 12px;
+        color: #666;
+        margin-top: 4px;
+        min-height: 18px;
+    }
+    #logout-btn.btn-danger:hover {
+        background-color: #dc3545 !important;
+        color: #fff !important;
+        opacity: 1 !important;
+    }
+    #remove-avatar-btn.btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        transition: all 0.2s ease;
+        width: auto;
+        min-width: 80px;
+        padding: 2px 8px;
+        font-size: 11px;
+    }
+
+    #remove-avatar-btn.btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        opacity: 0.9;
+    }
+
+    #remove-avatar-btn.btn-danger:disabled {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        opacity: 0.65;
+    }
+    </style>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Typni">
+
+    <!-- ========== Page Title ========== -->
+    <title>Events - The Young Peoples International Network</title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <!-- ========== End Stylesheet ========== -->
+
+    <!-- Custom styles for event sizing -->
+    <style>
+        .event-area .event-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2%;
+            justify-content: flex-start;
+        }
+        .event-area .event-items .item {
+            width: 100%;
+            margin-bottom: 32px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .event-area .event-items .item .thumb {
+            width: 100%;
+            height: 250px;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .event-area .event-items .item .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .event-area .event-items .item .info {
+            padding: 24px 20px 20px 20px;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        @media (min-width: 900px) {
+            .event-area .event-items .item {
+                width: 48%;
+            }
+        }
+    </style>
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+    <!-- ========== Supabase Client ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('assets/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/hero1.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Event</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li class="active">Event</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Event
+    ============================================= -->
+    <div class="event-area bg-gray default-padding">
+        <div class="container">
+            <div class="row">
+                <div class="site-heading text-center">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h2>Our Event</h2>
+                        <p>
+                            Inspiring the next generation with knowledge, innovation, and career opportunities. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="event-carousel" class="event-items inner-cell event-carousel owl-carousel owl-theme">
+                        <!-- Events will be loaded dynamically -->
+                        <div class="item">
+                            <div class="thumb">
+                                <img src="assets/img/800x600.png" alt="Loading...">
+                            </div>
+                            <div class="info">
+                                <div class="date">
+                                    ... <span>...</span>
+                                </div>
+                                <div class="content">
+                                    <h4>
+                                        <a href="#">Loading events...</a>
+                                    </h4>
+                                    <div class="meta">
+                                        <ul>
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i> ...
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i> ...
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p>
+                                        Please wait while we load the latest events...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Event -->
+
+    <!-- Start Upcomming Event 
+    ============================================= -->
+    <div class="upcomming-event-area carousel-shadow default-padding bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="site-heading text-center">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h2>Upcomming Event</h2>
+                        <p>
+                            Take the opportunities by tapping into our community 
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="upcoming-events" class="upcomming-event-list owl-carousel owl-theme">
+                        <!-- Upcoming events will be loaded dynamically -->
+                        <div class="item">
+                            <div class="date">
+                                ... <span>...</span>
+                            </div>
+                            <div class="info">
+                                <div class="meta">
+                                    <ul>
+                                        <li><i class="fas fa-clock"></i> Loading...</li>
+                                        <li><i class="fas fa-map-marker-alt"></i> Loading...</li>
+                                    </ul>
+                                </div>
+                                <h4>
+                                    <a href="#">Loading upcoming events...</a>
+                                </h4>
+                                <p>
+                                    Please wait while we load the upcoming events...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Upcomming Event -->
+
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('assets/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'https://lkgqmfqtxpbvwrsguwka.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZ3FtZnF0eHBidndyc2d1d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1ODk1MjYsImV4cCI6MjA2MzE2NTUyNn0.bMKMVLW-dwVDfhXFIBr-dxbB9yFZ-isNb5v2VrjoqQA';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Format date for display
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // Format year for display
+        function formatYear(dateString) {
+            return new Date(dateString).getFullYear();
+        }
+
+        // Format time for display
+        function formatTime(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            return `${start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        // Create HTML for an event
+        function createEventHTML(event) {
+            const date = new Date(event.start_date);
+            const dateStr = formatDate(event.start_date);
+            const year = formatYear(event.start_date);
+            
+            const eventHtml = `
+                <div class="item">
+                    <div class="thumb">
+                        <img src="${event.banner_url || 'assets/img/800x600.png'}" alt="${event.title}">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            ${date.getDate()} <span>${dateStr.split(' ')[0]}</span>
+                        </div>
+                        <div class="content">
+                            <h4>
+                                <a href="event-detail.html?id=${event.id}">${event.title}</a>
+                            </h4>
+                            <div class="meta">
+                                <ul>
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i> ${event.location}
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-clock"></i> ${formatTime(event.start_date, event.end_date)}
+                                    </li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-theme effect btn-sm" href="event-detail.html?id=${event.id}">Learn more <i class="fas fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return eventHtml;
+        }
+
+        // Create HTML for an upcoming event
+        function createUpcomingEventHTML(event) {
+            const date = new Date(event.start_date);
+            const month = date.toLocaleString('default', { month: 'short' });
+            
+            const eventHtml = `
+                <div class="item">
+                    <div class="date">
+                        ${date.getDate()} <span>${month}</span>
+                    </div>
+                    <div class="info">
+                        <div class="meta">
+                            <ul>
+                                <li><i class="fas fa-clock"></i> ${formatTime(event.start_date, event.end_date)}</li>
+                                <li><i class="fas fa-map-marker-alt"></i> ${event.location}</li>
+                            </ul>
+                        </div>
+                        <h4>
+                            <a href="event-detail.html?id=${event.id}">${event.title}</a>
+                        </h4>
+                        <p>
+                            ${event.description ? (event.description.length > 80 ? event.description.substring(0, 80) + '...' : event.description) : 'No description available'}
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            return eventHtml;
+        }
+
+        // Load events from Supabase
+        async function loadEvents() {
+            try {
+                // Get featured events (with banner_url)
+                const { data: featuredEvents, error: featuredError } = await supabaseClient
+                    .from('events')
+                    .select('*')
+                    .not('banner_url', 'is', null)
+                    .eq('status', 'upcoming')
+                    .order('start_date', { ascending: true })
+                    .limit(6);
+                
+                if (featuredError) throw featuredError;
+                
+                // Get upcoming events
+                const { data: upcomingEvents, error: upcomingError } = await supabaseClient
+                    .from('events')
+                    .select('*')
+                    .eq('status', 'upcoming')
+                    .order('start_date', { ascending: true })
+                    .limit(6);
+                
+                if (upcomingError) throw upcomingError;
+                
+                // Render featured events
+                const eventCarousel = document.getElementById('event-carousel');
+                if (featuredEvents && featuredEvents.length > 0) {
+                    let featuredHTML = '';
+                    featuredEvents.forEach(event => {
+                        featuredHTML += createEventHTML(event);
+                    });
+                    eventCarousel.innerHTML = featuredHTML;
+                    
+                    // Reinitialize the carousel
+                    $('.event-carousel').owlCarousel({
+                        loop: true,
+                        nav: true,
+                        dots: false,
+                        autoplay: true,
+                        margin: 15,
+                        items: 2,
+                        navText: [
+                            "<i class='fa fa-angle-left'></i>",
+                            "<i class='fa fa-angle-right'></i>"
+                        ],
+                        responsive: {
+                            0: {
+                                items: 1,
+                                margin: 10
+                            },
+                            600: {
+                                items: 1,
+                                margin: 15
+                            },
+                            1000: {
+                                items: 2,
+                                margin: 20
+                            },
+                            1200: {
+                                items: 2,
+                                margin: 20
+                            }
+                        }
+                    });
+                } else {
+                    eventCarousel.innerHTML = `
+                        <div class="text-center col-md-12">
+                            <p>No featured events found.</p>
+                        </div>
+                    `;
+                }
+                
+                // Render upcoming events
+                const upcomingEventsContainer = document.getElementById('upcoming-events');
+                if (upcomingEvents && upcomingEvents.length > 0) {
+                    let upcomingHTML = '';
+                    upcomingEvents.forEach(event => {
+                        upcomingHTML += createUpcomingEventHTML(event);
+                    });
+                    upcomingEventsContainer.innerHTML = upcomingHTML;
+                    
+                    // Reinitialize the carousel
+                    $('.upcomming-event-list').owlCarousel({
+                        loop: true,
+                        center: true,
+                        margin: 15,
+                        nav: true,
+                        navText: [
+                            "<i class='fa fa-angle-left'></i>",
+                            "<i class='fa fa-angle-right'></i>"
+                        ],
+                        dots: false,
+                        autoplay: true,
+                        responsive: {
+                            0: {
+                                items: 1,
+                                margin: 10
+                            },
+                            600: {
+                                items: 1,
+                                margin: 15
+                            },
+                            1000: {
+                                items: 2,
+                                margin: 20
+                            },
+                            1200: {
+                                items: 2,
+                                margin: 20
+                            }
+                        }
+                    });
+                } else {
+                    upcomingEventsContainer.innerHTML = `
+                        <div class="text-center col-md-12">
+                            <p>No upcoming events found.</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error loading events:', error);
+                document.getElementById('event-carousel').innerHTML = `
+                    <div class="text-center col-md-12">
+                        <p>Error loading events. Please try again later.</p>
+                    </div>
+                `;
+                document.getElementById('upcoming-events').innerHTML = `
+                    <div class="text-center col-md-12">
+                        <p>Error loading upcoming events. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load events when the page is ready
+        $(document).ready(function() {
+            loadEvents();
+        });
+    </script>
+</body>
+</html>

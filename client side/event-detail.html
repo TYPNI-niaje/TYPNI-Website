@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="typni website">
+
+    <!-- ========== Page Title ========== -->
+    <title>Event Detail - Typni</title>
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <!-- ========== End Stylesheet ========== -->
+
+    <!-- Custom styles for event sizing -->
+    <style>
+        /* Base styling for all screen sizes */
+        .more-events .item {
+            height: auto;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .more-events .item .thumb {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+        }
+        
+        .more-events .item .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .more-events .item:hover .thumb img {
+            transform: scale(1.05);
+        }
+        
+        .more-events .item .info {
+            padding: 10px;
+        }
+        
+        .more-events .item .info .date {
+            padding: 5px;
+            margin-right: 10px;
+            font-size: 90%;
+        }
+        
+        /* Main event banner adjustment */
+        .event-details-items .banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            max-height: 500px;
+        }
+        
+        .event-details-items .banner img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .event-details-items .banner:hover img {
+            transform: scale(1.02);
+        }
+        
+        /* Event cards container spacing */
+        .event-cards-container {
+            margin: 0 -10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        /* Fix spacing between related event cards */
+        #more-events .col-md-4 {
+            padding: 10px;
+        }
+        
+        /* Tablet screens */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .more-events .item {
+                max-width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        /* Desktop screens */
+        @media (min-width: 992px) {
+            .more-events .item {
+                max-width: 95%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+    <!-- ========== Supabase Client ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- ========== Auth Setup ========== -->
+    <script type="module">
+        import { supabase } from './utils/supabaseClient.js';
+        window.supabaseClient = supabase;
+    </script>
+    <script src="utils/authGuard.js"></script>
+    
+    <!-- ========== Event Registration Component ========== -->
+    <script src="js/EventRegistration.js"></script>
+    
+    <script type="text/javascript">
+        // Initialize Supabase client
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for supabaseClient to be available
+            const initializeApp = setInterval(() => {
+                if (window.supabaseClient && window.EventRegistration) {
+                    clearInterval(initializeApp);
+                    initializeEvent();
+                }
+            }, 100);
+        });
+        
+        // Initialize the event display
+        async function initializeEvent() {
+            try {
+                const supabase = window.supabaseClient;
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
+
+                // Get event ID from URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventId = urlParams.get('id');
+                
+                if (!eventId) {
+                    // If no event ID provided, redirect to events page
+                    window.location.href = '/event-carousel.html';
+                    return;
+                }
+
+                // Fetch event details
+                const { data: event, error } = await supabase
+                    .from('events')
+                    .select('*')
+                    .eq('id', eventId)
+                    .single();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                if (!event) {
+                    throw new Error('Event not found');
+                }
+
+                // Update the page title
+                document.title = `${event.title} - Typni`;
+                
+                // Update event details
+                const eventTitleElement = document.getElementById('event-title');
+                if (eventTitleElement) eventTitleElement.innerText = event.title;
+                
+                const eventDescriptionElement = document.getElementById('event-description');
+                if (eventDescriptionElement) eventDescriptionElement.innerText = event.description || 'No description available';
+                
+                const eventLocationElement = document.getElementById('event-location');
+                if (eventLocationElement) eventLocationElement.innerText = event.location;
+                
+                // Format and set dates
+                const startDate = new Date(event.start_date);
+                const endDate = new Date(event.end_date);
+                
+                const eventDateElement = document.getElementById('event-date');
+                if (eventDateElement) eventDateElement.innerText = `${formatShortDate(startDate)}`;
+                
+                const eventTimeElement = document.getElementById('event-time');
+                if (eventTimeElement) eventTimeElement.innerText = `${startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                
+                const eventStartDateElement = document.getElementById('event-start-date');
+                if (eventStartDateElement) eventStartDateElement.innerText = formatDate(event.start_date);
+                
+                const eventEndDateElement = document.getElementById('event-end-date');
+                if (eventEndDateElement) eventEndDateElement.innerText = formatDate(event.end_date);
+                
+                // Event type and status badges
+                const eventTypeBadge = document.getElementById('event-type-badge');
+                const eventStatusBadge = document.getElementById('event-status-badge');
+                const eventTypeInfo = document.getElementById('event-type-info');
+                
+                // Set type badge
+                if (eventTypeBadge && event.type) {
+                    eventTypeBadge.innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
+                    if (eventTypeInfo) eventTypeInfo.innerText = event.type.charAt(0).toUpperCase() + event.type.slice(1);
+                    
+                    switch(event.type) {
+                        case 'in-person':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        case 'online':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        case 'hybrid':
+                            eventTypeBadge.className = 'badge btn-theme';
+                            break;
+                        default:
+                            eventTypeBadge.className = 'badge btn-theme';
+                    }
+                }
+                
+                // Set status badge
+                if (eventStatusBadge && event.status) {
+                    eventStatusBadge.innerText = event.status.charAt(0).toUpperCase() + event.status.slice(1);
+                    
+                    switch(event.status) {
+                        case 'upcoming':
+                            eventStatusBadge.className = 'badge btn-theme';
+                            break;
+                        case 'ongoing':
+                            eventStatusBadge.className = 'badge btn-theme';
+                            break;
+                        case 'past':
+                            eventStatusBadge.className = 'badge btn-dark';
+                            break;
+                        case 'canceled':
+                            eventStatusBadge.className = 'badge btn-danger';
+                            break;
+                        default:
+                            eventStatusBadge.className = 'badge btn-theme';
+                    }
+                }
+                
+                // Set banner image if available
+                const eventBanner = document.getElementById('event-banner');
+                if (eventBanner && event.banner_url) {
+                    eventBanner.innerHTML = `<img src="${event.banner_url}" alt="${event.title}" class="img-responsive">`;
+                }
+                
+                // Show capacity if available
+                const capacityRow = document.getElementById('capacity-row');
+                const eventCapacity = document.getElementById('event-capacity');
+                if (capacityRow && eventCapacity && event.capacity) {
+                    capacityRow.style.display = 'block';
+                    eventCapacity.innerText = event.capacity;
+                }
+                
+                // Show registration deadline if available
+                const deadlineRow = document.getElementById('deadline-row');
+                const registrationDeadline = document.getElementById('registration-deadline');
+                if (deadlineRow && registrationDeadline && event.registration_deadline) {
+                    deadlineRow.style.display = 'block';
+                    registrationDeadline.innerText = formatDate(event.registration_deadline);
+                }
+                
+                // Initialize registration component
+                const registrationContainer = document.getElementById('event-registration-container');
+                if (registrationContainer) {
+                    new window.EventRegistration('event-registration-container', eventId);
+                }
+                
+                // Load related events
+                loadRelatedEvents(event.type, eventId);
+                
+            } catch (error) {
+                console.error('Error loading event:', error);
+                const eventTitle = document.getElementById('event-title');
+                if (eventTitle) eventTitle.innerText = 'Error Loading Event';
+                
+                const eventDescription = document.getElementById('event-description');
+                if (eventDescription) eventDescription.innerText = 'Sorry, we couldn\'t load the event details. Please try again later.';
+                
+                // Show error in registration container
+                const registrationContainer = document.getElementById('event-registration-container');
+                if (registrationContainer) {
+                    registrationContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4>Error</h4>
+                            <p>Failed to load event details. Please try again later.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Format short date (without time)
+        function formatShortDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Load related events
+        async function loadRelatedEvents(eventType, currentEventId) {
+            try {
+                const supabase = window.supabaseClient;
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
+
+                // Fetch events with the same type
+                const { data: events, error } = await supabase
+                    .from('events')
+                    .select('id, title, start_date, location, banner_url')
+                    .eq('type', eventType)
+                    .neq('id', currentEventId)
+                    .eq('status', 'upcoming')
+                    .order('start_date', { ascending: true })
+                    .limit(3);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                const moreEventsContainer = document.getElementById('more-events-container');
+                const moreEvents = document.getElementById('more-events');
+                
+                if (!events || events.length === 0) {
+                    // No related events found
+                    if (moreEventsContainer) moreEventsContainer.style.display = 'none';
+                    return;
+                }
+                
+                // Build HTML for related events
+                if (moreEvents) {
+                    let eventsHtml = '';
+                    
+                    events.forEach(event => {
+                        const eventDate = new Date(event.start_date);
+                        
+                        eventsHtml += `
+                            <div class="col-md-4">
+                                <div class="item">
+                                    <div class="thumb">
+                                        <img src="${event.banner_url || 'assets/img/800x600.png'}" alt="Thumb">
+                                    </div>
+                                    <div class="info">
+                                        <div class="date">
+                                            ${eventDate.getDate()} <span>${eventDate.toLocaleString('default', { month: 'short' })}</span>
+                                        </div>
+                                        <div class="content">
+                                            <h4>
+                                                <a href="event-detail.html?id=${event.id}">${event.title}</a>
+                                            </h4>
+                                            <div class="meta">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fas fa-map-marker-alt"></i> ${event.location}
+                                                    </li>
+                                                    <li>
+                                                        <i class="fas fa-clock"></i> ${eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <a class="btn btn-theme effect btn-sm" href="event-detail.html?id=${event.id}">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    moreEvents.innerHTML = eventsHtml;
+                }
+                
+            } catch (error) {
+                console.error('Error loading related events:', error);
+                const moreEventsContainer = document.getElementById('more-events-container');
+                if (moreEventsContainer) moreEventsContainer.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('assets/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/hero1.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Event Details</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/event-carousel.html">Events</a></li>
+                        <li class="active">Event Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Event Details
+    ============================================= -->
+    <div class="event-details-area default-padding">
+        <div class="container">
+            <div class="row">
+                <!-- Event Content -->
+                <div class="col-md-8">
+                    <div class="event-details-items">
+                        <!-- Event Banner -->
+                        <div class="banner" id="event-banner">
+                            <img src="assets/img/800x600.png" alt="Thumb" class="img-responsive">
+                        </div>
+                        
+                        <!-- Event Info -->
+                        <div class="info mt-4">
+                            <div class="content">
+                                <h2 id="event-title">Loading Event Details...</h2>
+                                
+                                <div class="meta-info">
+                                    <ul>
+                                        <li>
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span id="event-date">Loading date...</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span id="event-location">Loading location...</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-clock"></i>
+                                            <span id="event-time">Loading time...</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="event-type mt-4">
+                                    <span id="event-status-badge" class="badge">Status</span>
+                                    <span id="event-type-badge" class="badge">Type</span>
+                                </div>
+                                
+                                <!-- Event Description -->
+                                <div class="mt-4">
+                                    <h4>About The Event</h4>
+                                    <p id="event-description">Loading description...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Event Registration -->
+                <div class="col-md-4">
+                    <div class="sidebar">
+                        <div class="sidebar-item">
+                            <div class="title">
+                                <h4>Event Registration</h4>
+                            </div>
+                            
+                            <!-- Registration form will be rendered here -->
+                            <div id="event-registration-container">
+                                <div class="text-center">
+                                    <div class="spinner-circle">
+                                        <div class="circle-inner"></div>
+                                    </div>
+                                    <p class="mt-3">Loading registration details...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event Details Summary -->
+                        <div class="sidebar-item">
+                            <div class="title">
+                                <h4>Event Information</h4>
+                            </div>
+                            <ul class="sidebar-list">
+                                <li>
+                                    <span class="title">Event Type:</span>
+                                    <span class="value" id="event-type-info">Loading...</span>
+                                </li>
+                                <li>
+                                    <span class="title">Start Date:</span>
+                                    <span class="value" id="event-start-date">Loading...</span>
+                                </li>
+                                <li>
+                                    <span class="title">End Date:</span>
+                                    <span class="value" id="event-end-date">Loading...</span>
+                                </li>
+                                <li id="capacity-row" style="display: none;">
+                                    <span class="title">Capacity:</span>
+                                    <span class="value" id="event-capacity">Loading...</span>
+                                </li>
+                                <li id="deadline-row" style="display: none;">
+                                    <span class="title">Registration Deadline:</span>
+                                    <span class="value" id="registration-deadline">Loading...</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- More Events -->
+            <div class="more-events mt-5" id="more-events-container">
+                <h3>More Events</h3>
+                <div class="row event-cards-container" id="more-events">
+                    <!-- Events will be populated dynamically -->
+                    <div class="col-md-12 text-center">
+                        <p>Loading more events...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Event Details -->
+
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('assets/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html> 

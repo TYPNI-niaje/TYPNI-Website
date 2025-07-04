@@ -1,0 +1,5 @@
+   "Session/JWT expiry" section:
+• Set "JWT expiry" to 604800 (7 days in seconds)
+• Set "Session expiry" to 604800 (7 days in seconds)
+
+*{Liban|dev}*
