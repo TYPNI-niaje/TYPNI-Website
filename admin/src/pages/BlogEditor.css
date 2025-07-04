@@ -1,0 +1,71 @@
+/* ReactQuill Editor Styles */
+.quill {
+  height: auto;
+  min-height: 300px;
+  margin-bottom: 2rem;
+}
+
+.ql-container {
+  min-height: 250px;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  background: white;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  background: white;
+}
+
+.ql-editor {
+  min-height: 250px;
+  font-family: 'Montserrat', 'Open Sans', sans-serif;
+  font-size: 1rem;
+}
+
+/* Fix editor container height for proper display */
+.blog-editor-container .ql-container {
+  height: auto !important;
+}
+
+/* Add more spacing in the form elements */
+.blog-form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Ensure the editor has proper spacing */
+.blog-editor-wrapper {
+  margin-bottom: 60px !important; /* Ensure enough space below the editor */
+}
+
+/* Fix for ReactQuill container display issues */
+.ql-container.ql-snow {
+  display: block;
+  height: auto !important;
+  min-height: 250px;
+}
+
+.quill .ql-container {
+  height: auto !important;
+}
+
+/* Ensure the page has enough padding */
+.blog-editor-page {
+  padding: 1rem;
+}
+
+/* Styling for the content area */
+.ql-editor p {
+  margin-bottom: 1em;
+}
+
+/* Make sure the form looks good even if content is missing */
+.blog-editor-form {
+  min-height: 400px;
+}
+
+/* Fix any z-index issues with the toolbar */
+.ql-toolbar {
+  z-index: 10;
+} 

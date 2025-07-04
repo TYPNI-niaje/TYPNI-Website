@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "client side/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "server/src/app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/src/app.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client side/$1"
+    }
+  ],
+  "env": {
+    "CORS_ORIGIN": "https://typni-website.vercel.app",
+    "PORT": "3000",
+    "RATE_LIMIT_WINDOW_MS": "900000",
+    "RATE_LIMIT_MAX": "100"
+  }
+} 

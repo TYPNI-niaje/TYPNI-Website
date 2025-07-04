@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="typni website">
+
+    <!-- ========== Page Title ========== -->
+    <title> join - Typni</title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <!-- ========== End Stylesheet ========== -->
+
+    
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+</head>
+
+<body style="background-image: url(assets/img/hero1.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;  ">
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('assets/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <!-- <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/2440x1578.png);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Event</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li class="active">Event</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- End Breadcrumb -->
+
+    <!-- Start Membership registration 
+    ============================================= -->
+    <div class="registration-form login default-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 form">
+                    <h2 style="color: white;"></h2>
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Login</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Email </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="email" placeholder="yourname@mail.com" required>
+                                                <span class="input-group-addon"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">PassWord </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-theme effect btn-sm" type="submit">Log In</button>
+                                        <a href="registration.html">Dont have an account? Register</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('assets/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script src="utils/authGuard.js"></script>
+    <script type="module">
+    import { signIn } from './utils/supabaseClient.js';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const { data, error } = await signIn(email, password);
+                
+                if (error) {
+                    throw error;
+                }
+
+                // Get the redirect URL from query parameters if available
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect') || 'profile.html';
+
+                // Redirect to profile page or requested page on success
+                window.location.href = redirectUrl;
+            } catch (error) {
+                console.error('Error:', error.message);
+                alert('Login failed: ' + error.message);
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>
