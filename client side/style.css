@@ -37,6 +37,376 @@ Table of contents
 ** General Styles for HTML tags
 */
 /* profile */
+.services-section{
+  background-image: no repeat center bottom;
+  background-size: cover !important;
+}
+
+.core-pillars-section {
+    padding: 60px 0; /* Add padding top and bottom */
+    background-color: #f8f9fa; /* Light background for the whole section */
+}
+
+.image-containers {
+    background-color: var(--primary-yellow); /* Yellow background for the image side */
+    border-radius: 0 20px 20px 0; /* Rounded on the right side for desktop */
+    overflow: visible; /* Ensure image doesn't spill out */
+    display: flex;
+    align-items: flex-end; /* Align image to the bottom */
+    justify-content: center; /* Center horizontally */
+    position: relative; /* For positioning the image */
+    min-height: 450px; /* Ensure a minimum height for the yellow background */
+}
+
+.image-containers img {
+    width: 100%; /* Make image fill container width */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    object-fit: contain; /* Adjusted to 'contain' assuming the image has a transparent background */
+    object-position: bottom center; /* Align image to the bottom center */
+    border-radius: 0 20px 20px 0; /* Match container border radius */
+}
+
+.pillars-content {
+    padding: 20px 30px; /* Padding inside the content area */
+}
+
+.pillars-content h2 {
+    color: var(--dark-purple); /* Dark purple for the main heading */
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.pillar-item {
+    margin-bottom: 25px; /* Space between pillar items */
+}
+
+.pillar-item h4 {
+    color: var(--dark-purple); /* Dark purple for pillar titles */
+    font-size: 1.4em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.pillar-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0; /* Prevent dot from shrinking */
+}
+
+.pillar-dot.yellow { background-color: #390099; }
+.pillar-dot.red { background-color: #DC3545; } /* Bootstrap red */
+.pillar-dot.orange { background-color: #FD7E14; } /* Bootstrap orange */
+.pillar-dot.purple { background-color: #9E0059; }
+
+.pillar-item p {
+    color: var(--text-color); /* Dark grey for pillar descriptions */
+    font-size: 1.1em;
+    line-height: 1.6;
+    padding-left: 27px; /* Align text with the start of the title, accounting for dot */
+}
+
+/* Responsive adjustments */
+@media (min-width: 992px) { /* Large screens and up */
+    .image-container {
+        border-radius: 20px 0 0 20px; /* Rounded on the left side for desktop */
+    }
+    .core-pillars-section .row {
+        display: flex;
+        flex-direction: row; /* Ensure row direction for desktop */
+    }
+    .core-pillars-section .col-lg-6:first-child {
+        order: 1; /* Image column first */
+    }
+    .core-pillars-section .col-lg-6:last-child {
+        order: 2; /* Content column second */
+    }
+}
+
+@media (max-width: 991.98px) { /* Medium and small screens */
+    .image-container {
+        border-radius: 20px 20px 0 0; /* Rounded on top for mobile */
+        min-height: 300px; /* Adjust height for mobile */
+    }
+    .image-container img {
+        border-radius: 20px 20px 0 0; /* Match container border radius */
+    }
+    .pillars-content {
+        padding-top: 30px; /* Add more space after image on mobile */
+        padding-bottom: 30px;
+    }
+    .pillars-content h2 {
+        text-align: center; /* Center heading on mobile */
+    }
+    .pillar-item h4 {
+        justify-content: center; /* Center pillar titles on mobile */
+    }
+    .pillar-item p {
+        text-align: center; /* Center pillar descriptions on mobile */
+        padding-left: 0; /* Remove left padding on mobile */
+    }
+}
+
+
+.vision-mission-section {
+padding: 40px 0;
+}
+
+.vision-card, .mission-card {
+background-color: #ff0066; /* The vibrant pink color */
+border-radius: 20px; /* Rounded corners */
+color: #ffffff; /* White text */
+padding: 30px;
+text-align: left;
+margin-bottom: 20px; /* Space between cards on smaller screens */
+display: flex; /* For aligning icon and text */
+flex-direction: column; /* Stack elements vertically */
+justify-content: center; /* Vertically center content */
+min-height: 300px; /* Ensure consistent height, adjust as needed */
+}
+
+.vision-card h3, .mission-card h3 {
+font-size: 2.2em; /* Larger heading */
+font-weight: bold;
+margin-bottom: 20px;
+display: flex;
+align-items: center; /* Align icon and text in heading */
+}
+
+.vision-card h3 img, .mission-card h3 img {
+height: 60px; /* Adjust icon size */
+width: auto;
+margin-right: 15px; /* Space between icon and text */
+filter: brightness(0) invert(1); /* Makes the SVG white if it's black */
+}
+
+.vision-card p, .mission-card p {
+font-size: 1.2em; /* Larger paragraph text */
+line-height: 1.6;
+}
+
+/* Adjust icon positioning and size for the main content area if needed */
+.card-icon {
+text-align: center; /* Center the icon within its column */
+margin-bottom: 20px; /* Space between icon and text on smaller screens */
+}
+
+.card-icon img {
+max-width: 100px; /* Adjust icon size */
+height: auto;
+filter: brightness(0) invert(1); /* Makes the SVG white */
+}
+
+/* Responsive adjustments */
+@media (min-width: 992px) { /* For large screens and up (lg breakpoint in Bootstrap) */
+.vision-card, .mission-card {
+    flex-direction: row; /* Align icon and text horizontally */
+    align-items: center; /* Vertically align items */
+}
+
+.vision-card h3, .mission-card h3 {
+    margin-bottom: 0; /* Remove bottom margin when horizontal */
+    margin-right: 30px; /* Space between title and description */
+    flex-shrink: 0; /* Prevent the title from shrinking */
+}
+
+.vision-card .text-content, .mission-card .text-content {
+    flex-grow: 1; /* Allow text content to take remaining space */
+}
+
+.vision-card .card-icon, .mission-card .card-icon {
+    margin-bottom: 0; /* Remove bottom margin for icon */
+    margin-right: 30px; /* Space between icon and text */
+    flex-shrink: 0; /* Prevent the icon from shrinking */
+}
+
+/* Adjust the size and positioning of the specific icons */
+.vision-card .vision-icon-main {
+    width: 120px; /* Adjust as needed */
+    height: auto;
+    margin-right: 30px;
+}
+
+.mission-card .mission-icon-main {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+    margin-right: 30px;
+}
+}
+
+@media (max-width: 991.98px) { /* For medium and small screens */
+.vision-card h3, .mission-card h3 {
+    justify-content: center; /* Center align title and icon on smaller screens */
+}
+.vision-card p, .mission-card p {
+    text-align: center; /* Center align paragraph text on smaller screens */
+}
+.vision-card .card-icon, .mission-card .card-icon {
+      display: none; /* Hide the large icons on smaller screens */
+}
+}
+/* added style */
+.what-we-do-section {
+  background: no-repeat center center ;
+  background-size:100%;
+  color: #fff;
+  width: 100%;
+  height: 180vh;
+  padding-top: 400px;
+  margin-top: -100px;
+}
+@media (max-width: 768px) {
+.what-we-do-section {
+  background: no-repeat center center ;
+  background-image: none !important;
+}
+}
+.section-title {
+  font-size: large;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 40px;
+  margin-top: 60px;
+  columns: fff;
+}
+
+.text-box h3{
+  font-size: larger;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.text-box p {
+  font-size: medium;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.content-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* GRID SYSTEM */
+.what-we-do-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* IMAGES */
+.tall-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.short-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* TEXT BOXES */
+.text-box {
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.text-box h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.text-box p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* COLOR STYLES */
+.pink {
+  background-color: #f42c61;
+}
+
+.yellow {
+  background-color: #f4c013;
+  color: #000;
+}
+
+.maroon {
+  background-color: #880e4f;
+}
+
+.svg-stripe-wrapper {
+  position: relative;
+  width: 100%;
+  overflow:visible;
+  line-height: 0; /* removes space below img */
+}
+
+.svg-stripe {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: rotate(-3deg);
+  margin-top: -200px; /* overlaps slightly with previous section */
+}
+
+/* Optional: Responsive adjustments */
+@media (max-width: 768px) {
+  .svg-stripe {
+    transform: rotate(-2deg);
+    margin-top: -10px;
+  }
+}
+
+
+
+.bg-purple {
+  background-color: #3e1f8f;
+}
+
+.carousel-item {
+  min-height: 100vh;
+}
+
+.carousel-inner,
+.carousel-item {
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .carousel-item {
+    flex-direction: column;
+  }
+
+  .col-md-6 {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .btn {
+    margin-top: 10px;
+  }
+}
+
+/* end added style */
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   /* max-width: 300px; */
@@ -500,9 +870,9 @@ input {
 }
 
 .btn-theme {
-  background-color: #390099;
+  background-color: #9E0059;
   color: #ffffff !important;
-  border: 2px solid #390099;
+  border: 2px solid #ffffff;
 }
 
 .btn-theme.border {
@@ -557,7 +927,7 @@ input {
 }
 
 .btn.standard::before {
-  color: #390099;
+  color: #ff0054;
   content: "\f061";
   font-family: "Font Awesome 5 Free";
   height: 100%;
@@ -610,7 +980,7 @@ header nav.navbar.border.bootsnav.navbar-fixed.no-background ul li a {
 }
 
 header nav.navbar.border.bootsnav.navbar-fixed.no-background ul li a::after {
-  background: #ffffff none repeat scroll 0 0;
+  background: #9E0059 none repeat scroll 0 0;
   bottom: -2px;
   content: "";
   height: 3px;
@@ -643,7 +1013,7 @@ header nav.navbar.border.bootsnav.navbar-fixed.no-background ul li a:hover::afte
 =================================================================== */
 body, .banner-area, 
  .banner-area div {
-  height: 90vh;
+  height: 80vh;
 }
 
 .banner-area .box-cell {
@@ -679,7 +1049,7 @@ body, .banner-area,
 }
 
 .banner-area.shadow-inner .content::after {
-  background: #15181d none repeat scroll 0 0;
+  background: #000000 none repeat scroll 0 0;
   content: "";
   height: 100%;
   left: 0;
@@ -691,13 +1061,13 @@ body, .banner-area,
 }
 
 .banner-area .item h1 {
-  font-size: 60px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 20px;
 }
 
 .banner-area .item h1 span {
-  color: #390099;
+  color: #9E0059;
 }
 
 .banner-area .carousel.main-lower .item h1 {
@@ -781,10 +1151,10 @@ body, .banner-area,
   line-height: 50px;
   padding: 0;
   position: absolute;
-  top: 50%;
+  top: 30%;
   width: 50px;
   margin-top: -25px;
-  background: transparent;
+  background: white;
   opacity: 1;
   z-index: 1;
 }
@@ -811,7 +1181,7 @@ body, .banner-area,
 }
 
 .banner-area .carousel.single-title .item h1 {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: 900;
 }
 
@@ -821,7 +1191,7 @@ body, .banner-area,
 }
 
 .banner-area .carousel.single-title .item h1 span {
-  color: #390099;
+  color: #9E0059;
 }
 
 .banner-area .text-uppercase .content h4 {
@@ -835,7 +1205,7 @@ body, .banner-area,
 }
 
 .banner-area .text-uppercase .content h4::after {
-  background: #390099 none repeat scroll 0 0;
+  background: #9E0059 none repeat scroll 0 0;
   content: "";
   height: 100%;
   left: 0;
@@ -862,7 +1232,7 @@ body, .banner-area,
 }
 
 .banner-area .uppercase .content h4::after {
-  background: #390099 none repeat scroll 0 0;
+  background: #ff0054 none repeat scroll 0 0;
   content: "";
   height: 100%;
   left: 0;
@@ -1007,7 +1377,7 @@ body, .banner-area,
 }
 
 .banner-area .carousel.single-title .carousel-inner .thumb img {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .banner-area .carousel.item-bg .carousel-inner .item .content h2::after {
@@ -1022,7 +1392,7 @@ body, .banner-area,
 .top-bar-area {
   padding: 10px 0;
   position: relative;
-  background-color: #390099 !important;
+  background-color: #ffffff !important;
 }
 
 .top-bar-area.shadow::after {
@@ -1091,7 +1461,7 @@ body, .banner-area,
 }
 
 .top-bar-area.one-line .info li p span {
-  color: #ffffff;
+  color: #000000;
   font-family: "Montserrat",sans-serif;
   font-weight: 600;
   padding-left: 10px;
@@ -1114,7 +1484,7 @@ body, .banner-area,
 }
 
 .top-bar-are .topbar-social li a {
-  color: #ffffff;
+  color: #9E0059;
 }
 
 .topbar-social li {
@@ -1141,8 +1511,7 @@ body, .banner-area,
 }
 
 .top-bar-area .logo img {
-  height: 50px;
-  width: 50px;
+  width: 50px !important;
 }
 
 .top-bar-area .info li:first-child {
@@ -1152,7 +1521,7 @@ body, .banner-area,
 }
 
 .top-bar-area .info li i {
-  color: #ffffff;
+  color: #FF0054;
   font-size: 30px;
   text-align: center;
 }
@@ -1465,7 +1834,7 @@ nav.bootsnav.navbar-default.info-topbar.sticked ul li a {
   height: 40px;
   left: -60px;
   line-height: 40px;
-  margin-top: -20px;
+  margin-top:2;
   opacity: 1;
   padding: 0;
   position: absolute;
@@ -5546,7 +5915,7 @@ nav.bootsnav.navbar-default.info-topbar.sticked ul li a {
 =================================================================== */
 
 footer {
-  background: #390099 none repeat scroll 0 0;
+  background: #FF0054 none repeat scroll 0 0;
 }
 
 footer .f-item h4 {

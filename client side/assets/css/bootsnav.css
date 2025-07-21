@@ -67,7 +67,7 @@ nav.bootsnav.navbar-sidebar.bg-dark ul.nav li.dropdown h6 {
 }
 
 nav.navbar.bootsnav {
-  background-color: #fff;
+  background-color: #9E0059 ;
   border-radius: 0;
   border: none;
   box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.04);
@@ -84,7 +84,7 @@ nav.bg-dark.navbar.bootsnav {
 }
 
 nav.navbar.bootsnav ul.nav > li > a {
-  color: #333333;
+  color: #ffffff;
   background-color: transparent !important;
   text-transform: uppercase;
   font-weight: 600;
@@ -127,7 +127,7 @@ ul.menu-col {
 }
 
 ul.menu-col li a {
-  color: #333333;
+  color: #ffffff;
 }
 
 ul.menu-col li a:hover, ul.menu-col li a:focus {
@@ -822,13 +822,13 @@ nav.navbar.bootsnav {
     text-align: center;
     width: 30px;
   }
-    /* nav.navbar.bootsnav ul.nav > li.dropdown > a.dropdown-toggle:after {
+    nav.navbar.bootsnav ul.nav > li.dropdown > a.dropdown-toggle:after {
          font-family: 'FontAwesome';
          content: "\f107";
          margin-left: 5px;
          margin-top: 2px 
     }
-     */
+    
   nav.navbar.bootsnav li.dropdown ul.dropdown-menu {
     background: #fff none repeat scroll 0 0;
     border: 1px solid transparent;

@@ -525,8 +525,9 @@
   }
 
   .banner-area .content {
-    padding-top: 50px;
+    padding-top: 20px;
     padding-bottom: 50px;
+    margin-bottom: 50px;
   }
 
   .banner-area .uppercase .content h4 {
@@ -542,7 +543,7 @@
 
   .banner-area .carousel.single-title .item h1 {
     font-size: 30px;
-    font-weight: 700;
+    font-weight: 400;
   }
 
   .banner-area .item h1 {
