@@ -43,7 +43,7 @@ nav.navbar .navbar-brand {
 nav.bootsnav.navbar-sidebar.bg-dark ul.nav li.dropdown ul.dropdown-menu li a, 
 nav.bootsnav.navbar-sidebar.bg-dark ul.nav li.dropdown a, 
 nav.bootsnav.navbar-sidebar.bg-dark ul.nav li.dropdown h6 {
-  color: #cccccc;
+  color: #9E0059;
 }
 
 .attr-nav ul.cart-list li.total a {
@@ -59,7 +59,7 @@ nav.bootsnav.navbar-sidebar.bg-dark ul.nav li.dropdown h6 {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   -ms-border-radius: 50px;
-  color: #ffffff !important;
+  color: #9E0059 !important;
   display: inline-block;
   font-family: "Work Sans",sans-serif;
   font-weight: 600 !important;
@@ -85,13 +85,13 @@ nav.bg-dark.navbar.bootsnav {
 
 nav.navbar.bootsnav ul.nav > li > a {
   color: #ffffff;
-  background-color: transparent !important;
+  background-color: #9E0059 !important;
   text-transform: uppercase;
   font-weight: 600;
 }
 
 nav.navbar.bootsnav.bg-dark ul.nav > li > a {
-  color: #ffffff;
+  color: #9E0059;
 }
 
 nav.navbar.bootsnav ul.nav li.megamenu-fw > a:hover, 
@@ -127,7 +127,7 @@ ul.menu-col {
 }
 
 ul.menu-col li a {
-  color: #ffffff;
+  color: #9E0059;
 }
 
 ul.menu-col li a:hover, ul.menu-col li a:focus {
@@ -184,7 +184,7 @@ nav.bootsnav.navbar-full .navbar-collapse .nav-full {
 nav.bootsnav.navbar-full .navbar-collapse .wrap-full-menu {
   display: table-cell;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: #9E0059;
   overflow: auto;
 }
 
