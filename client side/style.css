@@ -157,6 +157,11 @@ Table of contents
 padding: 40px 0;
 }
 
+@media (max-width: 767px) {
+.vision-mission-section {
+    margin-top: -800px;
+}
+}
 .vision-card, .mission-card {
 background-color: #ff0066; /* The vibrant pink color */
 border-radius: 20px; /* Rounded corners */
@@ -264,6 +269,8 @@ filter: brightness(0) invert(1); /* Makes the SVG white */
 .what-we-do-section {
   background: no-repeat center center ;
   background-image: none !important;
+  margin-bottom: 1;
+  bottom: 0;
 }
 }
 .section-title {
