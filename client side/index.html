@@ -196,8 +196,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 info" padding-top="50px">
-                    <p><h2 style="color: #4D1AA3;">Who We Are</h2>
+                <div class="col-md-5 info">
+                    <h2 class="who-we-are-heading">Who We Are</h2>
+
+                    <style>
+                    .who-we-are-heading {
+                    color: #4D1AA3;
+                    margin-top: 200px;
+                    }
+
+                    /* On small screens (max-width: 767px), remove the top margin */
+                    @media (max-width: 767px) {
+                    .who-we-are-heading {
+                        margin-top: 0;
+                    }
+                    }
+                    </style>
                     <p>
                         Welcome to Young People’s Network International (TYPNI)—a global movement of passionate, driven, and visionary young people who are shaping a better world. We are a platform that brings together youth from across borders to collaborate, lead, and thrive.
                         Whether you're a changemaker, student, artist, entrepreneur, or advocate, YPNI is here to amplify your voice, support your growth, and connect you with like-minded peers and mentors.</p>
