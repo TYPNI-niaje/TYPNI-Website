@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="typni website">
+
+    <!-- ========== Page Title ========== -->
+    <title> join - Typni</title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/flaticon-charity-set.css" rel="stylesheet" />
+    <link href="assets/css/magnific-popup.css" rel="stylesheet" />
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/bootsnav.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <!-- ========== End Stylesheet ========== -->
+
+    
+
+    <!-- ========== Google Fonts ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="se-pre-con"></div>
+    <!-- Preloader Ends -->
+
+    <!-- Header 
+    ============================================= -->
+    <div id="header-placeholder"></div>
+    <script>
+    fetch('assets/components/header.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Header-->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area shadow dark bg-fixed text-center padding-xl text-light" style="background-image: url(assets/img/hero1.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 text-left">
+                    <h1>Volonteer With Us</h1>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li class="active">Register</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Membership registration 
+    ============================================= -->
+    <div style="top: -100 !important;" class="registration-form default-padding">
+        <div class="container">
+            <div class="row">
+            <h2 style="color: white;"></h2>
+                <div class="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Volunteer</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="name">Your Name</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="name" placeholder="Name as per ID" required>
+                                                <span class="input-group-addon"><i class="fas fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone_number">Phone Number</label>
+                                            <div class="input-group">
+                                                <input type="tel" class="form-control" id="phone_number" required>
+                                                <span class="input-group-addon"><i class="fas fa-phone"></i></span>
+                                            </div>
+                                            <small class="form-text text-muted">Please enter a valid phone number with country code.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id-number">ID Number</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="idNumber" placeholder="Your Id Number" required>
+                                                <span class="input-group-addon"><i class="fas fa-flag"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Email </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="email" placeholder="yourname@mail.com" required>
+                                                <span class="input-group-addon"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="date_of_birth">Date Of Birth</label>
+                                            <div class="input-group">
+                                                <input type="date" class="form-control" id="date_of_birth" required>
+                                                <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="donateType">Gender</label>
+                                            <select id="gender" class="form-control">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="not Say">Rather Not Say</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="country">Country</label>
+                                            <select id="country" class="form-control countries-dropdown">
+                                                <!-- Will be populated by JavaScript -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="employment">Are You Employed?</label>
+                                            <select id="employment" class="form-control">
+                                                <option value="false">No</option>
+                                                <option value="true">Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Higest Level Of Education </label>
+                                            <select id="education" class="form-control">
+                                                <option value="highschool">High School</option>
+                                                <option value="tvet">TVET</option>
+                                                <option value="college">College</option>
+                                                <option value="university">University</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="interests">Select Your Top 3 Interests *</label>
+                                        <div class="interests-container">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-empowerment" name="interests" value="youth-empowerment">
+                                                        <label for="youth-empowerment">Youth Empowerment</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-mentorship" name="interests" value="youth-mentorship">
+                                                        <label for="youth-mentorship">Youth Mentorship</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-employment" name="interests" value="youth-employment">
+                                                        <label for="youth-employment">Youth Employment</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="entrepreneurship" name="interests" value="entrepreneurship">
+                                                        <label for="entrepreneurship">Entrepreneurship</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="financial-literacy" name="interests" value="financial-literacy">
+                                                        <label for="financial-literacy">Financial Literacy</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="youth-representation" name="interests" value="youth-representation">
+                                                        <label for="youth-representation">Youth Representation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="education" name="interests" value="education">
+                                                        <label for="education">Education</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="sports-arts-talent" name="interests" value="sports-arts-talent">
+                                                        <label for="sports-arts-talent">Sports, Arts & Talent</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="pan-africanism" name="interests" value="pan-africanism">
+                                                        <label for="pan-africanism">Pan Africanism</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="technology-digital-literacy" name="interests" value="technology-digital-literacy">
+                                                        <label for="technology-digital-literacy">Technology & Digital Literacy</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="menstrual-health" name="interests" value="menstrual-health">
+                                                        <label for="menstrual-health">Menstrual Health</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="sexual-education" name="interests" value="sexual-education">
+                                                        <label for="sexual-education">Sexual Education</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="female-genital-mutilation" name="interests" value="female-genital-mutilation">
+                                                        <label for="female-genital-mutilation">Female Genital Mutilation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="childhood-marriages" name="interests" value="childhood-marriages">
+                                                        <label for="childhood-marriages">Childhood Marriages</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="childhood-pregnancies" name="interests" value="childhood-pregnancies">
+                                                        <label for="childhood-pregnancies">Childhood Pregnancies</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="alcohol-drugs-substance-abuse" name="interests" value="alcohol-drugs-substance-abuse">
+                                                        <label for="alcohol-drugs-substance-abuse">Alcohol, Drugs & Substance Abuse</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="mental-health-action" name="interests" value="mental-health-action">
+                                                        <label for="mental-health-action">Mental Health Action</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="inclusivity-young-pwds" name="interests" value="inclusivity-young-pwds">
+                                                        <label for="inclusivity-young-pwds">Inclusivity of Young PWDs</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="cyberbullying" name="interests" value="cyberbullying">
+                                                        <label for="cyberbullying">Cyberbullying</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="blood-donation" name="interests" value="blood-donation">
+                                                        <label for="blood-donation">Blood Donation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="climate-change-mitigation" name="interests" value="climate-change-mitigation">
+                                                        <label for="climate-change-mitigation">Climate Change Mitigation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="climate-change-adaptation-resilience" name="interests" value="climate-change-adaptation-resilience">
+                                                        <label for="climate-change-adaptation-resilience">Climate Change Adaptation & Resilience</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="nature-based-solutions" name="interests" value="nature-based-solutions">
+                                                        <label for="nature-based-solutions">Nature-Based Solutions</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="water-solutions-management" name="interests" value="water-solutions-management">
+                                                        <label for="water-solutions-management">Water Solutions & Management</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="interest-option">
+                                                        <input type="checkbox" id="smart-agriculture" name="interests" value="smart-agriculture">
+                                                        <label for="smart-agriculture">Smart Agriculture</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted">Please select up to 3 interests that best match your preferences.</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">PassWord </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">PassWord </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password" placeholder="Retype Password" required>
+                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-theme effect btn-sm" type="submit">Register Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Start Footer 
+    ============================================= -->
+    <div id="footer-placeholder"></div>
+    <script>
+    fetch('assets/components/footer.html') // make sure this path is correct
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+    <!-- End Footer -->
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/equal-height.min.js"></script>
+    <script src="assets/js/jquery.appear.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/progress-bar.min.js"></script>
+    <script src="assets/js/modernizr.custom.13711.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/count-to.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/YTPlayer.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+</body>
+</html>
