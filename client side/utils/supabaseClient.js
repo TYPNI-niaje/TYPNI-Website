@@ -1,22 +1,9 @@
-// Create Supabase client
-const supabaseUrl = 'https://lkgqmfqtxpbvwrsguwka.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZ3FtZnF0eHBidndyc2d1d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1ODk1MjYsImV4cCI6MjA2MzE2NTUyNn0.bMKMVLW-dwVDfhXFIBr-dxbB9yFZ-isNb5v2VrjoqQA'
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// Initialize the Supabase client with session handling
-const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-    storageKey: 'typni_auth',
-    storage: window.localStorage,
-    flowType: 'pkce'
-  }
-})
+const supabaseUrl = 'https://lkgqmfqtxpbvwrsguwka.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZ3FtZnF0eHBidndyc2d1d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1ODk1MjYsImV4cCI6MjA2MzE2NTUyNn0.bMKMVLW-dwVDfhXFIBr-dxbB9yFZ-isNb5v2VrjoqQA';
 
-// Make the initialized client available globally and export it
-window.supabaseClient = supabase
-export { supabase }
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Auth helper functions
 export async function signUp(userData) {

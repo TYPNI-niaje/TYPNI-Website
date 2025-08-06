@@ -25,6 +25,7 @@
     <link href="assets/css/bootsnav.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
     <link href="assets/css/responsive.css" rel="stylesheet" />
+    <!-- Add intl-tel-input and flag-icon CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
     <!-- ========== End Stylesheet ========== -->
@@ -75,310 +76,453 @@
     </div>
     <!-- End Breadcrumb -->
 
-    <!-- Start Membership registration 
-    ============================================= -->
-    <div style="top: -100 !important;" class="registration-form default-padding">
+    <!-- Start Membership registration -->
+    <div class="registration-form default-padding">
         <div class="container">
             <div class="row">
-            <h2 style="color: white;"></h2>
-                <div class="form">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Volunteer</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="name">Your Name</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="name" placeholder="Name as per ID" required>
-                                                <span class="input-group-addon"><i class="fas fa-user"></i></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="phone_number">Phone Number</label>
-                                            <div class="input-group">
-                                                <input type="tel" class="form-control" id="phone_number" required>
-                                                <span class="input-group-addon"><i class="fas fa-phone"></i></span>
-                                            </div>
-                                            <small class="form-text text-muted">Please enter a valid phone number with country code.</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="id-number">ID Number</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="idNumber" placeholder="Your Id Number" required>
-                                                <span class="input-group-addon"><i class="fas fa-flag"></i></span>
-                                            </div>
-                                        </div>
+                <div class="col-md-12 text-center" style="margin-bottom: 32px;">
+                    <button id="select-volunteer" class="btn btn-theme effect btn-sm active" style="background-color: #390099; color: #fff; border: 2px solid #390099; margin-right: 10px;">Register as Volunteer</button>
+                    <button id="select-partner" class="btn btn-theme effect btn-sm" style="background-color: #f3f0fa; color: #390099; border: 2px solid #390099;">Register as Partner</button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="email">Email </label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="email" placeholder="yourname@mail.com" required>
-                                                <span class="input-group-addon"><i class="fas fa-envelope"></i></span>
+                    <!-- Volunteer Form Container -->
+                    <div id="volunteer-form-container">
+                        <div class="panel panel-default" style="border: 1.5px solid #390099; border-radius: 10px; box-shadow: 0 2px 8px rgba(57,0,153,0.08);">
+                            <div class="panel-heading" style="background: #390099; color: #fff; border-radius: 10px 10px 0 0;">
+                                <h3 class="panel-title" style="margin: 0;">Volunteer Registration</h3>
                                             </div>
-                                        </div>
+                            <div class="panel-body" style="padding: 32px;">
+                                <!-- Volunteer Form (replace relevant fields) -->
+                                <form id="volunteer-form">
+                                    <div class="form-group">
+                                        <label for="volunteer-name">Full Name</label>
+                                        <input type="text" class="form-control" id="volunteer-name" placeholder="Your Name" required>
                                     </div>
+                                        <div class="form-group">
+                                        <label for="volunteer-email">Email</label>
+                                        <input type="email" class="form-control" id="volunteer-email" placeholder="your@email.com" required>
+                                    </div>
+                                        <div class="form-group">
+                                        <label for="volunteer-phone">Phone</label>
+                                        <input type="tel" class="form-control" id="volunteer-phone" placeholder="Phone Number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="volunteer-id">ID Number</label>
+                                        <input type="text" class="form-control" id="volunteer-id" placeholder="ID Number" required>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date_of_birth">Date Of Birth</label>
-                                            <div class="input-group">
-                                                <input type="date" class="form-control" id="date_of_birth" required>
-                                                <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
-                                            </div>
-                                        </div>
+                                        <label for="volunteer-dob">Date of Birth</label>
+                                        <input type="date" class="form-control" id="volunteer-dob" required>
                                     </div>
-                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="donateType">Gender</label>
-                                            <select id="gender" class="form-control">
+                                        <label for="volunteer-gender">Gender</label>
+                                        <select id="volunteer-gender" class="form-control" required>
+                                            <option value="">Select Gender</option>
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
                                                 <option value="not Say">Rather Not Say</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="country">Country</label>
-                                            <select id="country" class="form-control countries-dropdown">
-                                                <!-- Will be populated by JavaScript -->
-                                            </select>
-                                        </div>
+                                        <label for="volunteer-country">Country</label>
+                                        <select id="volunteer-country" class="form-control countries-dropdown" required></select>
                                     </div>
-                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="employment">Are You Employed?</label>
-                                            <select id="employment" class="form-control">
+                                        <label for="volunteer-employed">Are You Employed?</label>
+                                        <select id="volunteer-employed" class="form-control" required>
+                                            <option value="">Select</option>
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </select>
-                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="email">Higest Level Of Education </label>
-                                            <select id="education" class="form-control">
+                                        <label for="volunteer-education">Highest Level Of Education</label>
+                                        <select id="volunteer-education" class="form-control" required>
+                                            <option value="">Select</option>
                                                 <option value="highschool">High School</option>
                                                 <option value="tvet">TVET</option>
                                                 <option value="college">College</option>
                                                 <option value="university">University</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
+                                    <!-- Interests and password as before -->
                                     <div class="form-group">
-                                        <label for="interests">Select Your Top 3 Interests *</label>
+                                        <label for="volunteer-interests">Select Your Top 3 Interests *</label>
                                         <div class="interests-container">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="youth-empowerment" name="interests" value="youth-empowerment">
-                                                        <label for="youth-empowerment">Youth Empowerment</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="youth-mentorship" name="interests" value="youth-mentorship">
-                                                        <label for="youth-mentorship">Youth Mentorship</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="youth-employment" name="interests" value="youth-employment">
-                                                        <label for="youth-employment">Youth Employment</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="entrepreneurship" name="interests" value="entrepreneurship">
-                                                        <label for="entrepreneurship">Entrepreneurship</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="financial-literacy" name="interests" value="financial-literacy">
-                                                        <label for="financial-literacy">Financial Literacy</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="youth-representation" name="interests" value="youth-representation">
-                                                        <label for="youth-representation">Youth Representation</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="education" name="interests" value="education">
-                                                        <label for="education">Education</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="sports-arts-talent" name="interests" value="sports-arts-talent">
-                                                        <label for="sports-arts-talent">Sports, Arts & Talent</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="pan-africanism" name="interests" value="pan-africanism">
-                                                        <label for="pan-africanism">Pan Africanism</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="technology-digital-literacy" name="interests" value="technology-digital-literacy">
-                                                        <label for="technology-digital-literacy">Technology & Digital Literacy</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="menstrual-health" name="interests" value="menstrual-health">
-                                                        <label for="menstrual-health">Menstrual Health</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="sexual-education" name="interests" value="sexual-education">
-                                                        <label for="sexual-education">Sexual Education</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="female-genital-mutilation" name="interests" value="female-genital-mutilation">
-                                                        <label for="female-genital-mutilation">Female Genital Mutilation</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="childhood-marriages" name="interests" value="childhood-marriages">
-                                                        <label for="childhood-marriages">Childhood Marriages</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="childhood-pregnancies" name="interests" value="childhood-pregnancies">
-                                                        <label for="childhood-pregnancies">Childhood Pregnancies</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="alcohol-drugs-substance-abuse" name="interests" value="alcohol-drugs-substance-abuse">
-                                                        <label for="alcohol-drugs-substance-abuse">Alcohol, Drugs & Substance Abuse</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="mental-health-action" name="interests" value="mental-health-action">
-                                                        <label for="mental-health-action">Mental Health Action</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="inclusivity-young-pwds" name="interests" value="inclusivity-young-pwds">
-                                                        <label for="inclusivity-young-pwds">Inclusivity of Young PWDs</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="cyberbullying" name="interests" value="cyberbullying">
-                                                        <label for="cyberbullying">Cyberbullying</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="blood-donation" name="interests" value="blood-donation">
-                                                        <label for="blood-donation">Blood Donation</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="climate-change-mitigation" name="interests" value="climate-change-mitigation">
-                                                        <label for="climate-change-mitigation">Climate Change Mitigation</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="climate-change-adaptation-resilience" name="interests" value="climate-change-adaptation-resilience">
-                                                        <label for="climate-change-adaptation-resilience">Climate Change Adaptation & Resilience</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="nature-based-solutions" name="interests" value="nature-based-solutions">
-                                                        <label for="nature-based-solutions">Nature-Based Solutions</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="water-solutions-management" name="interests" value="water-solutions-management">
-                                                        <label for="water-solutions-management">Water Solutions & Management</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="interest-option">
-                                                        <input type="checkbox" id="smart-agriculture" name="interests" value="smart-agriculture">
-                                                        <label for="smart-agriculture">Smart Agriculture</label>
-                                                    </div>
-                                                </div>
+                                            <div class="row" id="volunteer-interests-row">
+                                                <!-- Interests will be dynamically loaded here -->
                                             </div>
                                         </div>
                                         <small class="form-text text-muted">Please select up to 3 interests that best match your preferences.</small>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="volunteer-password">Password</label>
+                                        <input type="password" class="form-control" id="volunteer-password" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="volunteer-confirm-password">Confirm Password</label>
+                                        <input type="password" class="form-control" id="volunteer-confirm-password" placeholder="Confirm Password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-theme" style="background: #390099; color: #fff; border-radius: 5px;">Register</button>
+                                </form>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="email">PassWord </label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control" id="password" placeholder="Password" required>
-                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
                                             </div>
                                         </div>
+                    <!-- Partner Form Container -->
+                    <div id="partner-form-container" style="display: none;">
+                        <div class="panel panel-default" style="border: 1.5px solid #390099; border-radius: 10px; box-shadow: 0 2px 8px rgba(57,0,153,0.08);">
+                            <div class="panel-heading" style="background: #390099; color: #fff; border-radius: 10px 10px 0 0;">
+                                <h3 class="panel-title" style="margin: 0;">Partner Registration</h3>
+                            </div>
+                            <div class="panel-body" style="padding: 32px;">
+                                <!-- Partner Form (replace relevant fields) -->
+                                <form id="partner-form">
+                                    <div class="form-group">
+                                        <label for="contact-person">Your Full Name</label>
+                                        <input type="text" class="form-control" id="contact-person" placeholder="Your Full Name" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="org-name">Organization Name <small class="text-muted">(Optional - leave blank if partnering as individual)</small></label>
+                                        <input type="text" class="form-control" id="org-name" placeholder="Organization Name (Optional)">
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="email">PassWord </label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control" id="password" placeholder="Retype Password" required>
-                                                <span class="input-group-addon"><i class="fas fa-lock"></i></span>
+                                        <label for="partner-email">Email</label>
+                                        <input type="email" class="form-control" id="partner-email" placeholder="contact@email.com" required>
                                             </div>
+                                    <div class="form-group">
+                                        <label for="partner-phone">Phone</label>
+                                        <input type="tel" class="form-control" id="partner-phone" placeholder="Phone Number" required>
                                         </div>
+                                    <div class="form-group">
+                                        <label for="partner-country">Country</label>
+                                        <select id="partner-country" class="form-control countries-dropdown" required></select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="partnership-type">Partnership Type</label>
+                                        <select class="form-control" id="partnership-type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="individual">Individual Partner</option>
+                                            <option value="sponsor">Sponsor</option>
+                                            <option value="collaborator">Collaborator</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="other">Other</option>
+                                        </select>
                                 </div>   
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <button class="btn btn-theme effect btn-sm" type="submit">Register Now</button>
+                                    <div class="form-group">
+                                        <label for="partner-password">Password</label>
+                                        <input type="password" class="form-control" id="partner-password" placeholder="Password" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="partner-confirm-password">Confirm Password</label>
+                                        <input type="password" class="form-control" id="partner-confirm-password" placeholder="Confirm Password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-theme" style="background: #390099; color: #fff; border-radius: 5px;">Register</button>
+                                </form>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- End Membership registration -->
 
+    <script>
+    const volunteerBtn = document.getElementById('select-volunteer');
+    const partnerBtn = document.getElementById('select-partner');
+    const volunteerForm = document.getElementById('volunteer-form-container');
+    const partnerForm = document.getElementById('partner-form-container');
+    function setTabStyles(activeBtn, inactiveBtn) {
+        activeBtn.style.backgroundColor = '#390099';
+        activeBtn.style.color = '#fff';
+        inactiveBtn.style.backgroundColor = '#f3f0fa';
+        inactiveBtn.style.setProperty('color', '#390099', 'important');
+        activeBtn.style.border = '2px solid #390099';
+        inactiveBtn.style.border = '2px solid #390099';
+        activeBtn.style.fontWeight = 'bold';
+        inactiveBtn.style.fontWeight = 'bold';
+    }
+    volunteerBtn.addEventListener('click', function() {
+        volunteerForm.style.display = '';
+        partnerForm.style.display = 'none';
+        volunteerBtn.classList.add('active');
+        partnerBtn.classList.remove('active');
+        setTabStyles(volunteerBtn, partnerBtn);
+    });
+    partnerBtn.addEventListener('click', function() {
+        volunteerForm.style.display = 'none';
+        partnerForm.style.display = '';
+        partnerBtn.classList.add('active');
+        volunteerBtn.classList.remove('active');
+        setTabStyles(partnerBtn, volunteerBtn);
+    });
+    setTabStyles(volunteerBtn, partnerBtn);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <script type="module">
+    import { supabase } from './utils/supabaseClient.js';
+    const interestsRow = document.getElementById('volunteer-interests-row');
+    let interestsData = {};
+    async function loadInterests() {
+        interestsRow.innerHTML = '<div class="col-12">Loading interests...</div>';
+        const { data: interests, error } = await supabase
+            .from('interests')
+            .select('id, name')
+            .order('name');
+        if (error) {
+            interestsRow.innerHTML = '<div class="col-12 text-danger">Failed to load interests.</div>';
+            return;
+        }
+        interestsData = interests.reduce((acc, interest) => {
+            const kebabName = interest.name.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+            acc[kebabName] = interest.id;
+            return acc;
+        }, {});
+        interestsRow.innerHTML = '';
+        interests.forEach(interest => {
+            const kebabName = interest.name.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+            const div = document.createElement('div');
+            div.className = 'col-md-4 interest-option';
+            div.innerHTML = `
+                <input type="checkbox" id="${kebabName}" name="interests" value="${kebabName}">
+                <label for="${kebabName}">${interest.name}</label>
+            `;
+            interestsRow.appendChild(div);
+        });
+        // Limit to 3 selections
+        const checkboxes = interestsRow.querySelectorAll('input[name="interests"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checked = interestsRow.querySelectorAll('input[name="interests"]:checked');
+                if (checked.length > 3) {
+                    this.checked = false;
+                    alert('You can only select up to 3 interests.');
+                }
+            });
+        });
+    }
+    if (interestsRow) loadInterests();
+
+    // Add country dropdown and phone input logic for both forms, and update form submission logic to collect all required fields.
+    function initializePhoneInput(inputId, countryDropdownId) {
+        const phoneInput = document.getElementById(inputId);
+        const countryDropdown = document.getElementById(countryDropdownId);
+
+        const iti = window.intlTelInput(phoneInput, {
+            separateDialCode: true,
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                $.get("https://ipinfo.io", function() {}, function(response) {
+                    const countryCode = (response && response.country) ? response.country : "us";
+                    callback(countryCode);
+                });
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"
+        });
+
+        // Update the country dropdown when the phone number changes
+        phoneInput.addEventListener('countrychange', function() {
+            countryDropdown.value = iti.getSelectedCountryData().iso2;
+        });
+
+        // Set the initial country for the dropdown
+        countryDropdown.addEventListener('change', function() {
+            iti.setCountry(countryDropdown.value);
+        });
+    }
+
+    // --- Country Dropdown Logic (for both forms) ---
+    const countryDropdowns = [
+        document.getElementById('volunteer-country'),
+        document.getElementById('partner-country')
+    ];
+    const preferredCountries = ['KE', 'UG', 'TZ'];
+    function getCountryOption(code) {
+        const countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(code);
+        return {
+            code: code,
+            name: countryName,
+            flag: code.toLowerCase()
+        };
+    }
+    const allCountryCodes = ["AF","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BA","BW","BV","BR","IO","BN","BG","BF","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","CC","CO","KM","CG","CD","CK","CR","CI","HR","CU","CY","CZ","DK","DJ","DM","DO","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GR","GL","GD","GP","GU","GT","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IL","IT","JM","JP","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","MS","MA","MZ","MM","NA","NR","NP","NL","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","RU","RW","SH","KN","LC","PM","VC","WS","SM","ST","SA","SN","SC","SL","SG","SK","SI","SB","SO","ZA","GS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TL","TG","TK","TO","TT","TN","TR","TM","TC","TV","UG","UA","AE","GB","US","UM","UY","UZ","VU","VE","VN","VG","VI","WF","EH","YE","ZM","ZW"];
+    const preferredCountryOptions = preferredCountries.map(getCountryOption);
+    const allCountryOptions = allCountryCodes.map(getCountryOption)
+        .filter(country => !preferredCountries.includes(country.code))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    for (const dropdown of countryDropdowns) {
+        if (!dropdown) continue;
+        dropdown.innerHTML = '';
+        if (preferredCountryOptions.length > 0) {
+            const preferredGroup = document.createElement('optgroup');
+            preferredGroup.label = 'Preferred Countries';
+            preferredCountryOptions.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.code;
+                option.innerHTML = `${country.name}`;
+                preferredGroup.appendChild(option);
+            });
+            dropdown.appendChild(preferredGroup);
+            const separator = document.createElement('option');
+            separator.disabled = true;
+            separator.textContent = '──────────';
+            dropdown.appendChild(separator);
+        }
+        const otherGroup = document.createElement('optgroup');
+        otherGroup.label = 'All Countries';
+        allCountryOptions.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country.code;
+            option.innerHTML = `${country.name}`;
+            otherGroup.appendChild(option);
+        });
+        dropdown.appendChild(otherGroup);
+    }
+
+    // --- intl-tel-input for phone fields ---
+    const volunteerPhoneInput = window.intlTelInput(document.getElementById('volunteer-phone'), {
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+        preferredCountries: ["ke", "ug", "tz"],
+        separateDialCode: true,
+        initialCountry: "ke",
+        placeholderNumberType: "MOBILE"
+    });
+    const partnerPhoneInput = window.intlTelInput(document.getElementById('partner-phone'), {
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+        preferredCountries: ["ke", "ug", "tz"],
+        separateDialCode: true,
+        initialCountry: "ke",
+        placeholderNumberType: "MOBILE"
+    });
+
+    // --- Volunteer Registration Logic ---
+    const volunteerFormEl = document.getElementById('volunteer-form');
+    if (volunteerFormEl) {
+        volunteerFormEl.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('volunteer-name').value;
+            const email = document.getElementById('volunteer-email').value;
+            const phone = volunteerPhoneInput.getNumber();
+            const idNumber = document.getElementById('volunteer-id').value;
+            const dob = document.getElementById('volunteer-dob').value;
+            const gender = document.getElementById('volunteer-gender').value;
+            const countryCode = document.getElementById('volunteer-country').value;
+            const country = new Intl.DisplayNames(['en'], { type: 'region' }).of(countryCode);
+            const employed = document.getElementById('volunteer-employed').value;
+            const education = document.getElementById('volunteer-education').value;
+            const password = document.getElementById('volunteer-password').value;
+            const confirmPassword = document.getElementById('volunteer-confirm-password').value;
+            const selectedInterests = Array.from(document.querySelectorAll('#volunteer-interests-row input[name="interests"]:checked')).map(cb => cb.value);
+            if (!name || !email || !phone || !idNumber || !dob || !gender || !countryCode || !employed || !education || !password || !confirmPassword) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            if (!volunteerPhoneInput.isValidNumber()) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
+            if (selectedInterests.length === 0) {
+                alert('Please select at least one interest.');
+                return;
+            }
+            if (selectedInterests.length > 3) {
+                alert('You can only select up to 3 interests.');
+                return;
+            }
+            // Map interest values to UUIDs
+            const interestIds = [];
+            if (window.interestsData) {
+                for (const value of selectedInterests) {
+                    if (window.interestsData[value]) {
+                        interestIds.push(window.interestsData[value]);
+                    }
+                }
+            }
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: name,
+                            phone_number: phone,
+                            id_number: idNumber,
+                            date_of_birth: dob,
+                            gender,
+                            country,
+                            is_employed: employed,
+                            education_level: education,
+                            role: 'Volunteer',
+                            interests: selectedInterests,
+                            interest_ids: interestIds
+                        }
+                    }
+                });
+                if (error) throw error;
+                alert('Registration successful! Please check your email to verify your account.');
+                volunteerFormEl.reset();
+            } catch (err) {
+                alert('Registration failed: ' + (err.message || 'Unknown error'));
+            }
+        });
+    }
+
+    // --- Partner Registration Logic ---
+    const partnerFormEl = document.getElementById('partner-form');
+    if (partnerFormEl) {
+        partnerFormEl.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const orgName = document.getElementById('org-name').value;
+            const contactPerson = document.getElementById('contact-person').value;
+            const email = document.getElementById('partner-email').value;
+            const phone = partnerPhoneInput.getNumber();
+            const countryCode = document.getElementById('partner-country').value;
+            const country = new Intl.DisplayNames(['en'], { type: 'region' }).of(countryCode);
+            const partnershipType = document.getElementById('partnership-type').value;
+            const password = document.getElementById('partner-password').value;
+            const confirmPassword = document.getElementById('partner-confirm-password').value;
+            if (!contactPerson || !email || !phone || !countryCode || !partnershipType || !password || !confirmPassword) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            if (!partnerPhoneInput.isValidNumber()) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: contactPerson,
+                            organization_name: orgName || null,
+                            phone_number: phone,
+                            country,
+                            partnership_type: partnershipType,
+                            role: 'Partner'
+                        }
+                    }
+                });
+                if (error) throw error;
+                alert('Registration successful! Please check your email to verify your account.');
+                partnerFormEl.reset();
+            } catch (err) {
+                alert('Registration failed: ' + (err.message || 'Unknown error'));
+            }
+        });
+    }
+    </script>
     
     <!-- Start Footer 
     ============================================= -->

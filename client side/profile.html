@@ -116,16 +116,18 @@
                             <button id="remove-avatar-btn" class="btn btn-danger btn-xs" style="margin-top: 8px; display:none; font-size:11px; padding:2px 8px; width: auto; min-width: 80px;">Remove Photo</button>
                         </div>
                         <h1><span>Name:</span> <span id="profile-name"></span></h1>
-                        <p class="title"><span>Organization :</span> <span id="profile-organization"></span></p>
+                        <p class="title"><span>Role:</span> <span id="profile-role" style="font-weight: bold; color: #390099;"></span></p>
+                        <p class="title partner-field"><span>Organization :</span> <span id="profile-organization"></span></p>
+                        <p class="title partner-field"><span>Partnership Type:</span> <span id="profile-partnership-type"></span></p>
                         <p><span>Phone Number:</span> <span id="profile-phone"></span></p>
-                        <p><span>ID Number:</span> <span id="profile-idNumber"></span></p>
+                        <p class="volunteer-member-field"><span>ID Number:</span> <span id="profile-idNumber"></span></p>
                         <p><span>Email:</span> <span id="profile-email"></span></p>
-                        <p><span>DOB:</span> <span id="profile-dob"></span></p>
-                        <p><span>Gender:</span> <span id="profile-gender"></span></p>
+                        <p class="volunteer-member-field"><span>DOB:</span> <span id="profile-dob"></span></p>
+                        <p class="volunteer-member-field"><span>Gender:</span> <span id="profile-gender"></span></p>
                         <p><span>Nationality:</span> <span id="profile-nationality"></span></p>
-                        <p><span>Employment Status:</span> <span id="profile-employment"></span></p>
-                        <p><span>Highest Education:</span> <span id="profile-education"></span></p>
-                        <p><span>Interests:</span> <span id="profile-interests"></span></p>
+                        <p class="volunteer-member-field"><span>Employment Status:</span> <span id="profile-employment"></span></p>
+                        <p class="volunteer-member-field"><span>Highest Education:</span> <span id="profile-education"></span></p>
+                        <p class="volunteer-member-field"><span>Interests:</span> <span id="profile-interests"></span></p>
                         <button id="logout-btn" class="btn btn-danger" style="margin-top: 20px;">Sign Out</button>
                     </div>
                 </div>
@@ -342,7 +344,9 @@
 
             // Update profile display with real data
             document.getElementById('profile-name').textContent = profile.full_name || 'Not specified';
+            document.getElementById('profile-role').textContent = profile.role || 'Member';
             document.getElementById('profile-organization').textContent = profile.organization || 'Not specified';
+            document.getElementById('profile-partnership-type').textContent = profile.partnership_type || 'Not specified';
             document.getElementById('profile-phone').textContent = profile.phone_number || 'Not specified';
             document.getElementById('profile-idNumber').textContent = profile.id_number || 'Not specified';
             document.getElementById('profile-email').textContent = user.email || 'Not specified';
@@ -354,6 +358,21 @@
             document.getElementById('profile-interests').textContent = (interests && interests.length > 0)
                 ? interests.map(i => i.interests?.name || i.name).join(', ')
                 : 'None';
+
+            // Show/hide fields based on user role
+            const userRole = profile.role || 'Member';
+            const partnerFields = document.querySelectorAll('.partner-field');
+            const volunteerMemberFields = document.querySelectorAll('.volunteer-member-field');
+            
+            if (userRole === 'Partner') {
+                // Show partner fields, hide volunteer/member fields
+                partnerFields.forEach(field => field.style.display = '');
+                volunteerMemberFields.forEach(field => field.style.display = 'none');
+            } else {
+                // Show volunteer/member fields, hide partner fields
+                partnerFields.forEach(field => field.style.display = 'none');
+                volunteerMemberFields.forEach(field => field.style.display = '');
+            }
 
             // Handle profile update form
             const profileForm = document.getElementById('profile-form');
