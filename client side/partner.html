@@ -80,9 +80,9 @@
     <div class="registration-form default-padding">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center" style="margin-bottom: 32px;">
-                    <button id="select-volunteer" class="btn btn-theme effect btn-sm active" style="background-color: #390099; color: #fff; border: 2px solid #390099; margin-right: 10px;">Register as Volunteer</button>
-                    <button id="select-partner" class="btn btn-theme effect btn-sm" style="background-color: #f3f0fa; color: #390099; border: 2px solid #390099;">Register as Partner</button>
+                <div class="col-md-12 text-center tab-buttons-container" style="margin-bottom: 32px;">
+                    <button id="select-volunteer" class="btn btn-theme effect btn-sm active tab-button" style="background-color: #390099; color: #fff; border: 2px solid #390099;">Register as Volunteer</button>
+                    <button id="select-partner" class="btn btn-theme effect btn-sm tab-button" style="background-color: #f3f0fa; color: #390099; border: 2px solid #390099;">Register as Partner</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -554,6 +554,89 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    
+    <!-- Custom CSS for mobile responsiveness -->
+    <style>
+    /* Ensure proper spacing from hero section */
+    .registration-form {
+        position: relative;
+        z-index: 10;
+        margin-top: 0;
+        padding-top: 60px;
+    }
+    
+    .tab-buttons-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        position: relative;
+        z-index: 15;
+        margin-bottom: 32px !important;
+        padding: 20px 15px;
+    }
+    
+    .tab-button {
+        min-width: 160px;
+        padding: 12px 20px !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        font-size: 14px !important;
+        text-align: center;
+        white-space: nowrap;
+        position: relative;
+        z-index: 20;
+    }
+    
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+        .registration-form {
+            padding-top: 40px;
+            margin-top: 20px;
+        }
+        
+        .tab-buttons-container {
+            flex-direction: column;
+            gap: 12px;
+            padding: 30px 15px;
+            margin-bottom: 20px !important;
+        }
+        
+        .tab-button {
+            width: 100%;
+            max-width: 280px;
+            min-width: unset;
+            margin: 0 !important;
+            padding: 14px 24px !important;
+            font-size: 15px !important;
+        }
+        
+        /* Ensure breadcrumb doesn't overlap */
+        .breadcrumb-area {
+            position: relative;
+            z-index: 5;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .registration-form {
+            padding-top: 30px;
+            margin-top: 25px;
+        }
+        
+        .tab-buttons-container {
+            padding: 25px 10px;
+        }
+        
+        .tab-button {
+            padding: 12px 20px !important;
+            font-size: 14px !important;
+            max-width: 250px;
+        }
+    }
+    </style>
     
 </body>
 </html>
