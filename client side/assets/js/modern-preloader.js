@@ -9,9 +9,9 @@
 
     // Configuration
     const config = {
-        homePageDelay: 1800,      // Simple logo animation
+        homePageDelay: 3000,      // Extended logo animation
         otherPageDelay: 600,      // Fast simple loader
-        contentFadeDelay: 200     // Content animation delay
+        contentFadeDelay: 300     // Content animation delay
     };
 
     // Check if this is the home page
@@ -53,9 +53,14 @@
         element.classList.add('loaded');
         
         setTimeout(() => {
+            // Remove preloader element
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
+            
+            // Show content by removing body class
+            document.body.classList.remove('preloader-active');
+            
             if (callback) callback();
         }, 800);
     }
@@ -84,6 +89,9 @@
 
     // Initialize preloader system
     function initPreloader() {
+        // Add body class to hide content
+        document.body.classList.add('preloader-active');
+        
         // Remove old preloader
         const oldPreloader = document.querySelector('.se-pre-con');
         if (oldPreloader) {
@@ -94,7 +102,7 @@
         let delay;
 
         if (isHomePage()) {
-            // Home page: Simple logo preloader
+            // Home page: Extended logo preloader
             preloader = createHomePreloader();
             delay = config.homePageDelay;
             
@@ -145,6 +153,18 @@
                 }
             });
         });
+    }
+
+    // Hide content immediately
+    function hideContentImmediately() {
+        document.body.classList.add('preloader-active');
+    }
+    
+    // Call immediately to hide content
+    if (document.body) {
+        hideContentImmediately();
+    } else {
+        document.addEventListener('DOMContentLoaded', hideContentImmediately);
     }
 
     // Initialize when DOM is ready
