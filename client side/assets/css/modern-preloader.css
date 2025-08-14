@@ -1,0 +1,136 @@
+/*!
+ * Modern Preloader System for TYPNI Website
+ * Different preloaders for home page vs other pages
+ * Version: 1.0
+ */
+
+/* Hide old preloader */
+.se-pre-con {
+    display: none !important;
+}
+
+/* Simple Modern Preloader with TYPNI Logo */
+.modern-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.modern-preloader.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.preloader-logo {
+    width: 120px;
+    height: auto;
+    animation: mildBounce 2s infinite ease-in-out;
+}
+
+/* Mild bouncy animation */
+@keyframes mildBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    10% {
+        transform: translateY(-8px) scale(1.02);
+    }
+    30% {
+        transform: translateY(-4px) scale(1.01);
+    }
+    60% {
+        transform: translateY(-2px) scale(1.005);
+    }
+}
+
+/* Simple Page Loader for other pages */
+.simple-page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4D1AA3, #390099, #FF0054);
+    z-index: 999999;
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: simpleLoad 0.8s ease-in-out forwards;
+}
+
+@keyframes simpleLoad {
+    0% { transform: scaleX(0); }
+    50% { transform: scaleX(0.7); }
+    100% { transform: scaleX(1); }
+}
+
+.simple-page-loader.loaded {
+    animation: simpleLoadOut 0.3s ease-in-out forwards;
+}
+
+@keyframes simpleLoadOut {
+    from { 
+        transform: scaleX(1);
+        opacity: 1;
+    }
+    to { 
+        transform: scaleX(1);
+        opacity: 0;
+    }
+}
+
+/* Content fade in animation */
+.content-fade-in {
+    opacity: 0;
+    animation: contentFadeIn 0.6s ease 0.3s forwards;
+}
+
+@keyframes contentFadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .preloader-logo {
+        width: 100px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .preloader-logo {
+        animation: none !important;
+    }
+    
+    .modern-preloader,
+    .simple-page-loader {
+        transition: opacity 0.3s ease !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .modern-preloader {
+        background: #fff;
+        border: 2px solid #000;
+    }
+}

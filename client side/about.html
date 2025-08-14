@@ -25,6 +25,8 @@
     <link href="assets/css/bootsnav.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
     <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link href="assets/css/modern-enhancements.css" rel="stylesheet" />
+    <link href="assets/css/modern-preloader.css" rel="stylesheet" />
     <link href="chatbot-package/css/chatbot.css" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
 
@@ -42,10 +44,9 @@
 </head>
 
 <body>
-
-    <!-- Preloader Start -->
-    <div class="se-pre-con"></div>
-    <!-- Preloader Ends -->
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scroll-progress"></div>
+    
 
     <!-- Header 
     ============================================= -->
@@ -84,37 +85,37 @@
     <section class="history-area bg-gray default-padding">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 video-info bg-cover" style="background-image: url(assets/img/enterprenuership-09.jpg);">
+                <div class="col-md-6 video-info bg-cover" style="background-image: url(assets/img/enterprenuership-09.jpg);" data-scroll-animate="fadeInLeft">
                     <div class="overlay-video">
                         <a href="assets/img/competition.mp4" class="popup-youtube video-play-button">
                             <i class="fa fa-play"></i>
                         </a>
                     </div>
                 </div>
-                <div class="col-md-6 info">
+                <div class="col-md-6 info" data-scroll-animate="fadeInRight" data-delay="200">
                     <h2>Welcome to TYPNI – The Young People's Network International</h2>
                     <h4>At TYPNI, we believe in the power of youth to shape the future.</h4>
-                    <p>
-                        The Young People’s Network International (TYPNI) is membership based, youth-led, and youth-centered registered NGO that was founded on 28th September 2023 to provide an inclusive environment for the young people to connect, grow, and engage productively on significant aspects affecting their lives and that of their community.
+                    <p data-scroll-animate="fadeInUp" data-delay="400">
+                        The Young People's Network International (TYPNI) is membership based, youth-led, and youth-centered registered NGO that was founded on 28th September 2023 to provide an inclusive environment for the young people to connect, grow, and engage productively on significant aspects affecting their lives and that of their community.
                         Our mission is to connect and empower young people globally through dynamic initiatives and programs that foster collective growth and positive transformation. We envision an empowered, vibrant community of young people, connected to endless opportunities for oneness and progress.
                         We are committed to fostering a culture of accountability, originality, empowerment, and belonging.
                     </p>
                     <div class="achivement-items row">
-                        <div class="col-md-6 col-sm-6 item">
+                        <div class="col-md-6 col-sm-6 item" data-scroll-animate="scaleIn" data-delay="100">
                             <div class="fun-fact">
                                 <i class="flaticon-solidarity"></i>
                                 <div class="timer" data-to="100" data-speed="5000"></div>
                                 <span class="medium">Youth Reached</span>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 item">
+                        <div class="col-md-6 col-sm-6 item" data-scroll-animate="scaleIn" data-delay="200">
                             <div class="fun-fact">
                                 <i class="flaticon-kids-couple"></i>
                                 <div class="timer" data-to="45" data-speed="5000"></div>
                                 <span class="medium">Volunteers</span>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 item">
+                        <div class="col-md-6 col-sm-6 item" data-scroll-animate="scaleIn" data-delay="300">
                             <div class="fun-fact">
                                 <i class="flaticon-vegetables"></i>
                                 <div class="timer" data-to="276450" data-speed="5000"></div>
@@ -404,7 +405,37 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/modern-scroll-animations.js"></script>
+    <script src="assets/js/modern-preloader.js"></script>
     <script src="chatbot-package/js/chatbot.js"></script>
+    
+    <script>
+        // Initialize scroll progress indicator
+        const scrollProgress = document.getElementById('scroll-progress');
+        
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            
+            if (scrollProgress) {
+                scrollProgress.style.transform = `scaleX(${scrollPercent / 100})`;
+            }
+        }
+        
+        let scrollTicking = false;
+        function handleScrollProgress() {
+            if (!scrollTicking) {
+                requestAnimationFrame(() => {
+                    updateScrollProgress();
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', handleScrollProgress);
+    </script>
     <script>
         // Initialize chatbot
         document.addEventListener('DOMContentLoaded', function() {

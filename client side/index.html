@@ -25,6 +25,8 @@
     <link href="assets/css/bootsnav.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
     <link href="assets/css/responsive.css" rel="stylesheet" />
+    <link href="assets/css/modern-enhancements.css" rel="stylesheet" />
+    <link href="assets/css/modern-preloader.css" rel="stylesheet" />
     <link href="chatbot-package/css/chatbot.css" rel="stylesheet" />
     
     <!-- Custom styles for event sizing -->
@@ -87,10 +89,10 @@
 </head>
 
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scroll-progress"></div>
 
-    <!-- Preloader Start -->
-    <div class="se-pre-con"></div>
-    <!-- Preloader Ends -->
+
 
     <!-- Header 
     ============================================= -->
@@ -106,11 +108,11 @@
     <!-- Start Banner 
     ============================================= -->
     <div class="banner-area text-bg">
-        <div id="bootcarousel" class="carousel slide item-bg animate_text carousel-fade" data-ride="carousel">
+        <div id="bootcarousel" class="carousel slide item-bg animate_text carousel-fade hero-enhanced" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner text-light text-center uppercase carousel-zoom">
                 <div class="item active">
-                    <div class="slider-thumb bg-fixed" style="background-image: url(assets/img/hero\ section-01.jpg);"></div>
+                    <div class="slider-thumb bg-fixed parallax-element" data-speed="0.5" style="background-image: url(assets/img/hero\ section-01.jpg);"></div>
                     <div class="box-table">
                         <div class="box-cell shadow dark">
                             <div class="container">
@@ -129,7 +131,7 @@
                     </div>
                 </div>
                 <div class="item">
-                    <div class="slider-thumb bg-fixed" style="background-image: url(assets/img/hero\ section-02.jpg);"></div>
+                    <div class="slider-thumb bg-fixed parallax-element" data-speed="0.3" style="background-image: url(assets/img/hero\ section-02.jpg);"></div>
                     <div class="box-table">
                         <div class="box-cell shadow dark">
                             <div class="container">
@@ -148,7 +150,7 @@
                     </div>
                 </div>
                 <div class="item">
-                    <div class="slider-thumb bg-fixed" style="background-image: url(assets/img/hero\ section-03.jpg);"></div>
+                    <div class="slider-thumb bg-fixed parallax-element" data-speed="0.4" style="background-image: url(assets/img/hero\ section-03.jpg);"></div>
                     <div class="box-table">
                         <div class="box-cell shadow dark">
                             <div class="container">
@@ -190,16 +192,16 @@
     <div class="about-us default-padding">
         <div class="container">
             <div class="row" style="vertical-align: middle;">
-                <div class="col-md-7 items">
+                <div class="col-md-7 items" data-scroll-animate="fadeInLeft">
                     <div class="row">
                         <div class="content">
-                            <div class="thumb">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/volunteer.png" alt="Thumb">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 info">
+                <div class="col-md-5 info" data-scroll-animate="fadeInRight" data-delay="200">
                     <h2 class="who-we-are-heading">Who We Are</h2>
 
                     <style>
@@ -215,8 +217,8 @@
                     }
                     }
                     </style>
-                    <p>
-                        Welcome to Young People’s Network International (TYPNI)—a global movement of passionate, driven, and visionary young people who are shaping a better world. We are a platform that brings together youth from across borders to collaborate, lead, and thrive.
+                    <p data-scroll-animate="fadeInUp" data-delay="400">
+                        Welcome to Young People's Network International (TYPNI)—a global movement of passionate, driven, and visionary young people who are shaping a better world. We are a platform that brings together youth from across borders to collaborate, lead, and thrive.
                         Whether you're a changemaker, student, artist, entrepreneur, or advocate, YPNI is here to amplify your voice, support your growth, and connect you with like-minded peers and mentors.</p>
                 </div>
             </div>
@@ -227,20 +229,20 @@
     <div class="popular-causes-area default-padding bottom-less">
         <div class="container">
             <div class="row">
-                <div class="site-heading text-center">
+                <div class="site-heading text-center" data-scroll-animate="fadeInUp">
                     <div class="col-md-8 col-md-offset-2">
                         <h2 style="color: #4D1AA3;">Our core focus Areas</h2>
-                        <p>
-                            Young People’s Network International (YPNI) is a youth-led, youth-focused movement that connects, equips, and elevates young people to lead positive change across borders. We work to build a world where young people have the agency, tools, and support they need to shape their own futures—and their communities.
+                        <p data-scroll-animate="fadeInUp" data-delay="200">
+                            Young People's Network International (YPNI) is a youth-led, youth-focused movement that connects, equips, and elevates young people to lead positive change across borders. We work to build a world where young people have the agency, tools, and support they need to shape their own futures—and their communities.
                         </p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="popular-causes-items">
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="100">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/youth rep-07.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -256,9 +258,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="200">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/our focus-02.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -274,9 +276,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="300">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/our focus-03.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -292,9 +294,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="400">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/enterprenuership-09.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -310,9 +312,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="500">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/finacial lit-08.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -328,9 +330,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 equal-height">
-                        <div class="item">
-                            <div class="thumb">
+                    <div class="col-md-4 col-sm-6 equal-height" data-scroll-animate="fadeInUp" data-delay="600">
+                        <div class="item pulse-glow">
+                            <div class="thumb image-reveal">
                                 <img src="assets/img/our focus-04.jpg" alt="Thumb">
                             </div>
                             <div class="info">
@@ -353,14 +355,14 @@
     <!-- End Popular Causes -->
     <!-- Start Banner 
     ============================================= -->
-    <div class="video-bg-live barber bg-fixed text-light padding-xl" style="background-image: url(assets/img/initiative2.jpg);">
+    <div class="video-bg-live barber bg-fixed text-light padding-xl parallax-section" style="background-image: url(assets/img/initiative2.jpg);">
         <div class="player" data-property="{videoURL:'https://www.youtube.com/watch?v=UE9UvT5ujyg',containment:'.video-bg-live', showControls:false, autoPlay:true, zoom:0, loop:true, mute:true, startAt:90, opacity:1, quality:'default'}"></div>
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center">
-                    <div class="info">
-                        <h2>We navigate through our activities in three broad thematic areas, each expanded into 10 specific activities.</h2>
-                        <a class="btn btn-theme effect btn-sm" target="_blank" href="https://charleneruto.org/programs/">Learn More</a>
+                    <div class="info" data-scroll-animate="scaleIn">
+                        <h2 data-scroll-animate="fadeInUp" data-delay="200">We navigate through our activities in three broad thematic areas, each expanded into 10 specific activities.</h2>
+                        <a class="btn btn-theme effect btn-sm" target="_blank" href="https://charleneruto.org/programs/" data-scroll-animate="fadeInUp" data-delay="400">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -370,10 +372,10 @@
     
     <div class="what-we-do-section " style="background-image: url('assets/img/Rectangle\ 237.png');">
     <div class="content-wrapper">
-        <div class="site-heading text-center">
+        <div class="site-heading text-center" data-scroll-animate="fadeInUp">
             <div class="col-md-8 col-md-offset-2">
                 <h2 style="color: #ffffff;">What We Do</h2>
-                <p>
+                <p data-scroll-animate="fadeInUp" data-delay="200">
                     
                 </p>
             </div>
@@ -381,33 +383,33 @@
 
         <div class="what-we-do-grid">
         <!-- Column 1 -->
-        <div class="box tall-image" style="grid-column: 1 / 2; grid-row: 1 / 3;">
+        <div class="box tall-image" style="grid-column: 1 / 2; grid-row: 1 / 3;" data-scroll-animate="fadeInLeft" data-delay="100">
             <img src="assets/img/Rectangle 245.png" alt="Smiling Woman">
         </div>
 
         <!-- Column 2 -->
-        <div class="box short-image" style="grid-column: 2; grid-row: 1;">
+        <div class="box short-image" style="grid-column: 2; grid-row: 1;" data-scroll-animate="fadeInUp" data-delay="200">
             <img src="assets/img/Rectangle 246.png" alt="Discussion">
         </div>
-        <div class="box text-box pink" style="grid-column: 2; grid-row: 2;">
+        <div class="box text-box pink" style="grid-column: 2; grid-row: 2;" data-scroll-animate="scaleIn" data-delay="300">
             <h3>Advocacy</h3>
             <p>Workshops, summits, and mentorships designed to cultivate strong, values-driven leadership among youth.</p>
         </div>
 
         <!-- Column 3 (Narrow) -->
-        <div class="box text-box yellow" style="grid-column: 3; grid-row: 1;">
+        <div class="box text-box yellow" style="grid-column: 3; grid-row: 1;" data-scroll-animate="scaleIn" data-delay="400">
             <h3>Growth</h3>
             <p>Workshops, summits, and mentorships</p>
         </div>
-        <div class="box short-image" style="grid-column: 3; grid-row: 2;">
+        <div class="box short-image" style="grid-column: 3; grid-row: 2;" data-scroll-animate="fadeInUp" data-delay="500">
             <img src="assets/img/Rectangle 249.png" alt="Laptop Work">
         </div>
 
         <!-- Column 4 -->
-        <div class="box short-image" style="grid-column: 4; grid-row: 1;">
+        <div class="box short-image" style="grid-column: 4; grid-row: 1;" data-scroll-animate="fadeInRight" data-delay="600">
             <img src="assets/img/Rectangle 250.png" alt="Team Discussion">
         </div>
-        <div class="box text-box maroon" style="grid-column: 4; grid-row: 2;">
+        <div class="box text-box maroon" style="grid-column: 4; grid-row: 2;" data-scroll-animate="scaleIn" data-delay="700">
             <h3>Innovation</h3>
             <p>Workshops, summits, and mentorships designed to cultivate strong.</p>
         </div>
@@ -418,8 +420,8 @@
     <section class="vision-mission-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-12 mb-4">
-                    <div class="vision-card">
+                <div class="col-lg-6 col-md-12 mb-4" data-scroll-animate="fadeInLeft" data-delay="100">
+                    <div class="vision-card float-animation">
                         <div class="card-icon">
                             <img src="assets/img/Group 174.png" alt="Eye Icon" class="vision-icon-main">
                         </div>
@@ -430,8 +432,8 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 col-md-12 mb-4">
-                    <div class="mission-card">
+                <div class="col-lg-6 col-md-12 mb-4" data-scroll-animate="fadeInRight" data-delay="300">
+                    <div class="mission-card float-animation">
                         <div class="card-icon">
                             <img src="assets/img/Vector.png" style="transform: rotate(45deg);">
                         </div>
@@ -451,7 +453,7 @@
             <div class="portfolio-items-area text-center">
                 <div class="row">
                     <div class="col-md-12 portfolio-content">
-                        <div class="mix-item-menu active-theme text-center">
+                        <div class="mix-item-menu active-theme text-center" data-scroll-animate="fadeInUp">
                             <button class="active" data-filter="*">All</button>
                             <button data-filter=".development">Youth Empowerment</button>
                             <button data-filter=".design">Training</button>
@@ -463,7 +465,7 @@
 
                         <div class="row magnific-mix-gallery masonary">
                             <div id="portfolio-grid" class="portfolio-items col-3">
-                                <div class="pf-item branding photography">
+                                <div class="pf-item branding photography" data-scroll-animate="scaleIn" data-delay="100">
                                     <div class="item-inner">
                                         <img src="assets/img/1F1A34 (930).jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -474,7 +476,7 @@
                                         </div>        
                                     </div>
                                 </div>
-                                <div class="pf-item video development">
+                                <div class="pf-item video development" data-scroll-animate="scaleIn" data-delay="200">
                                     <div class="item-inner">
                                         <img src="assets/img/1F1A3491.jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -485,7 +487,7 @@
                                         </div>           
                                     </div>
                                 </div>
-                                <div class="pf-item design photography">
+                                <div class="pf-item design photography" data-scroll-animate="scaleIn" data-delay="300">
                                     <div class="item-inner">
                                         <img src="assets/img/888A8497.jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -496,7 +498,7 @@
                                         </div>           
                                     </div>
                                 </div>
-                                <div class="pf-item branding video">
+                                <div class="pf-item branding video" data-scroll-animate="scaleIn" data-delay="400">
                                     <div class="item-inner">
                                         <img src="assets/img/IMG_8767.jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -507,7 +509,7 @@
                                         </div>           
                                     </div>
                                 </div>
-                                <div class="pf-item design photography">
+                                <div class="pf-item design photography" data-scroll-animate="scaleIn" data-delay="500">
                                     <div class="item-inner">
                                         <img src="assets/img/IMG_5378.jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -518,7 +520,7 @@
                                         </div>           
                                     </div>
                                 </div>
-                                <div class="pf-item branding design development">
+                                <div class="pf-item branding design development" data-scroll-animate="scaleIn" data-delay="600">
                                     <div class="item-inner">
                                         <img src="assets/img/1F1A34 (539).jpg" alt="Thumb"/>
                                         <div class="overlay">
@@ -543,17 +545,17 @@
     <div class="event-area bg-gray default-padding">
         <div class="container">
             <div class="row">
-                <div class="site-heading text-center">
+                <div class="site-heading text-center" data-scroll-animate="fadeInUp">
                     <div class="col-md-8 col-md-offset-2">
                         <h2>Our Events</h2>
-                        <p>
+                        <p data-scroll-animate="fadeInUp" data-delay="200">
                             Inspiring the next generation with knowledge, innovation, and career opportunities. 
                         </p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" data-scroll-animate="fadeInUp" data-delay="300">
                     <div id="event-carousel" class="event-items inner-cell event-carousel owl-carousel owl-theme">
                         <!-- Events will be loaded dynamically -->
                         <div class="item">
@@ -728,17 +730,17 @@
     <div class="blog-area default-padding">
         <div class="container">
             <div class="row">
-                <div class="site-heading text-center">
+                <div class="site-heading text-center" data-scroll-animate="fadeInUp">
                     <div class="col-md-8 col-md-offset-2">
                         <h2>Recent Blog</h2>
-                        <p>
+                        <p data-scroll-animate="fadeInUp" data-delay="200">
                             Stories, Events, and Ideas Driving Youth Empowerment in Kenya. 
                         </p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="blog-items">
+                <div class="blog-items" data-scroll-animate="fadeInUp" data-delay="300">
                     <!-- Blog posts will be loaded dynamically here -->
                 </div>
             </div>
@@ -791,6 +793,8 @@
     <script src="assets/js/bootsnav.js"></script>
     <script src="assets/js/YTPlayer.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/modern-scroll-animations.js"></script>
+    <script src="assets/js/modern-preloader.js"></script>
     <script src="chatbot-package/js/chatbot.js"></script>
 
     <script type="module">
@@ -1038,6 +1042,52 @@
             
             // Load recent blog posts when the page is ready
             loadRecentBlogs();
+            
+            // Initialize scroll progress indicator
+            const scrollProgress = document.getElementById('scroll-progress');
+            
+            function updateScrollProgress() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                
+                if (scrollProgress) {
+                    scrollProgress.style.transform = `scaleX(${scrollPercent / 100})`;
+                }
+            }
+            
+            // Throttled scroll handler for better performance
+            let scrollTicking = false;
+            function handleScrollProgress() {
+                if (!scrollTicking) {
+                    requestAnimationFrame(() => {
+                        updateScrollProgress();
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', handleScrollProgress);
+            
+            // Add GPU acceleration to animated elements
+            document.querySelectorAll('.scroll-animate, .modern-card, .parallax-element').forEach(el => {
+                el.classList.add('gpu-accelerated');
+            });
+            
+            // Enhanced smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         });
     </script>
 </body>
