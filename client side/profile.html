@@ -314,10 +314,140 @@
     <script src="assets/js/modern-preloader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
     <script src="utils/authGuard.js"></script>
-    <script type="module">
-    import { supabase, getCurrentUser, getUserProfile, getUserInterests, updateProfile, updateUserInterests, signOut, uploadAvatar, updateAvatarUrl, removeAvatar } from './utils/supabaseClient.js';
+    <script>
+    // Helper functions for profile management using UMD client
+    async function getCurrentUser() {
+        try {
+            const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+            if (error) throw error;
+            return { data: { user }, error: null };
+        } catch (error) {
+            return { data: { user: null }, error };
+        }
+    }
+
+    async function getUserProfile(userId) {
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('id', userId)
+                .single();
+            if (error) throw error;
+            return { data, error: null };
+        } catch (error) {
+            return { data: null, error };
+        }
+    }
+
+    async function getUserInterests(userId) {
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('user_interests')
+                .select(`
+                    interest_id,
+                    interests (
+                        name
+                    )
+                `)
+                .eq('user_id', userId);
+            if (error) throw error;
+            return { data, error: null };
+        } catch (error) {
+            return { data: null, error };
+        }
+    }
+
+    async function signOut() {
+        try {
+            const { error } = await window.supabaseClient.auth.signOut();
+            if (error) throw error;
+            return { error: null };
+        } catch (error) {
+            return { error };
+        }
+    }
+
+    async function uploadAvatar(userId, file) {
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${userId}-${Date.now()}.${fileExt}`;
+            
+            const { data, error: uploadError } = await window.supabaseClient.storage
+                .from('avatars')
+                .upload(fileName, file, {
+                    upsert: true,
+                    contentType: file.type
+                });
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = window.supabaseClient.storage
+                .from('avatars')
+                .getPublicUrl(fileName);
+
+            return publicUrl;
+        } catch (error) {
+            console.error('Error in uploadAvatar:', error);
+            throw error;
+        }
+    }
+
+    async function updateAvatarUrl(userId, avatarUrl) {
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('profiles')
+                .update({ avatar_url: avatarUrl })
+                .eq('id', userId);
+            if (error) throw error;
+            return { data, error: null };
+        } catch (error) {
+            return { data: null, error };
+        }
+    }
+
+    async function removeAvatar(userId, avatarUrl) {
+        try {
+            if (!avatarUrl) return;
+
+            // Extract filename from URL
+            const fileName = avatarUrl.split('/').pop();
+
+            // Remove file from storage
+            const { error: storageError } = await window.supabaseClient.storage
+                .from('avatars')
+                .remove([fileName]);
+
+            if (storageError) throw storageError;
+
+            // Update profile
+            const { error: profileError } = await window.supabaseClient
+                .from('profiles')
+                .update({ avatar_url: null })
+                .eq('id', userId);
+
+            if (profileError) throw profileError;
+
+            return { error: null };
+        } catch (error) {
+            return { error };
+        }
+    }
     
     document.addEventListener('DOMContentLoaded', async function() {
+        // Wait for Supabase client to be initialized
+        let attempts = 0;
+        while (!window.supabaseClient && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+
+        if (!window.supabaseClient) {
+            console.error('Supabase client not available');
+            window.location.href = 'login.html';
+            return;
+        }
+
         // Check if user is authenticated
         const { data: { user }, error: authError } = await getCurrentUser();
         
