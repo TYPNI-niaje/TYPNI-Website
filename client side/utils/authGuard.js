@@ -18,8 +18,14 @@ async function checkUser() {
 
     const { data: { session }, error } = await supabase.auth.getSession();
     
-    // If no active session, redirect to login page (except on login/registration pages)
-    if (!session && !window.location.pathname.includes('login') && !window.location.pathname.includes('registration')) {
+    // Only redirect to login on specifically protected pages
+    const currentPage = window.location.pathname.split('/').pop();
+    const protectedPages = ['profile.html'];
+    const authPages = ['login.html', 'registration.html'];
+    
+    // If no active session and on a protected page, redirect to login
+    if (!session && protectedPages.includes(currentPage)) {
+      console.log('No session on protected page, redirecting to login');
       window.location.href = 'login.html';
       return null;
     }
@@ -89,16 +95,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initial check for current user
     const user = await checkUser();
     
-    // If we're on a protected page and no user, redirect to login
-    const protectedPages = ['profile.html'];
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    if (!user && protectedPages.includes(currentPage)) {
-      console.log('No user found, redirecting to login');
-      window.location.href = 'login.html';
-      return;
-    }
-
     // If we get here, show the page
     document.body.style.visibility = 'visible';
   } catch (error) {

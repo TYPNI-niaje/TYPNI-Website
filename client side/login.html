@@ -152,9 +152,28 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/modern-preloader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script src="utils/globalAuth.js"></script>
     <script src="utils/authGuard.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Check if user is already authenticated and redirect to profile
+        if (window.typniAuth && window.typniAuth.onAuthChange) {
+            window.typniAuth.onAuthChange(function(event, user) {
+                if (event === 'SIGNED_IN' && user) {
+                    console.log('User already logged in, redirecting to profile');
+                    window.location.href = 'profile.html';
+                }
+            });
+
+            // Also check immediately if auth is already initialized
+            setTimeout(() => {
+                if (window.typniAuth.isAuthenticated && window.typniAuth.isAuthenticated()) {
+                    console.log('User already authenticated, redirecting to profile');
+                    window.location.href = 'profile.html';
+                }
+            }, 1000);
+        }
+
         const form = document.querySelector('form');
         
         form.addEventListener('submit', async function(e) {
