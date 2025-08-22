@@ -7,11 +7,11 @@
 (function() {
     'use strict';
 
-    // Configuration
+    // Configuration - Optimized for speed
     const config = {
-        homePageDelay: 3000,      // Extended logo animation
-        otherPageDelay: 600,      // Fast simple loader
-        contentFadeDelay: 300     // Content animation delay
+        homePageDelay: 2000,      // Reduced logo animation time
+        otherPageDelay: 400,      // Faster simple loader
+        contentFadeDelay: 150     // Quicker content animation
     };
 
     // Check if this is the home page
@@ -58,8 +58,9 @@
                 element.parentNode.removeChild(element);
             }
             
-            // Show content by removing body class
+            // Show content by removing body class and adding ready class
             document.body.classList.remove('preloader-active');
+            document.body.classList.add('content-ready');
             
             if (callback) callback();
         }, 800);
@@ -155,17 +156,35 @@
         });
     }
 
-    // Hide content immediately
+    // Hide content immediately - CRITICAL for preventing flash
     function hideContentImmediately() {
-        document.body.classList.add('preloader-active');
+        if (document.body) {
+            document.body.classList.add('preloader-active');
+        } else {
+            // If body doesn't exist yet, add style tag to hide content
+            const style = document.createElement('style');
+            style.textContent = `
+                body { visibility: hidden !important; opacity: 0 !important; }
+                .modern-preloader, .simple-page-loader, .scroll-indicator { 
+                    visibility: visible !important; 
+                    opacity: 1 !important; 
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add class when body is available
+            const checkBody = setInterval(() => {
+                if (document.body) {
+                    document.body.classList.add('preloader-active');
+                    document.head.removeChild(style);
+                    clearInterval(checkBody);
+                }
+            }, 1);
+        }
     }
     
-    // Call immediately to hide content
-    if (document.body) {
-        hideContentImmediately();
-    } else {
-        document.addEventListener('DOMContentLoaded', hideContentImmediately);
-    }
+    // Call immediately to hide content - CRITICAL timing
+    hideContentImmediately();
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {

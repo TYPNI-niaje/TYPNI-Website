@@ -41,9 +41,27 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- ========== End Font Awesome ========== -->
 
+    <!-- ========== Performance Optimization ========== -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/modern-preloader.css" as="style">
+    <style>
+        /* CRITICAL: Prevent content flash */
+        body:not(.content-ready) > *:not(.simple-page-loader):not(.scroll-indicator) {
+            visibility: hidden !important; opacity: 0 !important;
+        }
+        .simple-page-loader {
+            position: fixed !important; top: 0 !important; left: 0 !important;
+            width: 100% !important; height: 4px !important; z-index: 999999 !important;
+            background: linear-gradient(90deg, #4D1AA3, #390099, #FF0054) !important;
+            transform-origin: left !important; animation: fastLoad 0.4s ease forwards !important;
+        }
+        @keyframes fastLoad { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+    </style>
+
     <!-- ========== Supabase Client ========== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="utils/globalAuth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
+    <script src="utils/globalAuth.js" defer></script>
+    <script src="assets/js/modern-preloader.js"></script>
 
 </head>
 

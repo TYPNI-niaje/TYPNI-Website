@@ -9,12 +9,19 @@
     display: none !important;
 }
 
-/* Hide all content during preloader */
+/* Critical: Hide all content immediately during preloader */
 body.preloader-active {
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 body.preloader-active > *:not(.modern-preloader):not(.simple-page-loader):not(.scroll-indicator) {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Emergency content hiding for fast loading */
+body:not(.content-ready) > *:not(.modern-preloader):not(.simple-page-loader):not(.scroll-indicator) {
     visibility: hidden !important;
     opacity: 0 !important;
 }

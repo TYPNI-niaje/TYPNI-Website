@@ -74,19 +74,78 @@
         }
     </style>
 
-    <!-- ========== Google Fonts ========== -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <!-- ========== DNS Prefetch for External Resources ========== -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    
+    <!-- ========== Preload Critical Assets ========== -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/modern-preloader.css" as="style">
+    <link rel="preload" href="assets/img/TYPNI-11.jpg" as="image">
+    <link rel="preload" href="assets/js/jquery-1.12.4.min.js" as="script">
+    
+    <!-- ========== Google Fonts (Combined & Optimized) ========== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Montserrat:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- ========== Font Awesome ========== -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- ========== End Font Awesome ========== -->
 
-    <!-- ========== Supabase Client ========== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="utils/globalAuth.js"></script>
-    <script type="module" src="utils/supabaseClient.js"></script>
+    <!-- ========== Critical Inline CSS for Instant Loading ========== -->
+    <style>
+        /* CRITICAL: Hide content immediately to prevent flash */
+        body:not(.content-ready) > *:not(.modern-preloader):not(.simple-page-loader):not(.scroll-indicator) {
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        /* Preloader base styles - inline for instant application */
+        .modern-preloader, .simple-page-loader {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 999999 !important;
+            background: #ffffff !important;
+        }
+        
+        /* CRITICAL: Mobile Responsiveness Fix - Prevent horizontal overflow */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100% !important;
+        }
+        
+        /* Fix common mobile overflow issues */
+        *, *::before, *::after {
+            box-sizing: border-box !important;
+        }
+        
+        /* Prevent specific elements from causing overflow */
+        .container, .row, [class*="col-"] {
+            max-width: 100% !important;
+        }
+        
+        /* Fix image overflow */
+        img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        
+        /* Fix any fixed-width elements */
+        .banner-area, .banner-area div {
+            max-width: 100% !important;
+        }
+    </style>
+    
+    <!-- ========== Critical Performance Script ========== -->
+    <script src="assets/js/modern-preloader.js"></script>
+    
+    <!-- ========== Performance Monitoring (Development) ========== -->
+    <script src="utils/performance-monitor.js"></script>
 </head>
 
 <body>
@@ -778,25 +837,34 @@
 
     <!-- jQuery Frameworks
     ============================================= -->
+    <!-- ========== Critical Scripts (Blocking) ========== -->
     <script src="assets/js/jquery-1.12.4.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/equal-height.min.js"></script>
-    <script src="assets/js/jquery.appear.js"></script>
-    <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/progress-bar.min.js"></script>
-    <script src="assets/js/modernizr.custom.13711.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/count-to.js"></script>
-    <script src="assets/js/bootsnav.js"></script>
-    <script src="assets/js/YTPlayer.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/modern-scroll-animations.js"></script>
+    
+    <!-- ========== Non-Critical Scripts (Deferred for Performance) ========== -->
+    <script src="assets/js/equal-height.min.js" defer></script>
+    <script src="assets/js/jquery.appear.js" defer></script>
+    <script src="assets/js/jquery.easing.min.js" defer></script>
+    <script src="assets/js/jquery.magnific-popup.min.js" defer></script>
+    <script src="assets/js/progress-bar.min.js" defer></script>
+    <script src="assets/js/modernizr.custom.13711.js" defer></script>
+    <script src="assets/js/owl.carousel.min.js" defer></script>
+    <script src="assets/js/wow.min.js" defer></script>
+    <script src="assets/js/isotope.pkgd.min.js" defer></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js" defer></script>
+    <script src="assets/js/count-to.js" defer></script>
+    <script src="assets/js/bootsnav.js" defer></script>
+    <script src="assets/js/YTPlayer.min.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/modern-scroll-animations.js" defer></script>
+    <!-- ========== Supabase Client (Async) ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
+    <script src="utils/globalAuth.js" defer></script>
+    <script type="module" src="utils/supabaseClient.js"></script>
+    
+    <!-- ========== Non-Critical Scripts (Deferred) ========== -->
     <script src="assets/js/modern-preloader.js"></script>
-    <script src="chatbot-package/js/chatbot.js"></script>
+    <script src="chatbot-package/js/chatbot.js" defer></script>
 
     <script type="module">
         import { supabase, getPublishedBlogPosts, getRecentBlogPosts } from './utils/supabaseClient.js';
