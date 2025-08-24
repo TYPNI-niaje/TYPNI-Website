@@ -14,7 +14,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2';
 import { parseISO, format, startOfMonth, subMonths, endOfMonth } from 'date-fns';
 import { motion } from 'framer-motion';
 import typniLogo from '../assets/images/TYPNI-11.jpg';
@@ -478,18 +478,7 @@ const Analytics: FC = () => {
     ]
   };
 
-  const geoDataChart = {
-    labels: geoData.countries,
-    datasets: [
-      {
-        label: 'Users by Country',
-        data: geoData.counts,
-        backgroundColor: accentColor,
-        borderColor: 'rgba(236, 72, 153, 0.8)',
-        borderWidth: 1
-      }
-    ]
-  };
+
 
   if (loading) {
     return <LoadingScreen />;
