@@ -1,0 +1,540 @@
+/*!
+ * Epic TYPNI Countdown System
+ * 10-second countdown -> "NIaje Niaje!" -> Preloader
+ * Version: 1.0
+ */
+
+/* Hide everything during countdown */
+body.countdown-active {
+    overflow: hidden !important;
+}
+
+body.countdown-active > *:not(.epic-countdown):not(.niaje-container):not(.confetti-container):not(script) {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide everything during NIaje display except NIaje and confetti */
+body.niaje-active {
+    overflow: hidden !important;
+}
+
+body.niaje-active > *:not(.niaje-container):not(.confetti-container):not(script) {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Epic Countdown Container */
+.epic-countdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 9999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.epic-countdown.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Countdown Content */
+.countdown-content {
+    text-align: center;
+    position: relative;
+}
+
+/* Main Counter Display */
+.countdown-number {
+    font-size: clamp(80px, 20vw, 300px);
+    font-weight: 900;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #390099, #4D1AA3, #FF0054);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 2s ease-in-out infinite, countdownPulse 1s ease-in-out;
+    line-height: 0.8;
+    margin: 0;
+    position: relative;
+    text-align: center;
+}
+
+/* Countdown pulse animation */
+@keyframes countdownPulse {
+    0% { 
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% { 
+        transform: scale(1.1);
+    }
+    100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Gradient shift animation */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Particle effects around countdown */
+.countdown-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.particle:nth-child(1) {
+    background: #390099;
+    animation: floatParticle 3s ease-in-out infinite;
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    background: #4D1AA3;
+    animation: floatParticle 3s ease-in-out infinite;
+    top: 30%;
+    right: 20%;
+    animation-delay: 0.5s;
+}
+
+.particle:nth-child(3) {
+    background: #FF0054;
+    animation: floatParticle 3s ease-in-out infinite;
+    bottom: 20%;
+    left: 30%;
+    animation-delay: 1s;
+}
+
+.particle:nth-child(4) {
+    background: #390099;
+    animation: floatParticle 3s ease-in-out infinite;
+    bottom: 30%;
+    right: 30%;
+    animation-delay: 1.5s;
+}
+
+.particle:nth-child(5) {
+    background: #4D1AA3;
+    animation: floatParticle 3s ease-in-out infinite;
+    top: 50%;
+    left: 10%;
+    animation-delay: 2s;
+}
+
+.particle:nth-child(6) {
+    background: #FF0054;
+    animation: floatParticle 3s ease-in-out infinite;
+    top: 50%;
+    right: 10%;
+    animation-delay: 2.5s;
+}
+
+@keyframes floatParticle {
+    0%, 100% { 
+        transform: translateY(0px) scale(1);
+        opacity: 0.7;
+    }
+    50% { 
+        transform: translateY(-20px) scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* NIaje Niaje Animation Container */
+.niaje-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 9999998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.niaje-container.show {
+    display: flex !important;
+    animation: niajeShow 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes niajeShow {
+    0% { 
+        opacity: 0;
+        transform: scale(0.3) rotate(-10deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1) rotate(5deg);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.niaje-container.hide {
+    animation: niajeHide 0.6s ease-in forwards;
+}
+
+@keyframes niajeHide {
+    0% { 
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    100% { 
+        opacity: 0;
+        transform: scale(1.3) rotate(10deg);
+    }
+}
+
+/* NIaje Text Styling */
+.niaje-text {
+    font-size: clamp(40px, 12vw, 150px);
+    font-weight: 900;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(45deg, #390099, #4D1AA3, #FF0054, #390099);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: niajeGradient 1.5s ease-in-out infinite, niajeFloat 2s ease-in-out infinite;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+    word-break: keep-all;
+}
+
+@keyframes niajeGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes niajeFloat {
+    0%, 100% { 
+        transform: translateY(0px) rotateZ(0deg);
+    }
+    25% { 
+        transform: translateY(-10px) rotateZ(1deg);
+    }
+    75% { 
+        transform: translateY(5px) rotateZ(-1deg);
+    }
+}
+
+/* Sparkle effects for NIaje */
+.niaje-sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #FF0054;
+    border-radius: 50%;
+    opacity: 0;
+    animation: sparkleAnimation 2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(odd) {
+    background: #390099;
+}
+
+.sparkle:nth-child(3n) {
+    background: #4D1AA3;
+}
+
+@keyframes sparkleAnimation {
+    0% { 
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+    }
+    100% { 
+        opacity: 0;
+        transform: scale(0) rotate(360deg);
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .countdown-particles {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .particle {
+        width: 5px;
+        height: 5px;
+    }
+    
+    .countdown-number {
+        font-size: clamp(60px, 18vw, 200px);
+        line-height: 0.85;
+    }
+    
+    .niaje-text {
+        font-size: clamp(32px, 10vw, 100px);
+        padding: 0 15px;
+        line-height: 1.1;
+    }
+    
+    .confetti-piece {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .confetti-piece.rectangle {
+        width: 6px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-number {
+        font-size: clamp(50px, 16vw, 150px);
+    }
+    
+    .niaje-text {
+        font-size: clamp(28px, 9vw, 80px);
+        padding: 0 10px;
+    }
+    
+    .countdown-particles {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .particle {
+        width: 4px;
+        height: 4px;
+    }
+    
+    .confetti-piece {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .confetti-piece.rectangle {
+        width: 4px;
+        height: 8px;
+    }
+    
+    /* Optimize animations for mobile performance */
+    .countdown-number,
+    .niaje-text {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform, opacity;
+    }
+    
+    /* Reduce particle complexity on very small screens */
+    .countdown-particles .particle {
+        animation-duration: 4s !important; /* Slower for less CPU usage */
+    }
+    
+    /* Ensure text doesn't get too small */
+    .niaje-text {
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Extra small screens - optimize further */
+@media (max-width: 360px) {
+    .countdown-number {
+        font-size: clamp(45px, 15vw, 120px);
+    }
+    
+    .niaje-text {
+        font-size: clamp(24px, 8vw, 70px);
+        padding: 0 5px;
+    }
+    
+    .countdown-particles {
+        width: 150px;
+        height: 150px;
+    }
+    
+    /* Reduce particles even more on very small screens */
+    .particle:nth-child(n+4) {
+        display: none;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .countdown-number,
+    .niaje-text,
+    .particle,
+    .sparkle {
+        animation: none !important;
+    }
+    
+    .epic-countdown,
+    .niaje-container {
+        transition: opacity 0.3s ease !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .epic-countdown,
+    .niaje-container {
+        background: #fff;
+        border: 3px solid #000;
+    }
+    
+    .countdown-number,
+    .niaje-text {
+        color: #000 !important;
+        -webkit-text-fill-color: #000 !important;
+    }
+}
+
+/* Performance optimizations */
+.epic-countdown *,
+.niaje-container * {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+/* Preload critical fonts */
+@font-face {
+    font-family: 'System';
+    src: local(-apple-system), local(BlinkMacSystemFont);
+    font-display: swap;
+}
+
+/* GPU acceleration for smooth animations */
+.countdown-number,
+.niaje-text,
+.particle,
+.sparkle,
+.confetti-piece {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Epic Confetti Animation */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999999;
+    overflow: hidden;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0.9;
+    animation: confettiFall linear forwards;
+}
+
+.confetti-piece.square {
+    border-radius: 2px;
+}
+
+.confetti-piece.circle {
+    border-radius: 50%;
+}
+
+.confetti-piece.triangle {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid currentColor;
+}
+
+.confetti-piece.rectangle {
+    width: 8px;
+    height: 16px;
+    border-radius: 1px;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100px) translateX(0) rotateZ(0deg);
+        opacity: 1;
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(100vh + 100px)) translateX(var(--drift, 0px)) rotateZ(720deg);
+        opacity: 0.3;
+    }
+}
+
+/* Confetti colors using brand palette */
+.confetti-piece:nth-child(6n+1) { background-color: #390099; }
+.confetti-piece:nth-child(6n+2) { background-color: #4D1AA3; }
+.confetti-piece:nth-child(6n+3) { background-color: #FF0054; }
+.confetti-piece:nth-child(6n+4) { background-color: #FFDE21; }
+.confetti-piece:nth-child(6n+5) { background-color: #9D4EDD; }
+.confetti-piece:nth-child(6n+6) { background-color: #F72585; }
+
+/* Triangle color override */
+.confetti-piece.triangle:nth-child(6n+1) { border-bottom-color: #390099; }
+.confetti-piece.triangle:nth-child(6n+2) { border-bottom-color: #4D1AA3; }
+.confetti-piece.triangle:nth-child(6n+3) { border-bottom-color: #FF0054; }
+.confetti-piece.triangle:nth-child(6n+4) { border-bottom-color: #FFDE21; }
+.confetti-piece.triangle:nth-child(6n+5) { border-bottom-color: #9D4EDD; }
+.confetti-piece.triangle:nth-child(6n+6) { border-bottom-color: #F72585; }

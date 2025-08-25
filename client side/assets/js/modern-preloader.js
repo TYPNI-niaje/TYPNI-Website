@@ -90,6 +90,12 @@
 
     // Initialize preloader system
     function initPreloader() {
+        // Check if countdown is active (home page only)
+        if (isHomePage() && document.body.classList.contains('countdown-active')) {
+            // Don't initialize preloader yet, countdown will call us
+            return;
+        }
+        
         // Add body class to hide content
         document.body.classList.add('preloader-active');
         
@@ -219,6 +225,9 @@
             }
         },
         show: function() {
+            initPreloader();
+        },
+        init: function() {
             initPreloader();
         },
         isHome: isHomePage
