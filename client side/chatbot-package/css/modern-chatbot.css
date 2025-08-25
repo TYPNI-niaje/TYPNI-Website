@@ -1,10 +1,45 @@
 /*!
- * Modern Chatbot UI for TYPNI
- * Mobile-first responsive design inspired by modern chat interfaces
- * Version: 2.0
+ * Modern TYPNI Chatbot - Clean & Contemporary Design
+ * Mobile-first responsive design with smooth animations
+ * Version: 3.0
  */
 
-/* Global Text Direction Fix for Chatbot */
+:root {
+    /* TYPNI Brand Colors */
+    --typni-primary: #390099;
+    --typni-secondary: #4D1AA3;
+    --typni-accent: #FF0054;
+    --typni-yellow: #FFDE21;
+    
+    /* Modern UI System */
+    --chat-bg: #ffffff;
+    --chat-surface: #f8fafc;
+    --chat-border: #e2e8f0;
+    --chat-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --chat-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+    
+    /* Typography */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #94a3b8;
+    
+    /* Message Bubbles */
+    --bot-bg: var(--typni-primary);
+    --bot-text: #ffffff;
+    --user-bg: #e2e8f0;
+    --user-text: var(--text-primary);
+    
+    /* Smooth Animations */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Layout */
+    --chat-radius: 20px;
+    --message-radius: 18px;
+    --spacing: 20px;
+}
+
+/* Global Text Direction Fix */
 .modern-chatbot *,
 .chatbot-fab * {
     writing-mode: initial !important;
