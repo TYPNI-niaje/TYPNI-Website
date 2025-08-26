@@ -6011,7 +6011,7 @@ footer .f-item .address li i {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  color: #FF0054;
+  color: #ffffff;
   display: table-cell;
   font-size: 16px;
   height: 45px;
@@ -6104,7 +6104,7 @@ footer .f-item.gallery ul li img {
 }
 
 footer .f-item.recent-post li a {
-  color: #cccccc;
+  color: #ffffff;
   display: block;
   font-size: 14px;
   font-weight: 500;
@@ -6215,7 +6215,7 @@ footer .f-item.recent-post li .info {
 }
 
 .footer-bottom p {
-  color: #cccccc;
+  color: #ffffff;
   font-size: 14px;
   margin: 0;
   line-height: 40px;
@@ -6226,7 +6226,7 @@ footer .f-item.recent-post li .info {
 }
 
 .footer-bottom-menu li a {
-  color: #cccccc;
+  color: #ffffff;
   display: inline-block;
   font-weight: 500;
   margin-left: 15px;
@@ -6265,7 +6265,7 @@ footer .f-items .item:last-child {
 }
 
 .footer-bottom p a {
-  color: #FF0054;
+  color: #ffffff;
   font-weight: 600;
 }
 
