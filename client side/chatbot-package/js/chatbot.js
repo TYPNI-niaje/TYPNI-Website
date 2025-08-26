@@ -26,10 +26,8 @@ class Chatbot {
             <div class="chat-box">
                 <div class="chat-header">
                     <div class="typni-logo"></div>
-                    <h4>TYPNI Support</h4>
+                    <h4>TYPNI AI</h4>
                     <div class="chat-actions">
-                        <span class="bg-pattern-toggle" title="Change background"><i class="fas fa-image"></i></span>
-                        <span class="theme-toggle" title="Change theme"><i class="fas fa-paint-brush"></i></span>
                         <span class="voice-input" title="Voice input"><i class="fas fa-microphone"></i></span>
                         <span class="clear-chat" title="Clear chat"><i class="fas fa-broom"></i></span>
                         <span class="close-chat">&times;</span>
@@ -52,11 +50,8 @@ class Chatbot {
                     </div>
                 </div>
                 <div class="chat-input">
-                    <div class="emoji-button" title="Add emoji">
-                        <i class="fas fa-smile"></i>
-                    </div>
                     <input type="text" placeholder="Type your message...">
-                    <button>Send</button>
+                    <button>↑</button>
                 </div>
                 <div class="theme-picker">
                     <div class="theme-option" data-theme="violet" style="background-color: #390099;"></div>
@@ -64,7 +59,7 @@ class Chatbot {
                     <div class="theme-option" data-theme="berry" style="background-color: #9E0059;"></div>
                     <div class="theme-option" data-theme="flamingo" style="background-color: #FF0054;"></div>
                 </div>
-                <div class="emoji-picker">
+                <div class="emoji-picker" style="display: none !important;">
                     <div class="emoji-group">
                         <span class="emoji-item">😊</span>
                         <span class="emoji-item">😂</span>
@@ -95,9 +90,6 @@ class Chatbot {
         this.closeButton = chatWidget.querySelector('.close-chat');
         this.clearButton = chatWidget.querySelector('.clear-chat');
         this.voiceButton = chatWidget.querySelector('.voice-input');
-        this.themeToggle = chatWidget.querySelector('.theme-toggle');
-        this.themePicker = chatWidget.querySelector('.theme-picker');
-        this.themeOptions = chatWidget.querySelectorAll('.theme-option');
         this.promptChips = chatWidget.querySelectorAll('.prompt-chip');
         this.input = chatWidget.querySelector('.chat-input input');
         this.sendButton = chatWidget.querySelector('.chat-input button');
@@ -105,13 +97,9 @@ class Chatbot {
         this.typingIndicator = chatWidget.querySelector('.typing-indicator');
         
         // New elements
-        this.emojiButton = chatWidget.querySelector('.emoji-button');
         this.emojiPicker = chatWidget.querySelector('.emoji-picker');
         this.emojiItems = chatWidget.querySelectorAll('.emoji-item');
         
-        this.bgPatternToggle = chatWidget.querySelector('.bg-pattern-toggle');
-        this.bgPatternPicker = chatWidget.querySelector('.bg-pattern-picker');
-        this.bgPatternOptions = chatWidget.querySelectorAll('.bg-pattern-option');
 
         // Add event listeners
         this.chatButton.addEventListener('click', () => {
@@ -121,10 +109,6 @@ class Chatbot {
         this.closeButton.addEventListener('click', () => this.toggleChat());
         this.clearButton.addEventListener('click', () => this.clearChat());
         this.voiceButton.addEventListener('click', () => this.toggleVoiceInput());
-        this.themeToggle.addEventListener('click', () => this.toggleThemePicker());
-        this.themeOptions.forEach(option => {
-            option.addEventListener('click', (e) => this.changeTheme(e.target.dataset.theme));
-        });
         this.promptChips.forEach(chip => {
             chip.addEventListener('click', (e) => this.usePromptChip(e.target.textContent));
         });
@@ -133,17 +117,8 @@ class Chatbot {
             if (e.key === 'Enter') this.sendMessage();
         });
         
-        // New event listeners
-        this.emojiButton.addEventListener('click', () => this.toggleEmojiPicker());
-        this.emojiItems.forEach(emoji => {
-            emoji.addEventListener('click', (e) => this.insertEmoji(e.target.textContent));
-        });
+        // Emoji functionality disabled
         
-        // Add event listeners for background patterns
-        this.bgPatternToggle.addEventListener('click', () => this.toggleBgPatternPicker());
-        this.bgPatternOptions.forEach(option => {
-            option.addEventListener('click', (e) => this.changeBgPattern(e.target.dataset.pattern));
-        });
 
         // Show notification after 2 seconds
         setTimeout(() => {
@@ -393,28 +368,8 @@ User message: ${message}`;
                     
                     textContainer.innerHTML = formattedText;
                     
-                    // Add emoji reactions
-                    const reactionsDiv = document.createElement('div');
-                    reactionsDiv.className = 'message-reactions';
-                    reactionsDiv.innerHTML = `
-                        <span class="reaction" data-emoji="👍">👍</span>
-                        <span class="reaction" data-emoji="❤️">❤️</span>
-                        <span class="reaction" data-emoji="😊">😊</span>
-                    `;
-                    messageDiv.appendChild(reactionsDiv);
-                    
                     // Add class to indicate typing is done
                     messageDiv.classList.add('typing-complete');
-                    
-                    // Add event listeners to reactions
-                    setTimeout(() => {
-                        const reactions = messageDiv.querySelectorAll('.reaction');
-                        reactions.forEach(reaction => {
-                            reaction.addEventListener('click', (e) => {
-                                this.handleReaction(e.target, messageDiv);
-                            });
-                        });
-                    }, 0);
                 } else {
                     // For user messages, just set the text content directly
                     textContainer.textContent = message.text;
@@ -598,23 +553,6 @@ User message: ${message}`;
                     // Typing complete - replace with formatted text
                     textContainer.innerHTML = formattedText;
                     
-                    // Add emoji reactions after typing is complete
-                    const reactionsDiv = document.createElement('div');
-                    reactionsDiv.className = 'message-reactions';
-                    reactionsDiv.innerHTML = `
-                        <span class="reaction" data-emoji="👍">👍</span>
-                        <span class="reaction" data-emoji="❤️">❤️</span>
-                        <span class="reaction" data-emoji="😊">😊</span>
-                    `;
-                    messageDiv.appendChild(reactionsDiv);
-                    
-                    // Add event listeners to reactions
-                    const reactions = messageDiv.querySelectorAll('.reaction');
-                    reactions.forEach(reaction => {
-                        reaction.addEventListener('click', (e) => {
-                            this.handleReaction(e.target, messageDiv);
-                        });
-                    });
                     
                     // Signal completion
                     const typingCompleteEvent = new CustomEvent('typingComplete', { detail: { messageDiv } });
@@ -630,44 +568,7 @@ User message: ${message}`;
         }
     }
 
-    handleReaction(reactionEl, messageDiv) {
-        // First, remove active class from all reactions in this message
-        const reactions = messageDiv.querySelectorAll('.reaction');
-        reactions.forEach(r => r.classList.remove('active'));
-        
-        // Add active class to the clicked reaction
-        reactionEl.classList.add('active');
-        
-        // Show feedback animation
-        const feedbackEl = document.createElement('div');
-        feedbackEl.className = 'reaction-feedback';
-        feedbackEl.textContent = 'Thanks for your feedback!';
-        messageDiv.appendChild(feedbackEl);
-        
-        setTimeout(() => {
-            feedbackEl.classList.add('show');
-            setTimeout(() => {
-                feedbackEl.classList.remove('show');
-                setTimeout(() => {
-                    messageDiv.removeChild(feedbackEl);
-                }, 300);
-            }, 1500);
-        }, 10);
-    }
 
-    toggleEmojiPicker() {
-        this.emojiPicker.classList.toggle('visible');
-    }
-    
-    insertEmoji(emoji) {
-        const cursorPos = this.input.selectionStart;
-        const text = this.input.value;
-        const newText = text.slice(0, cursorPos) + emoji + text.slice(cursorPos);
-        this.input.value = newText;
-        this.input.focus();
-        this.input.selectionStart = this.input.selectionEnd = cursorPos + emoji.length;
-        this.emojiPicker.classList.remove('visible');
-    }
     
     showNotificationBadge() {
         this.notificationBadge.classList.add('visible');

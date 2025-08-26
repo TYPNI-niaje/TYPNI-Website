@@ -297,7 +297,29 @@ filter: brightness(0) invert(1); /* Makes the SVG white */
 
 .content-wrapper {
   max-width: 1300px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Fix for mobile zoom out issue */
+@media (max-width: 1300px) {
+  .content-wrapper {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 0 10px;
+  }
 }
 
 /* GRID SYSTEM */
@@ -621,11 +643,39 @@ input {
 .container-half {
   margin: 0 auto;
   width: 60%;
+  max-width: 100%;
   padding: 0 15px;
 }
 
+@media (max-width: 768px) {
+  .container-half {
+    width: 90%;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-half {
+    width: 95%;
+    padding: 0 8px;
+  }
+}
+
 .container-full {
+  width: 100%;
   padding: 0 15px;
+}
+
+@media (max-width: 768px) {
+  .container-full {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-full {
+    padding: 0 8px;
+  }
 }
 
 .bg-cover {

@@ -14,10 +14,11 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2';
 import { parseISO, format, startOfMonth, subMonths, endOfMonth } from 'date-fns';
 import { motion } from 'framer-motion';
 import typniLogo from '../assets/images/TYPNI-11.jpg';
+import GeographicalDistribution from '../components/GeographicalDistribution/GeographicalDistribution';
 
 // Register ChartJS components
 ChartJS.register(
@@ -477,18 +478,7 @@ const Analytics: FC = () => {
     ]
   };
 
-  const geoDataChart = {
-    labels: geoData.countries,
-    datasets: [
-      {
-        label: 'Users by Country',
-        data: geoData.counts,
-        backgroundColor: accentColor,
-        borderColor: 'rgba(236, 72, 153, 0.8)',
-        borderWidth: 1
-      }
-    ]
-  };
+
 
   if (loading) {
     return <LoadingScreen />;
@@ -706,49 +696,10 @@ const Analytics: FC = () => {
               boxShadow: "0px 10px 30px -5px rgba(0, 0, 0, 0.1)" 
             }}
           >
-            <Card title={
-              <div className="flex items-center space-x-2">
-                <span>Geographic Distribution</span>
-                <motion.div 
-                  className="w-2 h-2 rounded-full bg-accent"
-                  animate={{ scale: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                />
-              </div>
-            }>
-              <motion.div 
-                className="p-4 h-80"
-                variants={chartVariants}
-                initial="hidden"
-                animate={chartVisible ? "visible" : "hidden"}
-              >
-                <Bar
-                  data={geoDataChart}
-                  options={{
-                    indexAxis: 'y',
-                    plugins: {
-                      legend: {
-                        display: false
-                      }
-                    },
-                    responsive: true,
-                    scales: {
-                      x: {
-                        beginAtZero: true,
-                        grid: {
-                          color: 'rgba(229, 231, 235, 0.5)'
-                        }
-                      },
-                      y: {
-                        grid: {
-                          display: false
-                        }
-                      }
-                    }
-                  }}
-                />
-              </motion.div>
-            </Card>
+            <GeographicalDistribution 
+              geoData={geoData} 
+              isVisible={chartVisible}
+            />
           </motion.div>
         </div>
 

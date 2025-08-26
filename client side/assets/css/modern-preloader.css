@@ -58,8 +58,9 @@ body:not(.content-ready) > *:not(.modern-preloader):not(.simple-page-loader):not
 }
 
 .preloader-logo {
-    width: 120px;
+    width: clamp(100px, 15vw, 160px);
     height: auto;
+    max-width: 200px;
     animation: mildBounce 2s infinite ease-in-out;
 }
 
@@ -134,7 +135,15 @@ body:not(.content-ready) > *:not(.modern-preloader):not(.simple-page-loader):not
 /* Mobile optimizations */
 @media (max-width: 768px) {
     .preloader-logo {
-        width: 100px;
+        width: clamp(120px, 20vw, 180px);
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .preloader-logo {
+        width: clamp(100px, 25vw, 150px);
+        max-width: 150px;
     }
 }
 
