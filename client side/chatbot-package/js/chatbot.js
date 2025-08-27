@@ -221,8 +221,25 @@ class Chatbot {
     }
 
     addMessage(text, sender) {
-        // For backward compatibility, redirect to the new animation method
-        this.addMessageWithTypingEffect(text, sender);
+        if (sender === 'user') {
+            // User messages should be displayed immediately without typing animation
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            
+            // Insert message div before typing indicator
+            this.messagesContainer.insertBefore(messageDiv, this.typingIndicator);
+            
+            // Scroll to bottom
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            
+            // Save to history
+            this.messageHistory.push({ text, sender });
+            this.saveChatHistory();
+        } else {
+            // Bot messages use typing animation
+            this.addMessageWithTypingEffect(text, sender);
+        }
     }
 
     showTypingIndicator() {
@@ -484,11 +501,6 @@ User message: ${message}`;
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}`;
         
-        // Empty container for text to be typed
-        const textContainer = document.createElement('div');
-        textContainer.className = 'message-text';
-        messageDiv.appendChild(textContainer);
-        
         // Insert message div before typing indicator
         this.messagesContainer.insertBefore(messageDiv, this.typingIndicator);
         
@@ -538,10 +550,8 @@ User message: ${message}`;
                     const word = words[i];
                     currentText += word;
                     
-                    // Create a span for the word
-                    const wordContainer = document.createElement('span');
-                    wordContainer.style.animationDelay = `${i * 25}ms`; // Increased from 15 to 25ms
-                    textContainer.innerHTML = currentText;
+                    // Update the message div content directly
+                    messageDiv.innerHTML = currentText;
                     i++;
                     
                     // Scroll to the bottom as text is being typed
@@ -551,8 +561,7 @@ User message: ${message}`;
                     setTimeout(typeNextWord, typingSpeed);
                 } else {
                     // Typing complete - replace with formatted text
-                    textContainer.innerHTML = formattedText;
-                    
+                    messageDiv.innerHTML = formattedText;
                     
                     // Signal completion
                     const typingCompleteEvent = new CustomEvent('typingComplete', { detail: { messageDiv } });
@@ -564,7 +573,7 @@ User message: ${message}`;
             setTimeout(typeNextWord, 500); // Small initial delay
         } else {
             // For user messages, just set the text content directly
-            textContainer.textContent = text;
+            messageDiv.textContent = text;
         }
     }
 
