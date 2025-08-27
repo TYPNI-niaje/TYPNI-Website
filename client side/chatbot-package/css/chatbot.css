@@ -556,12 +556,19 @@
     .chat-widget {
         bottom: 20px;
         right: 20px;
+        left: 20px;
+        position: fixed;
+        z-index: 9999;
     }
     
     .chat-button {
         width: 56px;
         height: 56px;
         font-size: 24px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10000;
     }
     
     .chat-box {
@@ -571,25 +578,61 @@
         max-height: none;
         bottom: 0;
         right: 0;
+        left: 0;
+        top: 0;
         border-radius: 0;
         border: none;
+        position: fixed;
+        z-index: 9999;
     }
     
     .chat-header {
         border-radius: 0;
+        padding: var(--spacing-lg) var(--spacing-xl);
         padding-top: max(var(--spacing-lg), env(safe-area-inset-top));
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
     
     .chat-messages {
         padding: var(--spacing-md);
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
     }
     
     .chat-input {
         padding: var(--spacing-md);
+        padding-bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+        position: sticky;
+        bottom: 0;
+        background: var(--chat-bg);
+        border-top: 1px solid var(--chat-border);
     }
     
     .chat-input input {
         font-size: 16px; /* Prevents iOS zoom */
+        min-height: 44px; /* Touch target size */
+    }
+    
+    .chat-input button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .message {
+        max-width: 90%;
+        font-size: 14px;
+    }
+    
+    .prompt-chip {
+        font-size: 13px;
+        padding: 8px 12px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
     }
 }
 
@@ -597,8 +640,28 @@
     .chat-button {
         width: 52px;
         height: 52px;
-        margin: 16px;
         font-size: 22px;
+        bottom: 16px;
+        right: 16px;
+    }
+    
+    .chat-widget {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+    }
+    
+    .chat-messages {
+        padding: var(--spacing-sm);
+    }
+    
+    .chat-input {
+        padding: var(--spacing-sm);
+    }
+    
+    .message {
+        font-size: 13px;
+        padding: 10px 12px;
     }
 }
 

@@ -3,9 +3,12 @@ const GEMINI_API_KEY = 'AIzaSyBK08X0hbD0XtQipnxDz_vc09rcKsnbgFo';
 
 class Chatbot {
     constructor() {
-        this.initialize();
+        // Initialize properties first
         this.messageHistory = [];
         this.isProcessing = false;
+        
+        // Then initialize the UI
+        this.initialize();
         
         // Listen for typing complete events
         document.addEventListener('typingComplete', (e) => {
@@ -182,8 +185,27 @@ class Chatbot {
 
     toggleChat() {
         this.chatBox.classList.toggle('active');
-        if (this.chatBox.classList.contains('active')) {
+        const isActive = this.chatBox.classList.contains('active');
+        
+        if (isActive) {
             this.input.focus();
+            // Prevent body scrolling on mobile when chat is open
+            if (window.innerWidth <= 768) {
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = `-${window.scrollY}px`;
+            }
+        } else {
+            // Restore body scrolling on mobile when chat is closed
+            if (window.innerWidth <= 768) {
+                const scrollY = document.body.style.top;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
     }
 
@@ -221,6 +243,11 @@ class Chatbot {
     }
 
     addMessage(text, sender) {
+        // Initialize messageHistory if not already done
+        if (!this.messageHistory) {
+            this.messageHistory = [];
+        }
+        
         if (sender === 'user') {
             // User messages should be displayed immediately without typing animation
             const messageDiv = document.createElement('div');
@@ -498,6 +525,11 @@ User message: ${message}`;
     }
 
     addMessageWithTypingEffect(text, sender) {
+        // Initialize messageHistory if not already done
+        if (!this.messageHistory) {
+            this.messageHistory = [];
+        }
+        
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}`;
         
