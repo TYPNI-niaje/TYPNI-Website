@@ -268,5 +268,5 @@ export async function getRecentBlogPosts(limit = 3) {
     return { data, error: null }
   } catch (error) {
     return { data: null, error }
-}
+  }
 } 

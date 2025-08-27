@@ -848,9 +848,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Supabase client initialized", supabase);
 
-            // Initialize chatbot
-            const chatbot = new Chatbot();
-            chatbot.initialize();
+            // Initialize chatbot (with error handling)
+            try {
+                if (typeof Chatbot !== 'undefined') {
+                    const chatbot = new Chatbot();
+                    chatbot.initialize();
+                }
+            } catch (error) {
+                console.log("Chatbot initialization failed:", error);
+            }
 
             // Format date for display
             function formatDate(dateString) {
@@ -914,11 +920,16 @@
             async function loadEvents() {
                 console.log("Loading events...");
                 try {
-                    // Get upcoming events with preference for those with banner images
+                    // Verify supabase client is available
+                    if (!supabase) {
+                        throw new Error("Supabase client not initialized");
+                    }
+                    
+                    // Get upcoming and ongoing events with preference for those with banner images
                     const { data: events, error } = await supabase
                         .from('events')
                         .select('*')
-                        .eq('status', 'upcoming')
+                        .in('status', ['upcoming', 'ongoing'])
                         .order('start_date', { ascending: true })
                         .limit(6);
                     
@@ -927,6 +938,7 @@
                     if (error) throw error;
                     
                     const eventCarousel = document.querySelector('.event-carousel');
+                    console.log("Event carousel element found:", eventCarousel);
                     if (!eventCarousel) {
                         console.error("Could not find element with class 'event-carousel'");
                         return;
@@ -1043,6 +1055,11 @@
             async function loadRecentBlogs() {
                 console.log("Loading recent blogs...");
                 try {
+                    // Verify supabase client is available
+                    if (!supabase) {
+                        throw new Error("Supabase client not initialized");
+                    }
+                    
                     // Get recent blog posts using the imported function
                     const { data: blogs, error } = await getRecentBlogPosts(3);
                     
@@ -1051,6 +1068,7 @@
                     if (error) throw error;
                     
                     const blogContainer = document.querySelector('.blog-items');
+                    console.log("Blog container element found:", blogContainer);
                     if (!blogContainer) {
                         console.error("Could not find element with class 'blog-items'");
                         return;
