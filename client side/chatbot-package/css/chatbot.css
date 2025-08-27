@@ -63,7 +63,7 @@
 .chat-widget {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 24px;
     z-index: 1000;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -147,7 +147,7 @@
 .chat-box {
     position: absolute;
     bottom: 80px;
-    right: 0;
+    left: 0;
     width: 400px;
     max-width: calc(100vw - 48px);
     height: 600px;
@@ -160,14 +160,14 @@
     overflow: hidden;
     border: 1px solid var(--chat-border);
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateX(-20px) translateY(20px) scale(0.95);
     transition: all var(--transition-smooth);
 }
 
 .chat-box.active {
     display: flex;
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(0) translateY(0) scale(1);
 }
 
 /* Clean Header */
@@ -551,12 +551,63 @@
     display: none !important;
 }
 
+/* Desktop Responsiveness */
+@media (min-width: 769px) {
+    .chat-widget {
+        bottom: 24px;
+        left: 24px;
+    }
+    
+    .chat-button {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+    }
+    
+    .chat-box {
+        width: 400px;
+        height: 600px;
+        left: 0;
+        bottom: 80px;
+    }
+}
+
+/* Tablet and Small Desktop */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .chat-box {
+        width: 360px;
+        height: 550px;
+        max-width: calc(100vw - 60px);
+        max-height: calc(100vh - 140px);
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1025px) {
+    .chat-widget {
+        bottom: 32px;
+        left: 32px;
+    }
+    
+    .chat-button {
+        width: 70px;
+        height: 70px;
+        font-size: 30px;
+    }
+    
+    .chat-box {
+        width: 420px;
+        height: 650px;
+        bottom: 90px;
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .chat-widget {
         bottom: 20px;
-        right: 20px;
         left: 20px;
+        right: 20px;
         position: fixed;
         z-index: 9999;
     }
@@ -567,7 +618,7 @@
         font-size: 24px;
         position: fixed;
         bottom: 20px;
-        right: 20px;
+        left: 20px;
         z-index: 10000;
     }
     
@@ -642,13 +693,13 @@
         height: 52px;
         font-size: 22px;
         bottom: 16px;
-        right: 16px;
+        left: 16px;
     }
     
     .chat-widget {
         bottom: 16px;
-        right: 16px;
         left: 16px;
+        right: 16px;
     }
     
     .chat-messages {
