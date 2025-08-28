@@ -22,6 +22,8 @@ export async function signUp(userData) {
           country: userData.country,
           is_employed: userData.is_employed,
           education_level: userData.education_level,
+          pwd_status: userData.pwd_status,
+          organization: userData.organization,
           interests: userData.interests,
           interest_ids: userData.interest_ids
         }

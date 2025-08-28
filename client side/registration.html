@@ -242,6 +242,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pwd_status">Person with Disability (PWD) Status</label>
+                                            <select id="pwd_status" class="form-control">
+                                                <option value="no">No</option>
+                                                <option value="yes">Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="organization">Organization (Optional)</label>
+                                            <input type="text" class="form-control" id="organization" name="user_organization" placeholder="Enter organization name" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="interests">Select Your Top 3 Interests *</label>
@@ -659,9 +676,16 @@
                 }
             }
             
-            // Get form data
+            // Get form data with debugging
+            const nameValue = document.getElementById('name').value;
+            const organizationValue = document.getElementById('organization').value.trim() || null;
+            
+            console.log('DEBUG: Name field value:', nameValue);
+            console.log('DEBUG: Organization field value:', organizationValue);
+            console.log('DEBUG: Organization field element:', document.getElementById('organization'));
+            
             const formData = {
-                name: document.getElementById('name').value,
+                name: nameValue,
                 phone_number: phoneInput.getNumber(), // This includes the country code
                 idNumber: document.getElementById('idNumber').value,
                 email: document.getElementById('email').value,
@@ -671,9 +695,13 @@
                 country: new Intl.DisplayNames(['en'], { type: 'region' }).of(document.getElementById('country').value),
                 is_employed: document.getElementById('employment').value === 'true',
                 education_level: document.getElementById('education').value,
+                pwd_status: document.getElementById('pwd_status').value,
+                organization: organizationValue,
                 interests: selectedInterestValues,
                 interest_ids: interestIds
             };
+            
+            console.log('DEBUG: Complete formData object:', formData);
 
             // Validate interests
             if (formData.interests.length === 0) {

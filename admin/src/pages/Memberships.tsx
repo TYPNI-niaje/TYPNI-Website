@@ -10,6 +10,8 @@ interface User {
   role: string;
   created_at: string;
   avatar_url?: string | null;
+  pwd_status?: string;
+  organization?: string;
   [key: string]: any;
 }
 
@@ -56,6 +58,8 @@ const Memberships = () => {
             email: user.email,
             full_name: user.full_name || profile.full_name,
             role: user.role || profile.role || 'Member',
+            pwd_status: profile.pwd_status || 'no',
+            organization: profile.organization || 'None',
           };
         });
         
@@ -211,8 +215,18 @@ const Memberships = () => {
               <span className="text-xs bg-gray-100 px-2 py-1 rounded">{selectedUser.role || 'Member'}</span>
             </div>
             <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="font-medium text-gray-700">PWD Status:</span>
+                <span className={`text-xs px-2 py-1 rounded-full font-medium ${selectedUser.pwd_status === 'yes' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                  {selectedUser.pwd_status === 'yes' ? 'Yes' : 'No'}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="font-medium text-gray-700">Organization:</span>
+                <span className="text-gray-900">{selectedUser.organization && selectedUser.organization !== 'None' ? selectedUser.organization : 'None'}</span>
+              </div>
               {Object.entries(selectedUser).map(([key, value]) => (
-                key !== 'id' && key !== 'full_name' && key !== 'email' && key !== 'role' && key !== 'created_at' && key !== 'avatar_url' ? (
+                key !== 'id' && key !== 'full_name' && key !== 'email' && key !== 'role' && key !== 'created_at' && key !== 'avatar_url' && key !== 'pwd_status' && key !== 'organization' ? (
                   <div key={key} className="flex justify-between text-sm">
                     <span className="font-medium text-gray-700">{key.replace(/_/g, ' ')}:</span>
                     <span className="text-gray-900">{String(value)}</span>

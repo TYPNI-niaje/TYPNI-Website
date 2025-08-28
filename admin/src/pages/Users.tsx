@@ -12,6 +12,8 @@ interface User {
   status: 'active' | 'inactive';
   created_at: string;
   avatar_url?: string | null;
+  pwd_status?: string;
+  organization?: string;
 }
 
 const Users: FC = () => {
@@ -34,12 +36,12 @@ const Users: FC = () => {
           .select('*')
           .order('id', { ascending: false });
         if (fetchError) throw fetchError;
-        // Fetch avatar_url from profiles
+        // Fetch avatar_url, pwd_status, and organization from profiles
         const { data: profiles, error: profileError } = await supabase
           .from('profiles')
-          .select('id, avatar_url, created_at');
+          .select('id, avatar_url, created_at, pwd_status, organization');
         if (profileError) throw profileError;
-        // Merge avatar_url and created_at into users
+        // Merge avatar_url and created_at into users and get pwd_status and organization from profiles
         const formattedUsers: User[] = authUsers.map((user) => {
           const profile: any = profiles.find((p) => p.id === user.id) || {};
           return {
@@ -50,6 +52,8 @@ const Users: FC = () => {
             status: 'active',
             created_at: profile.created_at || '',
             avatar_url: profile.avatar_url || null,
+            pwd_status: profile.pwd_status || 'no',
+            organization: profile.organization || 'None',
           };
         });
         setUsers(formattedUsers);
@@ -181,7 +185,8 @@ const Users: FC = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PWD</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Organization</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
@@ -210,10 +215,16 @@ const Users: FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {user.role || 'Member'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(user.status)}`}>
-                            {user.status ? (user.status.charAt(0).toUpperCase() + user.status.slice(1)) : 'Unknown'}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${user.pwd_status === 'yes' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                            {user.pwd_status === 'yes' ? 'Yes' : 'No'}
                           </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500" title={user.organization}>
+                          {user.organization && user.organization !== 'None' ? 
+                            (user.organization.length > 20 ? user.organization.substring(0, 20) + '...' : user.organization) : 
+                            'None'
+                          }
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {formatDate(user.created_at)}
@@ -227,7 +238,7 @@ const Users: FC = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                      <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
                         No users found
                       </td>
                     </tr>
