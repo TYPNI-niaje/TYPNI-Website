@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import Card from '../components/Card/Card';
 import { PlusIcon, PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { supabase } from '../lib/supabase';
+import { getBlogImages } from '../lib/blogService';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface BlogPost {
@@ -28,6 +29,9 @@ const BlogManagement: FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft' | 'scheduled'>('all');
   const [showPreview, setShowPreview] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [galleryImages, setGalleryImages] = useState<Array<{name: string, url: string}>>([]);
+  const [loadingGallery, setLoadingGallery] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -118,7 +122,7 @@ const BlogManagement: FC = () => {
       excerpt: blog.excerpt,
       author: blog.author,
       category: blog.category,
-      status: blog.status,
+      status: blog.status as 'published' | 'draft' | 'scheduled',
       thumbnail_url: blog.thumbnail_url || '',
       publish_date: blog.publish_date || ''
     });
@@ -139,6 +143,33 @@ const BlogManagement: FC = () => {
     setEditingBlog(null);
     setShowCreateModal(false);
     setShowPreview(false);
+    setShowGallery(false);
+  };
+
+  // Gallery functions
+  const loadGalleryImages = async () => {
+    try {
+      setLoadingGallery(true);
+      const images = await getBlogImages();
+      setGalleryImages(images);
+    } catch (err: any) {
+      console.error('Error loading gallery images:', err);
+      setError('Failed to load gallery images: ' + err.message);
+    } finally {
+      setLoadingGallery(false);
+    }
+  };
+
+  const handleGalleryToggle = () => {
+    setShowGallery(!showGallery);
+    if (!showGallery && galleryImages.length === 0) {
+      loadGalleryImages();
+    }
+  };
+
+  const handleGalleryImageSelect = (imageUrl: string) => {
+    setFormData(prev => ({ ...prev, thumbnail_url: imageUrl }));
+    setShowGallery(false);
   };
 
   // Format blog content for preview (same as client-side function)
@@ -455,15 +486,46 @@ const BlogManagement: FC = () => {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Thumbnail URL
+                      Thumbnail Image
                     </label>
-                    <input
-                      type="url"
-                      value={formData.thumbnail_url}
-                      onChange={(e) => setFormData(prev => ({ ...prev, thumbnail_url: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-                      placeholder="https://example.com/image.jpg"
-                    />
+                    
+                    {/* Gallery button and URL input */}
+                    <div className="space-y-2">
+                      <button
+                        type="button"
+                        onClick={handleGalleryToggle}
+                        className="w-full px-4 py-2 border border-blue-300 rounded-md text-blue-600 hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Choose from Gallery
+                      </button>
+                      
+                      <div className="text-center text-sm text-gray-500">or</div>
+                      
+                      <input
+                        type="url"
+                        value={formData.thumbnail_url}
+                        onChange={(e) => setFormData(prev => ({ ...prev, thumbnail_url: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                        placeholder="https://example.com/image.jpg"
+                      />
+                    </div>
+
+                    {/* Preview selected image */}
+                    {formData.thumbnail_url && (
+                      <div className="mt-2">
+                        <img
+                          src={formData.thumbnail_url}
+                          alt="Thumbnail preview"
+                          className="w-full h-32 object-cover rounded-md"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   
                   <div>
@@ -481,19 +543,56 @@ const BlogManagement: FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Content * 
-                      <span className="text-xs text-gray-500 ml-2">
-                        (Supports Markdown: # Heading, **bold**, *italic*, [link](url), &gt; quote, - list)
-                      </span>
-                    </label>
-                    <textarea
-                      required
-                      value={formData.content}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                      rows={15}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary font-mono text-sm"
-                      placeholder="Write your blog content here using Markdown formatting...
+                    {/* Content Editor with Preview Toggle */}
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Content * 
+                        <span className="text-xs text-gray-500 block mt-1">
+                          (Supports Markdown: # Heading, **bold**, *italic*, [link](url), &gt; quote, - list)
+                        </span>
+                      </label>
+                      
+                      {/* Preview Toggle Buttons - Always Visible */}
+                      <div className="flex space-x-3 mb-3 p-3 bg-gray-50 rounded-lg border">
+                        <button
+                          type="button"
+                          onClick={() => setShowPreview(false)}
+                          className={`flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all duration-200 ${
+                            !showPreview 
+                              ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+                              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                          }`}
+                        >
+                          <span className="text-lg">📝</span>
+                          <span>Write</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowPreview(true)}
+                          className={`flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all duration-200 ${
+                            showPreview 
+                              ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+                              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                          }`}
+                        >
+                          <span className="text-lg">👁️</span>
+                          <span>Preview</span>
+                        </button>
+                        <div className="flex items-center text-sm text-gray-500 ml-4">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800">
+                            {showPreview ? 'Preview Mode' : 'Edit Mode'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+{!showPreview ? (
+                      <textarea
+                        required
+                        value={formData.content}
+                        onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                        rows={15}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary font-mono text-sm"
+                        placeholder="Write your blog content here using Markdown formatting...
 
 # Main Heading
 Write your introduction paragraph here.
@@ -508,7 +607,37 @@ More content here with **bold text** and *italic text*.
 > This is a quote block
 
 [This is a link](https://example.com)"
-                    />
+                      />
+                    ) : (
+                      <div className="w-full min-h-[300px] border border-gray-300 rounded-md bg-white">
+                        <div className="p-6 bg-gray-50 border-b border-gray-200 rounded-t-md">
+                          <h3 className="text-lg font-semibold text-gray-900">Blog Preview</h3>
+                          <p className="text-sm text-gray-600">How your blog post will appear on the website</p>
+                        </div>
+                        <div className="p-6">
+                          {formData.title && (
+                            <div className="mb-6 pb-4 border-b border-gray-200">
+                              <h1 className="text-3xl font-bold text-gray-900 mb-2">{formData.title}</h1>
+                              <div className="text-sm text-gray-500 space-x-4">
+                                <span>By {formData.author || 'Author'}</span>
+                                <span>•</span>
+                                <span>{formData.category || 'Category'}</span>
+                              </div>
+                            </div>
+                          )}
+                          {formData.content ? (
+                            <div 
+                              className="formatted-content"
+                              dangerouslySetInnerHTML={{ 
+                                __html: formatBlogContent(formData.content) 
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-500 italic">Start writing your content to see the preview...</p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="flex justify-end space-x-3 pt-4">
@@ -527,6 +656,71 @@ More content here with **bold text** and *italic text*.
                     </button>
                   </div>
                 </form>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+        
+        {/* Gallery Modal */}
+        {showGallery && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto"
+            >
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-lg font-semibold">Choose from Gallery</h3>
+                <button
+                  onClick={() => setShowGallery(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4">
+                {loadingGallery ? (
+                  <div className="flex justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+                  </div>
+                ) : galleryImages.length === 0 ? (
+                  <div className="text-center py-8">
+                    <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-gray-500">No images in gallery yet.</p>
+                    <p className="text-sm text-gray-400">Upload some images first to see them here.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {galleryImages.map((image, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleGalleryImageSelect(image.url)}
+                        className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all group"
+                      >
+                        <img
+                          src={image.url}
+                          alt={image.name}
+                          className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-25 transition-all flex items-center justify-center">
+                          <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-medium">
+                            Select
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

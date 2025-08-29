@@ -351,4 +351,54 @@ export const deleteComment = async (id: string, userId: string) => {
     console.error(`Error deleting comment with ID ${id}:`, error);
     throw error;
   }
+};
+
+// Get all images from the blog-images storage bucket for gallery selection
+export const getBlogImages = async (): Promise<Array<{name: string, url: string}>> => {
+  try {
+    // Check authentication
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      throw new Error('No authentication session found');
+    }
+
+    // List all files in the blog-images bucket
+    const { data: files, error } = await supabase
+      .storage
+      .from('blog-images')
+      .list('', {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'created_at', order: 'desc' }
+      });
+    
+    if (error) {
+      console.error('Error listing blog images:', error);
+      throw error;
+    }
+
+    if (!files) {
+      return [];
+    }
+
+    // Get public URLs for all files
+    const imagesWithUrls = files
+      .filter(file => file.name && file.name !== '.emptyFolderPlaceholder')
+      .map(file => {
+        const { data: urlData } = supabase
+          .storage
+          .from('blog-images')
+          .getPublicUrl(file.name);
+        
+        return {
+          name: file.name,
+          url: urlData.publicUrl
+        };
+      });
+
+    return imagesWithUrls;
+  } catch (error) {
+    console.error('Error getting blog images for gallery:', error);
+    throw error;
+  }
 }; 

@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import './BlogEditor.css';
 import Card from '../components/Card/Card';
 import { ArrowLeftIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { createBlogPost, getBlogPostById, updateBlogPost, uploadBlogThumbnail } from '../lib/blogService';
+import { createBlogPost, getBlogPostById, updateBlogPost, uploadBlogThumbnail, getBlogImages } from '../lib/blogService';
 import Loading from '../components/Loading/Loading';
 import Message from '../components/Message/Message';
 
@@ -55,8 +55,70 @@ const BlogEditor: React.FC = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [message, setMessage] = useState<string>('');
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [showGallery, setShowGallery] = useState<boolean>(false);
+  const [galleryImages, setGalleryImages] = useState<Array<{name: string, url: string}>>([]);
+  const [loadingGallery, setLoadingGallery] = useState<boolean>(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Format blog content for preview (same as client-side function)
+  const formatBlogContent = (content: string) => {
+    if (!content) return '';
+    
+    // Convert line breaks to paragraphs
+    let formattedContent = content
+      .split('\n\n')
+      .filter(paragraph => paragraph.trim().length > 0)
+      .map(paragraph => {
+        const trimmed = paragraph.trim();
+        
+        // Check if it's a heading
+        if (trimmed.startsWith('# ')) {
+          return `<h2 class="blog-heading">${trimmed.substring(2)}</h2>`;
+        } else if (trimmed.startsWith('## ')) {
+          return `<h3 class="blog-subheading">${trimmed.substring(3)}</h3>`;
+        } else if (trimmed.startsWith('### ')) {
+          return `<h4 class="blog-subheading-small">${trimmed.substring(4)}</h4>`;
+        }
+        
+        // Check if it's a list item
+        else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          return `<li class="blog-list-item">${trimmed.substring(2)}</li>`;
+        }
+        
+        // Check if it's a numbered list item
+        else if (/^\d+\.\s/.test(trimmed)) {
+          return `<li class="blog-list-item">${trimmed.replace(/^\d+\.\s/, '')}</li>`;
+        }
+        
+        // Check if it's a quote
+        else if (trimmed.startsWith('> ')) {
+          return `<blockquote class="blog-quote">${trimmed.substring(2)}</blockquote>`;
+        }
+        
+        // Regular paragraph
+        else {
+          return `<p class="blog-paragraph">${trimmed}</p>`;
+        }
+      })
+      .join('\n');
+    
+    // Wrap consecutive list items in ul tags
+    formattedContent = formattedContent.replace(/(<li class="blog-list-item">.*?<\/li>\n?)+/gs, (match) => {
+      return `<ul class="blog-list">${match}</ul>`;
+    });
+    
+    // Apply inline formatting
+    formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formattedContent = formattedContent.replace(/__(.*?)__/g, '<strong>$1</strong>');
+    formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    formattedContent = formattedContent.replace(/_(.*?)_/g, '<em>$1</em>');
+    formattedContent = formattedContent.replace(/`(.*?)`/g, '<code class="blog-code">$1</code>');
+    formattedContent = formattedContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="blog-link" target="_blank">$1</a>');
+    
+    return formattedContent;
+  };
   
   // Check if user is logged in
   useEffect(() => {
@@ -120,9 +182,37 @@ const BlogEditor: React.FC = () => {
   const handleThumbnailRemove = () => {
     setThumbnailFile(null);
     setThumbnailPreview('');
+    setThumbnailUrl('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  const loadGalleryImages = async () => {
+    try {
+      setLoadingGallery(true);
+      const images = await getBlogImages();
+      setGalleryImages(images);
+    } catch (err: any) {
+      console.error('Error loading gallery images:', err);
+      setError('Failed to load gallery images: ' + err.message);
+    } finally {
+      setLoadingGallery(false);
+    }
+  };
+
+  const handleGalleryToggle = () => {
+    setShowGallery(!showGallery);
+    if (!showGallery && galleryImages.length === 0) {
+      loadGalleryImages();
+    }
+  };
+
+  const handleGalleryImageSelect = (imageUrl: string) => {
+    setThumbnailPreview(imageUrl);
+    setThumbnailUrl(imageUrl);
+    setThumbnailFile(null); // Clear file upload since we're using a gallery image
+    setShowGallery(false);
   };
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -303,13 +393,28 @@ const BlogEditor: React.FC = () => {
                   />
                 </div>
               ) : (
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="mt-2 border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
-                >
-                  <PhotoIcon className="w-10 h-10 text-gray-400" />
-                  <p className="mt-2 text-sm text-gray-500">Click to upload thumbnail image</p>
-                  <p className="text-xs text-gray-400">JPG, PNG or GIF up to 5MB</p>
+                <div className="mt-2 space-y-3">
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
+                  >
+                    <PhotoIcon className="w-10 h-10 text-gray-400" />
+                    <p className="mt-2 text-sm text-gray-500">Click to upload new image</p>
+                    <p className="text-xs text-gray-400">JPG, PNG or GIF up to 5MB</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <span className="text-sm text-gray-500">or</span>
+                  </div>
+                  
+                  <button
+                    type="button"
+                    onClick={handleGalleryToggle}
+                    className="w-full px-4 py-3 border border-blue-300 rounded-md text-blue-600 hover:bg-blue-50 transition-colors flex items-center justify-center"
+                  >
+                    <PhotoIcon className="w-5 h-5 mr-2" />
+                    Choose from Gallery
+                  </button>
                 </div>
               )}
               
@@ -321,6 +426,59 @@ const BlogEditor: React.FC = () => {
                 accept="image/*"
                 onChange={handleThumbnailChange}
               />
+              
+              {/* Gallery Modal */}
+              {showGallery && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+                    <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                      <h3 className="text-lg font-semibold text-gray-900">Choose from Image Gallery</h3>
+                      <button
+                        onClick={() => setShowGallery(false)}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <XMarkIcon className="w-6 h-6" />
+                      </button>
+                    </div>
+                    
+                    <div className="p-4">
+                      {loadingGallery ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+                        </div>
+                      ) : galleryImages.length === 0 ? (
+                        <div className="text-center py-8">
+                          <PhotoIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                          <p className="text-gray-500">No images in gallery yet.</p>
+                          <p className="text-sm text-gray-400">Upload some images first to see them here.</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {galleryImages.map((image, index) => (
+                            <div
+                              key={index}
+                              onClick={() => handleGalleryImageSelect(image.url)}
+                              className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.name}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                              <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all flex items-end">
+                                <div className="p-2 text-xs text-white bg-black bg-opacity-75 w-full truncate">
+                                  {image.name}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             {/* Title */}
@@ -390,18 +548,102 @@ const BlogEditor: React.FC = () => {
             
             {/* Content */}
             <div className="blog-form-group">
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                Content <span className="text-red-500">*</span>
-              </label>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Content <span className="text-red-500">*</span>
+                  <span className="text-xs text-gray-500 block mt-1">
+                    (Supports Markdown: # Heading, **bold**, *italic*, [link](url), &gt; quote, - list)
+                  </span>
+                </label>
+                
+                {/* Preview Toggle Buttons */}
+                <div className="flex space-x-3 mb-3 p-3 bg-gray-50 rounded-lg border">
+                  <button
+                    type="button"
+                    onClick={() => setShowPreview(false)}
+                    className={`flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all duration-200 ${
+                      !showPreview 
+                        ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                    }`}
+                  >
+                    <span className="text-lg">📝</span>
+                    <span>Write</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowPreview(true)}
+                    className={`flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all duration-200 ${
+                      showPreview 
+                        ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                    }`}
+                  >
+                    <span className="text-lg">👁️</span>
+                    <span>Preview</span>
+                  </button>
+                  <div className="flex items-center text-sm text-gray-500 ml-4">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800">
+                      {showPreview ? 'Preview Mode' : 'Edit Mode'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               <div className="blog-editor-wrapper">
-                <textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="w-full min-h-[300px] p-3 border border-gray-300 rounded-md"
-                  placeholder="Enter blog content here..."
-                  required
-                ></textarea>
+                {!showPreview ? (
+                  <textarea
+                    id="content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="w-full min-h-[400px] p-3 border border-gray-300 rounded-md font-mono text-sm"
+                    placeholder="Write your blog content here using Markdown formatting...
+
+# Main Heading
+Write your introduction paragraph here.
+
+## Subheading
+More content here with **bold text** and *italic text*.
+
+- First list item
+- Second list item
+- Third list item
+
+> This is a quote block
+
+[This is a link](https://example.com)"
+                    required
+                  />
+                ) : (
+                  <div className="w-full min-h-[400px] border border-gray-300 rounded-md bg-white">
+                    <div className="p-4 bg-gray-50 border-b border-gray-200 rounded-t-md">
+                      <h3 className="text-lg font-semibold text-gray-900">Blog Preview</h3>
+                      <p className="text-sm text-gray-600">How your blog post will appear on the website</p>
+                    </div>
+                    <div className="p-6">
+                      {title && (
+                        <div className="mb-6 pb-4 border-b border-gray-200">
+                          <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+                          <div className="text-sm text-gray-500 space-x-4">
+                            <span>By {author || 'Author'}</span>
+                            <span>•</span>
+                            <span>{category === 'Other' && customCategory ? customCategory : category}</span>
+                          </div>
+                        </div>
+                      )}
+                      {content ? (
+                        <div 
+                          className="formatted-content"
+                          dangerouslySetInnerHTML={{ 
+                            __html: formatBlogContent(content) 
+                          }}
+                        />
+                      ) : (
+                        <p className="text-gray-500 italic">Start writing your content to see the preview...</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             
