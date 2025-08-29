@@ -247,6 +247,87 @@ async function initBlogListingPage() {
   }
 }
 
+// Function to format blog content with proper typography
+function formatBlogContent(content) {
+  if (!content) return '';
+  
+  // Convert line breaks to paragraphs
+  let formattedContent = content
+    // Split by double line breaks (paragraph breaks)
+    .split('\n\n')
+    .filter(paragraph => paragraph.trim().length > 0)
+    .map(paragraph => {
+      const trimmed = paragraph.trim();
+      
+      // Check if it's a heading (starts with #)
+      if (trimmed.startsWith('# ')) {
+        return `<h2 class="blog-heading">${trimmed.substring(2)}</h2>`;
+      } else if (trimmed.startsWith('## ')) {
+        return `<h3 class="blog-subheading">${trimmed.substring(3)}</h3>`;
+      } else if (trimmed.startsWith('### ')) {
+        return `<h4 class="blog-subheading-small">${trimmed.substring(4)}</h4>`;
+      }
+      
+      // Check if it's a list item (starts with - or *)
+      else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        return `<li class="blog-list-item">${trimmed.substring(2)}</li>`;
+      }
+      
+      // Check if it's a numbered list item
+      else if (/^\d+\.\s/.test(trimmed)) {
+        return `<li class="blog-list-item">${trimmed.replace(/^\d+\.\s/, '')}</li>`;
+      }
+      
+      // Check if it's a quote (starts with >)
+      else if (trimmed.startsWith('> ')) {
+        return `<blockquote class="blog-quote">${trimmed.substring(2)}</blockquote>`;
+      }
+      
+      // Regular paragraph
+      else {
+        return `<p class="blog-paragraph">${trimmed}</p>`;
+      }
+    })
+    .join('\n');
+  
+  // Wrap consecutive list items in ul/ol tags
+  formattedContent = wrapListItems(formattedContent);
+  
+  // Apply inline formatting
+  formattedContent = applyInlineFormatting(formattedContent);
+  
+  return formattedContent;
+}
+
+// Function to wrap list items in proper ul/ol tags
+function wrapListItems(content) {
+  // Wrap consecutive <li> items in <ul>
+  content = content.replace(/(<li class="blog-list-item">.*?<\/li>\n?)+/gs, (match) => {
+    return `<ul class="blog-list">${match}</ul>`;
+  });
+  
+  return content;
+}
+
+// Function to apply inline formatting (bold, italic, links)
+function applyInlineFormatting(content) {
+  // Bold text **text** or __text__
+  content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  content = content.replace(/__(.*?)__/g, '<strong>$1</strong>');
+  
+  // Italic text *text* or _text_
+  content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  content = content.replace(/_(.*?)_/g, '<em>$1</em>');
+  
+  // Code spans `code`
+  content = content.replace(/`(.*?)`/g, '<code class="blog-code">$1</code>');
+  
+  // Links [text](url)
+  content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="blog-link" target="_blank">$1</a>');
+  
+  return content;
+}
+
 // Function to extract blog ID from URL
 function getBlogIdFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -320,8 +401,8 @@ async function initBlogDetailPage() {
             </div>
           </div>
         </div>
-        <div class="blog-content">
-          ${post.content}
+        <div class="blog-content formatted-content">
+          ${formatBlogContent(post.content)}
         </div>
       </div>
     `;

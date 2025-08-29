@@ -31,7 +31,7 @@ const sidebarItems: SidebarItem[] = [
   { name: 'Users', path: '/admin/users', icon: UserGroupIcon },
   { name: 'Memberships', path: '/admin/memberships', icon: TagIcon },
   { name: 'Messages', path: '/admin/messages', icon: ChatBubbleLeftRightIcon },
-  { name: 'Blog Posts', path: '/admin/blog', icon: DocumentTextIcon },
+  { name: 'Blog Posts', path: '/admin/blogs', icon: DocumentTextIcon },
   { name: 'Events', path: '/admin/events', icon: CalendarIcon },
   { name: 'Admin Tracking', path: '/admin/tracking', icon: UserIcon },
   { name: 'Settings', path: '/admin/settings', icon: CogIcon },
