@@ -8,7 +8,7 @@
 
 /* Headings */
 .blog-heading {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #1a202c;
   margin: 2.5rem 0 1.5rem 0;
@@ -18,7 +18,7 @@
 }
 
 .blog-subheading {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #2d3748;
   margin: 2rem 0 1rem 0;
@@ -26,7 +26,7 @@
 }
 
 .blog-subheading-small {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #2d3748;
   margin: 1.5rem 0 0.75rem 0;
@@ -35,7 +35,7 @@
 
 /* Paragraphs */
 .blog-paragraph {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   line-height: 1.8;
   margin: 1.5rem 0;
   color: #4a5568;
@@ -57,7 +57,7 @@
 }
 
 .blog-list-item {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.7;
   margin: 0.5rem 0;
   color: #4a5568;
@@ -89,7 +89,7 @@ ol.blog-list li::before {
 
 /* Quotes */
 .blog-quote {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-style: italic;
   color: #2d3748;
   margin: 2rem 0;

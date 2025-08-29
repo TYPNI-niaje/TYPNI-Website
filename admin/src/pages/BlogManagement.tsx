@@ -27,6 +27,7 @@ const BlogManagement: FC = () => {
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft' | 'scheduled'>('all');
+  const [showPreview, setShowPreview] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -137,6 +138,65 @@ const BlogManagement: FC = () => {
     });
     setEditingBlog(null);
     setShowCreateModal(false);
+    setShowPreview(false);
+  };
+
+  // Format blog content for preview (same as client-side function)
+  const formatBlogContent = (content: string) => {
+    if (!content) return '';
+    
+    // Convert line breaks to paragraphs
+    let formattedContent = content
+      .split('\n\n')
+      .filter(paragraph => paragraph.trim().length > 0)
+      .map(paragraph => {
+        const trimmed = paragraph.trim();
+        
+        // Check if it's a heading
+        if (trimmed.startsWith('# ')) {
+          return `<h2 class="blog-heading">${trimmed.substring(2)}</h2>`;
+        } else if (trimmed.startsWith('## ')) {
+          return `<h3 class="blog-subheading">${trimmed.substring(3)}</h3>`;
+        } else if (trimmed.startsWith('### ')) {
+          return `<h4 class="blog-subheading-small">${trimmed.substring(4)}</h4>`;
+        }
+        
+        // Check if it's a list item
+        else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          return `<li class="blog-list-item">${trimmed.substring(2)}</li>`;
+        }
+        
+        // Check if it's a numbered list item
+        else if (/^\d+\.\s/.test(trimmed)) {
+          return `<li class="blog-list-item">${trimmed.replace(/^\d+\.\s/, '')}</li>`;
+        }
+        
+        // Check if it's a quote
+        else if (trimmed.startsWith('> ')) {
+          return `<blockquote class="blog-quote">${trimmed.substring(2)}</blockquote>`;
+        }
+        
+        // Regular paragraph
+        else {
+          return `<p class="blog-paragraph">${trimmed}</p>`;
+        }
+      })
+      .join('\n');
+    
+    // Wrap consecutive list items in ul tags
+    formattedContent = formattedContent.replace(/(<li class="blog-list-item">.*?<\/li>\n?)+/gs, (match) => {
+      return `<ul class="blog-list">${match}</ul>`;
+    });
+    
+    // Apply inline formatting
+    formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formattedContent = formattedContent.replace(/__(.*?)__/g, '<strong>$1</strong>');
+    formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    formattedContent = formattedContent.replace(/_(.*?)_/g, '<em>$1</em>');
+    formattedContent = formattedContent.replace(/`(.*?)`/g, '<code class="blog-code">$1</code>');
+    formattedContent = formattedContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="blog-link" target="_blank">$1</a>');
+    
+    return formattedContent;
   };
 
   // Filter blogs based on search and status
@@ -424,7 +484,7 @@ const BlogManagement: FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Content * 
                       <span className="text-xs text-gray-500 ml-2">
-                        (Supports Markdown: # Heading, **bold**, *italic*, [link](url), > quote, - list)
+                        (Supports Markdown: # Heading, **bold**, *italic*, [link](url), &gt; quote, - list)
                       </span>
                     </label>
                     <textarea
