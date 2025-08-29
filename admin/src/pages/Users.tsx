@@ -99,16 +99,6 @@ const Users: FC = () => {
     }).format(new Date(dateString));
   };
   
-  const getStatusClass = (status: string | undefined) => {
-    switch(status) {
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'inactive':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-yellow-100 text-yellow-800';
-    }
-  };
   
   // Add user deletion logic with admin tracking
   const handleDelete = async (user: User) => {

@@ -19,7 +19,7 @@ interface AdminProfileData {
 }
 
 const AdminProfile: FC = () => {
-  const { profile, user } = useAuth();
+  const { user } = useAuth();
   const [adminData, setAdminData] = useState<AdminProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

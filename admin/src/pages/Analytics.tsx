@@ -206,7 +206,6 @@ const Analytics: FC = () => {
   const [chartVisible, setChartVisible] = useState(false);
 
   const primaryColor = 'rgba(79, 70, 229, 1)'; // Indigo-600
-  const primaryColorLight = 'rgba(79, 70, 229, 0.1)';
   const accentColor = 'rgba(236, 72, 153, 1)'; // Pink-500
   const secondaryColor = 'rgba(16, 185, 129, 1)'; // Green-500
   const tertiaryColor = 'rgba(245, 158, 11, 1)'; // Amber-500
@@ -494,7 +493,7 @@ const Analytics: FC = () => {
           color: '#64748b',
           font: {
             size: 12,
-            weight: '500' as const
+            weight: 500
           },
           padding: 12,
           callback: function(value: any) {
@@ -513,7 +512,7 @@ const Analytics: FC = () => {
           color: '#64748b',
           font: {
             size: 11,
-            weight: '500' as const
+            weight: 500
           },
           padding: 8
         }
