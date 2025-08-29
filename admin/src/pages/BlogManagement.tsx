@@ -40,7 +40,7 @@ const BlogManagement: FC = () => {
     excerpt: '',
     author: '',
     category: '',
-    status: 'draft' as const,
+    status: 'draft' as 'published' | 'draft' | 'scheduled',
     thumbnail_url: '',
     publish_date: ''
   });
