@@ -18,6 +18,7 @@ import Messages from './pages/Messages';
 import Analytics from './pages/Analytics';
 import AdminTracking from './pages/AdminTracking';
 import Settings from './pages/Settings';
+import AdminProfile from './pages/AdminProfile';
 import Login from './pages/Login';
 import AuthLoadingScreen from './components/Loading/AuthLoadingScreen';
 
@@ -141,6 +142,11 @@ function AppContent({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, set
               <Route path="/admin/settings" element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/profile" element={
+                <ProtectedRoute>
+                  <AdminProfile />
                 </ProtectedRoute>
               } />
               <Route path="*" element={<Navigate to="/admin" replace />} />

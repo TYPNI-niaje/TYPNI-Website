@@ -1,8 +1,10 @@
 import type { FC } from 'react';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { useState, useRef, useEffect } from 'react';
+import { Bars3Icon, ChevronDownIcon, UserIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import typniLogo from '../../assets/images/TYPNI-11.jpg';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NotificationBell from '../NotificationBell/NotificationBell';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -14,12 +16,43 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ onMenuClick, profile }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Get current page title based on path
   const getPageTitle = () => {
     const path = location.pathname.split('/').pop();
     if (!path || path === 'admin') return 'Dashboard';
     return path.charAt(0).toUpperCase() + path.slice(1);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -54,23 +87,58 @@ const Header: FC<HeaderProps> = ({ onMenuClick, profile }) => {
         <div className="flex items-center space-x-4">
           <NotificationBell />
           
-          <div className="flex items-center space-x-3">
-            {profile?.avatar_url ? (
-              <img
-                src={profile.avatar_url}
-                alt={profile.full_name || 'Avatar'}
-                className="w-8 h-8 rounded-full object-cover border-2 border-primary"
-              />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">
-                <span className="text-sm font-medium">
-                  {profile?.full_name?.charAt(0) || 'A'}
-                </span>
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-200"
+            >
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt={profile.full_name || 'Avatar'}
+                  className="w-8 h-8 rounded-full object-cover border-2 border-primary"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">
+                  <span className="text-sm font-medium">
+                    {profile?.full_name?.charAt(0) || 'A'}
+                  </span>
+                </div>
+              )}
+              <span className="hidden sm:inline-block text-sm font-medium text-gray-700">
+                {profile?.full_name?.split(' ')[0] || 'Admin'}
+              </span>
+              <ChevronDownIcon className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
+                <div className="px-4 py-2 border-b border-gray-100">
+                  <p className="text-sm font-medium text-gray-900">{profile?.full_name || 'Admin User'}</p>
+                  <p className="text-xs text-gray-500">Administrator</p>
+                </div>
+                
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    navigate('/admin/profile');
+                  }}
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <UserIcon className="w-4 h-4 mr-2" />
+                  Admin Profile
+                </button>
+                
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <ArrowRightStartOnRectangleIcon className="w-4 h-4 mr-2" />
+                  Sign Out
+                </button>
               </div>
             )}
-            <span className="hidden sm:inline-block text-sm font-medium text-gray-700">
-              {profile?.full_name?.split(' ')[0] || 'Admin'}
-            </span>
           </div>
         </div>
       </div>

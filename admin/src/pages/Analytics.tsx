@@ -394,51 +394,145 @@ const Analytics: FC = () => {
     });
   };
 
-  // Chart configurations
+  // Enhanced forex-style chart configurations
   const userGrowthChart = {
     labels: userGrowth.dates,
     datasets: [
       {
         label: 'User Growth',
         data: userGrowth.counts,
-        fill: true,
-        backgroundColor: primaryColorLight,
+        fill: 'start',
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          
+          if (!chartArea) {
+            return null;
+          }
+          
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(79, 70, 229, 0.8)');
+          gradient.addColorStop(0.5, 'rgba(79, 70, 229, 0.4)');
+          gradient.addColorStop(1, 'rgba(79, 70, 229, 0.05)');
+          return gradient;
+        },
         borderColor: primaryColor,
+        borderWidth: 3,
         tension: 0.4,
-        pointBackgroundColor: primaryColor,
-        pointRadius: 4,
-        pointHoverRadius: 6
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor: primaryColor,
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: '#ffffff',
+        pointHoverBorderColor: primaryColor,
+        pointHoverBorderWidth: 4,
+        // Add shadow effect
+        shadowColor: 'rgba(79, 70, 229, 0.3)',
+        shadowBlur: 10,
+        shadowOffsetY: 4
       }
     ]
   };
 
   const userGrowthOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      intersect: false,
+      mode: 'index' as const,
+    },
     plugins: {
       legend: {
         display: false
       },
       tooltip: {
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        titleColor: '#1f2937',
-        bodyColor: '#4b5563',
-        borderColor: '#e5e7eb',
-        borderWidth: 1,
-        padding: 12,
-        boxPadding: 6
+        enabled: true,
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+        titleColor: '#ffffff',
+        bodyColor: '#cbd5e1',
+        borderColor: 'rgba(79, 70, 229, 0.8)',
+        borderWidth: 2,
+        padding: 16,
+        boxPadding: 8,
+        cornerRadius: 12,
+        displayColors: false,
+        titleFont: {
+          size: 14,
+          weight: 'bold' as const
+        },
+        bodyFont: {
+          size: 13
+        },
+        callbacks: {
+          title: function(context: any) {
+            return context[0].label;
+          },
+          label: function(context: any) {
+            const value = context.parsed.y;
+            const growth = context.dataIndex > 0 ? 
+              context.dataset.data[context.dataIndex] - context.dataset.data[context.dataIndex - 1] : 0;
+            return [
+              `Total Users: ${value.toLocaleString()}`,
+              growth > 0 ? `+${growth} new users` : 'No new users'
+            ];
+          }
+        }
       }
     },
     scales: {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(229, 231, 235, 0.5)'
+          color: 'rgba(148, 163, 184, 0.1)',
+          lineWidth: 1,
+        },
+        border: {
+          display: false
+        },
+        ticks: {
+          color: '#64748b',
+          font: {
+            size: 12,
+            weight: '500' as const
+          },
+          padding: 12,
+          callback: function(value: any) {
+            return value.toLocaleString();
+          }
         }
       },
       x: {
         grid: {
           display: false
+        },
+        border: {
+          color: 'rgba(148, 163, 184, 0.2)'
+        },
+        ticks: {
+          color: '#64748b',
+          font: {
+            size: 11,
+            weight: '500' as const
+          },
+          padding: 8
         }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeInOutQuart' as const,
+      delay: (context: any) => {
+        return context.dataIndex * 100;
+      }
+    },
+    elements: {
+      line: {
+        borderJoinStyle: 'round' as const,
+        borderCapStyle: 'round' as const
+      },
+      point: {
+        hoverBorderWidth: 4
       }
     }
   };
@@ -703,7 +797,7 @@ const Analytics: FC = () => {
           </motion.div>
         </div>
 
-        {/* Charts Row 2 */}
+        {/* Charts Row 2 - Enhanced Modern Design */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <motion.div
             variants={itemVariants}
@@ -711,38 +805,118 @@ const Analytics: FC = () => {
             whileHover={{ 
               y: -5, 
               transition: { duration: 0.2 },
-              boxShadow: "0px 10px 30px -5px rgba(0, 0, 0, 0.1)" 
+              boxShadow: "0px 15px 35px -5px rgba(79, 70, 229, 0.15)" 
             }}
           >
-            <Card title={
-              <div className="flex items-center space-x-2">
-                <span>Content Categories</span>
-                <motion.div 
-                  className="w-2 h-2 rounded-full bg-secondary"
-                  animate={{ scale: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                />
+            <Card className="bg-gradient-to-br from-white to-blue-50/30 border-0 shadow-xl overflow-hidden">
+              <div className="p-6 pb-0">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">Content Categories</h3>
+                      <p className="text-sm text-gray-500">Distribution by type</p>
+                    </div>
+                  </div>
+                  
+                  <motion.div 
+                    className="flex items-center space-x-2 bg-primary/10 px-3 py-1 rounded-xl"
+                    animate={{ 
+                      backgroundColor: ["rgba(79, 70, 229, 0.1)", "rgba(79, 70, 229, 0.15)", "rgba(79, 70, 229, 0.1)"]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  >
+                    <motion.div 
+                      className="w-2 h-2 rounded-full bg-primary"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.7, 1, 0.7]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <span className="text-xs text-primary font-semibold">ACTIVE</span>
+                  </motion.div>
+                </div>
               </div>
-            }>
+              
               <motion.div 
-                className="p-4 h-64 flex justify-center"
+                className="relative px-6 pb-6 h-80"
                 variants={chartVariants}
                 initial="hidden"
                 animate={chartVisible ? "visible" : "hidden"}
               >
-                <div className="w-64">
-                  <Doughnut
-                    data={contentChart}
-                    options={{
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          position: 'right'
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="w-72 h-72 relative">
+                    <Doughnut
+                      data={contentChart}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            display: false
+                          },
+                          tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#4b5563',
+                            borderColor: 'rgba(79, 70, 229, 0.2)',
+                            borderWidth: 1,
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                              label: function(context: any) {
+                                const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+                              }
+                            }
+                          }
+                        },
+                        cutout: '70%',
+                        animation: {
+                          animateRotate: true,
+                          duration: 2000,
+                          easing: 'easeInOutQuart'
                         }
-                      },
-                      cutout: '60%'
-                    }}
-                  />
+                      }}
+                    />
+                    
+                    {/* Center content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="text-2xl font-bold text-gray-900">{contentMetrics.total}</div>
+                      <div className="text-xs text-gray-500 font-medium">Total Posts</div>
+                    </div>
+                  </div>
+                  
+                  {/* Custom legend */}
+                  <div className="absolute bottom-0 left-0 right-0">
+                    <div className="flex flex-wrap justify-center gap-3">
+                      {Object.entries(contentMetrics.categories).map(([category, count], index) => (
+                        <motion.div 
+                          key={category}
+                          className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-lg shadow-sm"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 + 0.5 }}
+                        >
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ 
+                              backgroundColor: [primaryColor, accentColor, secondaryColor, tertiaryColor, 'rgba(99, 102, 241, 0.8)', 'rgba(139, 92, 246, 0.8)'][index % 6]
+                            }}
+                          />
+                          <span className="text-xs font-medium text-gray-700">{category}</span>
+                          <span className="text-xs text-gray-500">({count})</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </Card>
@@ -754,38 +928,118 @@ const Analytics: FC = () => {
             whileHover={{ 
               y: -5, 
               transition: { duration: 0.2 },
-              boxShadow: "0px 10px 30px -5px rgba(0, 0, 0, 0.1)" 
+              boxShadow: "0px 15px 35px -5px rgba(16, 185, 129, 0.15)" 
             }}
           >
-            <Card title={
-              <div className="flex items-center space-x-2">
-                <span>Event Types</span>
-                <motion.div 
-                  className="w-2 h-2 rounded-full bg-amber-500"
-                  animate={{ scale: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.9 }}
-                />
+            <Card className="bg-gradient-to-br from-white to-emerald-50/30 border-0 shadow-xl overflow-hidden">
+              <div className="p-6 pb-0">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">Event Types</h3>
+                      <p className="text-sm text-gray-500">Event distribution</p>
+                    </div>
+                  </div>
+                  
+                  <motion.div 
+                    className="flex items-center space-x-2 bg-emerald-500/10 px-3 py-1 rounded-xl"
+                    animate={{ 
+                      backgroundColor: ["rgba(16, 185, 129, 0.1)", "rgba(16, 185, 129, 0.15)", "rgba(16, 185, 129, 0.1)"]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  >
+                    <motion.div 
+                      className="w-2 h-2 rounded-full bg-emerald-500"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.7, 1, 0.7]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <span className="text-xs text-emerald-600 font-semibold">LIVE</span>
+                  </motion.div>
+                </div>
               </div>
-            }>
+              
               <motion.div 
-                className="p-4 h-64 flex justify-center"
+                className="relative px-6 pb-6 h-80"
                 variants={chartVariants}
                 initial="hidden"
                 animate={chartVisible ? "visible" : "hidden"}
               >
-                <div className="w-64">
-                  <Doughnut
-                    data={eventTypeChart}
-                    options={{
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          position: 'right'
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="w-72 h-72 relative">
+                    <Doughnut
+                      data={eventTypeChart}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            display: false
+                          },
+                          tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#4b5563',
+                            borderColor: 'rgba(16, 185, 129, 0.2)',
+                            borderWidth: 1,
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                              label: function(context: any) {
+                                const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+                              }
+                            }
+                          }
+                        },
+                        cutout: '70%',
+                        animation: {
+                          animateRotate: true,
+                          duration: 2000,
+                          easing: 'easeInOutQuart'
                         }
-                      },
-                      cutout: '60%'
-                    }}
-                  />
+                      }}
+                    />
+                    
+                    {/* Center content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="text-2xl font-bold text-gray-900">{eventMetrics.upcoming + eventMetrics.past}</div>
+                      <div className="text-xs text-gray-500 font-medium">Total Events</div>
+                    </div>
+                  </div>
+                  
+                  {/* Custom legend */}
+                  <div className="absolute bottom-0 left-0 right-0">
+                    <div className="flex flex-wrap justify-center gap-3">
+                      {Object.entries(eventMetrics.categories).map(([category, count], index) => (
+                        <motion.div 
+                          key={category}
+                          className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-lg shadow-sm"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 + 0.5 }}
+                        >
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ 
+                              backgroundColor: [secondaryColor, accentColor, tertiaryColor, primaryColor, 'rgba(99, 102, 241, 0.8)'][index % 5]
+                            }}
+                          />
+                          <span className="text-xs font-medium text-gray-700">{category}</span>
+                          <span className="text-xs text-gray-500">({count})</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </Card>

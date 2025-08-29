@@ -18,7 +18,6 @@ interface DashboardStats {
   totalUsers: number;
   totalPosts: number;
   totalEvents: number;
-  analytics: string;
   recentActivity: AdminActivity[];
   newPosts: number;
   comments: number;
@@ -29,7 +28,6 @@ const Dashboard: FC = () => {
     totalUsers: 0,
     totalPosts: 0,
     totalEvents: 0,
-    analytics: '+0%',
     recentActivity: [],
     newPosts: 0,
     comments: 0
@@ -75,36 +73,18 @@ const Dashboard: FC = () => {
           .select('*', { count: 'exact', head: true })
           .gte('created_at', sevenDaysAgo.toISOString());
 
-        // Calculate growth rate (simplified example - could be enhanced with real analytics data)
-        const previousPeriodEnd = new Date();
-        previousPeriodEnd.setDate(previousPeriodEnd.getDate() - 14);
-        const previousPeriodStart = new Date();
-        previousPeriodStart.setDate(previousPeriodStart.getDate() - 28);
-        
-        const { count: previousPeriodUsers } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true })
-          .lt('created_at', previousPeriodEnd.toISOString())
-          .gt('created_at', previousPeriodStart.toISOString());
-        
-        const { count: currentPeriodUsers } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true })
-          .gte('created_at', previousPeriodEnd.toISOString());
-        
-        let growthRate = 0;
-        if (previousPeriodUsers && previousPeriodUsers > 0) {
-          growthRate = ((currentPeriodUsers || 0) - previousPeriodUsers) / previousPeriodUsers * 100;
-        }
+        // Get total contact messages count
+        const { count: messagesCount } = await supabase
+          .from('contact_messages')
+          .select('*', { count: 'exact', head: true });
 
         setStats({
           totalUsers: usersCount || 0,
           totalPosts: postsCount || 0,
           totalEvents: eventsCount || 0,
-          analytics: `${growthRate >= 0 ? '+' : ''}${growthRate.toFixed(1)}%`,
           recentActivity: recentActivity as AdminActivity[] || [],
           newPosts: newPostsCount || 0,
-          comments: 0 // Comments functionality not implemented yet
+          comments: messagesCount || 0
         });
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -174,14 +154,14 @@ const Dashboard: FC = () => {
 
         <Card className="bg-white">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-500 bg-opacity-10">
-              <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            <div className="p-3 rounded-full bg-blue-500 bg-opacity-10">
+              <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
               </svg>
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-medium text-gray-600">Analytics</h2>
-              <p className="text-2xl font-semibold text-gray-900">{stats.analytics}</p>
+              <h2 className="text-sm font-medium text-gray-600">Messages</h2>
+              <p className="text-2xl font-semibold text-gray-900">{stats.comments.toLocaleString()}</p>
             </div>
           </div>
         </Card>
@@ -194,65 +174,140 @@ const Dashboard: FC = () => {
           transition={{ duration: 0.5 }}
           className="h-full"
         >
-          <Card 
-            title={
-              <motion.div 
-                className="flex items-center"
-                animate={{ color: ["#4f46e5", "#6366f1", "#4f46e5"] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <span className="text-lg font-medium">Recent Activity</span>
+          <Card className="bg-white border-0 shadow-lg rounded-2xl overflow-hidden">
+            <div className="p-6 pb-0">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                    <p className="text-sm text-gray-500">Latest admin actions</p>
+                  </div>
+                </div>
                 <motion.div 
-                  className="ml-2 w-1.5 h-1.5 rounded-full bg-primary"
+                  className="w-2 h-2 rounded-full bg-green-500"
                   animate={{ 
-                    scale: [1, 1.5, 1],
+                    scale: [1, 1.3, 1],
                     opacity: [0.7, 1, 0.7]
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-              </motion.div>
-            }
-            className="bg-white hover:shadow-md transition-shadow duration-300"
-          >
-          <div className="space-y-4">
-              {stats.recentActivity.length > 0 ? stats.recentActivity.map((activity, index) => (
-                <motion.div 
-                  key={activity.id} 
-                  className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    delay: index * 0.1,
-                    duration: 0.5
-                  }}
-                  whileHover={{ 
-                    backgroundColor: "rgba(79, 70, 229, 0.05)",
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  <motion.div 
-                    className="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center"
-                    animate={{ 
-                      boxShadow: [
-                        "0 0 0 rgba(79, 70, 229, 0.1)",
-                        "0 0 10px rgba(79, 70, 229, 0.3)",
-                        "0 0 0 rgba(79, 70, 229, 0.1)"
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, delay: index * 1 }}
-                  >
-                    <motion.div className="w-6 h-6 rounded-full bg-primary bg-opacity-30" />
-                  </motion.div>
-                <div>
-                    <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                    <p className="text-sm text-gray-500">{new Date(activity.created_at).toLocaleString()}</p>
+              </div>
+            </div>
+            
+            <div className="px-6 pb-6">
+              {stats.recentActivity.length > 0 ? (
+                <div className="space-y-1">
+                  {stats.recentActivity.map((activity, index) => (
+                    <motion.div 
+                      key={activity.id}
+                      className="group relative"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ 
+                        delay: index * 0.1,
+                        duration: 0.4,
+                        type: "spring",
+                        stiffness: 100
+                      }}
+                    >
+                      <div className="flex items-center p-4 rounded-xl hover:bg-gray-50/70 transition-all duration-200 hover:shadow-sm">
+                        <div className="flex items-center space-x-4 flex-1">
+                          <div className="relative">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                              activity.action === 'login' ? 'bg-green-100 text-green-600' :
+                              activity.action === 'logout' ? 'bg-orange-100 text-orange-600' :
+                              activity.action.includes('delete') ? 'bg-red-100 text-red-600' :
+                              activity.action.includes('create') ? 'bg-blue-100 text-blue-600' :
+                              'bg-gray-100 text-gray-600'
+                            }`}>
+                              {activity.action === 'login' ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                </svg>
+                              ) : activity.action === 'logout' ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                              ) : activity.action.includes('delete') ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              ) : activity.action.includes('create') ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                              ) : (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                              )}
+                            </div>
+                            <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full ${
+                              Date.now() - new Date(activity.created_at).getTime() < 300000 ? 'bg-green-500' : 'bg-gray-300'
+                            }`} />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium text-gray-900 capitalize">
+                                {activity.action.replace(/_/g, ' ')}
+                              </p>
+                              <span className="text-xs text-gray-400 font-mono">
+                                {new Date(activity.created_at).toLocaleTimeString('en-US', {
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                              {new Date(activity.created_at).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <motion.div 
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </motion.div>
+                      </div>
+                      
+                      {index < stats.recentActivity.length - 1 && (
+                        <div className="ml-8 border-l-2 border-gray-100 h-2" />
+                      )}
+                    </motion.div>
+                  ))}
                 </div>
+              ) : (
+                <motion.div 
+                  className="flex flex-col items-center justify-center py-12"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                  </div>
+                  <h4 className="text-sm font-medium text-gray-900 mb-1">No recent activity</h4>
+                  <p className="text-xs text-gray-500 text-center">Admin actions will appear here when performed</p>
                 </motion.div>
-              )) : (
-                <div className="text-sm text-gray-500 text-center py-4">No recent activity</div>
               )}
-          </div>
-        </Card>
+            </div>
+          </Card>
         </motion.div>
 
         <motion.div 
@@ -261,119 +316,138 @@ const Dashboard: FC = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="h-full"
         >
-          <Card 
-            title={
-              <motion.div 
-                className="flex items-center"
-                animate={{ color: ["#4f46e5", "#6366f1", "#4f46e5"] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <span className="text-lg font-medium">Quick Stats</span>
+          <Card className="bg-white border-0 shadow-lg rounded-2xl overflow-hidden">
+            <div className="p-6 pb-0">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Quick Stats</h3>
+                  <p className="text-sm text-gray-500">Platform overview</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="px-6 pb-6">
+              <div className="space-y-3">
                 <motion.div 
-                  className="ml-2 w-1.5 h-1.5 rounded-full bg-accent"
-                  animate={{ 
-                    scale: [1, 1.5, 1],
-                    opacity: [0.7, 1, 0.7]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </motion.div>
-            }
-            className="bg-white hover:shadow-md transition-shadow duration-300"
-          >
-          <div className="space-y-4">
-              <motion.div 
-                className="flex justify-between items-center p-3 rounded-lg hover:bg-gray-50"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                whileHover={{ 
-                  backgroundColor: "rgba(79, 70, 229, 0.05)",
-                  x: 5,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                <span className="text-sm text-gray-600 flex items-center">
-                  <motion.span 
-                    className="inline-block w-2 h-2 rounded-full bg-primary mr-2"
-                    animate={{ 
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  Active Users
-                </span>
-                <motion.span 
-                  className="text-sm font-medium text-gray-900"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 5, repeat: Infinity }}
+                  className="group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  {stats.totalUsers.toLocaleString()}
-                </motion.span>
-              </motion.div>
-              <motion.div 
-                className="flex justify-between items-center p-3 rounded-lg hover:bg-gray-50"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                whileHover={{ 
-                  backgroundColor: "rgba(236, 72, 153, 0.05)",
-                  x: 5,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                <span className="text-sm text-gray-600 flex items-center">
-                  <motion.span 
-                    className="inline-block w-2 h-2 rounded-full bg-accent mr-2"
-                    animate={{ 
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                  />
-                  New Posts
-                </span>
-                <motion.span 
-                  className="text-sm font-medium text-gray-900"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100/50 hover:shadow-sm transition-all duration-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Total Users</p>
+                        <p className="text-xs text-gray-500">Registered members</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <motion.p 
+                        className="text-xl font-bold text-gray-900"
+                        animate={{ scale: [1, 1.02, 1] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      >
+                        {stats.totalUsers.toLocaleString()}
+                      </motion.p>
+                      <div className="flex items-center text-xs text-emerald-600">
+                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                        Active
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
                 >
-                  {stats.newPosts.toLocaleString()}
-                </motion.span>
-              </motion.div>
-              <motion.div 
-                className="flex justify-between items-center p-3 rounded-lg hover:bg-gray-50"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                whileHover={{ 
-                  backgroundColor: "rgba(16, 185, 129, 0.05)",
-                  x: 5,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                <span className="text-sm text-gray-600 flex items-center">
-                  <motion.span 
-                    className="inline-block w-2 h-2 rounded-full bg-secondary mr-2"
-                    animate={{ 
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                  />
-                  Comments
-                </span>
-                <motion.span 
-                  className="text-sm font-medium text-gray-900"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100/50 hover:shadow-sm transition-all duration-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">New Posts</p>
+                        <p className="text-xs text-gray-500">Last 7 days</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <motion.p 
+                        className="text-xl font-bold text-gray-900"
+                        animate={{ scale: [1, 1.02, 1] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                      >
+                        {stats.newPosts.toLocaleString()}
+                      </motion.p>
+                      <div className="flex items-center text-xs text-purple-600">
+                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Recent
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                  {stats.comments.toLocaleString()}
-                </motion.span>
-              </motion.div>
-          </div>
-        </Card>
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100/50 hover:shadow-sm transition-all duration-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Messages</p>
+                        <p className="text-xs text-gray-500">Contact inquiries</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <motion.p 
+                        className="text-xl font-bold text-gray-900"
+                        animate={{ scale: [1, 1.02, 1] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                      >
+                        {stats.comments.toLocaleString()}
+                      </motion.p>
+                      <div className="flex items-center text-xs text-emerald-600">
+                        <motion.div 
+                          className="w-2 h-2 bg-emerald-500 rounded-full mr-1"
+                          animate={{ 
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                        Live
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </Card>
         </motion.div>
       </div>
     </div>
